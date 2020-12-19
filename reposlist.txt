@@ -1,0 +1,5 @@
+sitemap;Tropby;open-apexx-sitemap
+helloworld;Tropby;open-apexx-helloworld
+module-manager;Tropby;open-apexx-module-manager
+faq;Tropby;open-apexx-faq
+content;Tropby;open-apexx-content

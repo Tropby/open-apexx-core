@@ -325,7 +325,7 @@ class Action
 		}
 		else
 		{
-			$repos = file("https://raw.githubusercontent.com/Tropby/open-apexx/master/reposlist.txt");
+			$repos = file("https://raw.githubusercontent.com/Tropby/open-apexx-core/master/reposlist.txt");
 			
 			$tmplrepos = array();
 			foreach( $repos as $r )
