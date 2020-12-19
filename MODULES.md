@@ -5,7 +5,7 @@ Um besser mit Modulen umgehen zu können werden die Module in eigene repositorie
 |Modul|Status|Version|Repository|
 |---|---|---|---|
 |affiliates|todo|?.?|?|
-|articles|todo|?.?|?|
+|articles|released|1.2.1|[REPOS](https://github.com/Tropby/open-apexx-articles)|
 |banner|todo|?.?|?|
 |calendar|released|1.1.3|[REPOS](https://github.com/Tropby/open-apexx-calendar)|
 |comments|released|1.1.0|[REPOS](https://github.com/Tropby/open-apexx-comments)|
