@@ -29,12 +29,16 @@ class Action
 	 */
 	private function delTree($dir) 
 	{
-		$files = array_diff(scandir($dir), array('.','..'));
-		foreach ($files as $file) 
-		{
-			(is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
+		if( is_dir($dir) )
+		{			
+			$files = array_diff(scandir($dir), array('.','..'));
+			foreach ($files as $file) 
+			{
+				(is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
+			}
+			return rmdir($dir);
 		}
-		return rmdir($dir);
+		return true;
 	}
 	
 	/*
@@ -161,7 +165,7 @@ class Action
 				{
 					@mkdir($oldPath.$n);
 					
-					$fl = $this->scanTree( $newPath.$n."/", $oldPath.$n."/");
+					$fl = $this->copyTemplates( $newPath.$n."/", $oldPath.$n."/");
 					foreach( $fl as $f )
 					{
 						$filelist[] = $f;
