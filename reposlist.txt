@@ -4,3 +4,4 @@ module-manager;Tropby;open-apexx-module-manager
 faq;Tropby;open-apexx-faq
 content;Tropby;open-apexx-content
 calendar;Tropby;open-apexx-calendar
+comments;Tropby;open-apexx-comments
