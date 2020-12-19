@@ -195,6 +195,10 @@ else {
 	}
 	
 	if ( is_writeable(BASEDIR.getpath('uploads')) ) $apx->tmpl->assign('WRITEABLE_UPLOADS',1);
+	if ( is_writeable(BASEDIR.getpath('templates')) ) $apx->tmpl->assign('WRITEABLE_TEMPLATES',1);
+	if ( is_writeable(BASEDIR.getpath('modules')) ) $apx->tmpl->assign('WRITEABLE_MODULES',1);
+	if ( is_writeable(BASEDIR.getpath('language')) ) $apx->tmpl->assign('WRITEABLE_LANGUAGE',1);
+	
 	$apx->tmpl->parse('step1','/');
 }
 

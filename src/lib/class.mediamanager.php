@@ -109,9 +109,12 @@ function createdir($name,$dir='') {
 		return;
 	}
 	
-	if ( !mkdir(BASEDIR.getpath('uploads').$newdir,0777) ) {
-		echo 'can not create directory!';
-		return;
+	if( !is_dir(BASEDIR.getpath('uploads').$newdir) )
+	{
+		if ( !mkdir(BASEDIR.getpath('uploads').$newdir,0777) ) {
+			echo 'can not create directory!';
+			return;
+		}		
 	}
 	
 	@chmod(BASEDIR.getpath('uploads').$newdir,0777);

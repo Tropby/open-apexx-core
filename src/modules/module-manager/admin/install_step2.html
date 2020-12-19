@@ -1,0 +1,26 @@
+
+<h2>Install Module: {MODULE}</h2>
+
+{list FILE_INFO}
+
+	{if FILE_INFO.MOVE_FAILED}
+		<span style='color: #C66413'>ERROR: Can not move file: 
+	{else}
+		<span style='color: #009900'>File moved: 
+	{/if}	=> {FILE_INFO.FILE}</span><br />
+
+{/list}
+
+<hr />
+
+{list TEMPLATE_INFO}
+	{* {if TEMPLATE_INFO.COPY} *}
+		<span style='color: #C66413'>New Template copied to default templates: {TEMPLATE_INFO.FILE}</span><br />
+	{* {/if} *}
+{/list}
+
+
+<br /><br />
+
+
+<a href='?action=main.mshow&do=refresh'>Weiter zur Modulverwaltung</a>

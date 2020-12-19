@@ -1,0 +1,101 @@
+{*
+	MODULE = Name of the module to install
+	
+	FILE_INFO = List of files to install
+	
+	FILE_INFO.OVERWRITE = The file will be overwritten by the installation
+	FILE_INFO.FILE = Filename of the file
+*}
+
+
+
+<table width="100%" class="table">
+	<colgroup>
+		<col width="200" />
+		<col width="150" />
+		<col />
+	</colgroup>
+	<tr class="tableheader">
+		<td colspan="3">{LANG[INSTALL]}: {MODULE}</td>
+	</tr>
+	<tr class="tableheader">
+		<td>&nbsp;</td>
+		<td>Neu</td>
+		<td>Aktuell</td>
+	</tr>
+	<tr>
+		<td>
+			{LANG[ID]}:
+		</td>
+		<td>
+			<b>{MODULE_ID}</b>
+		</td>
+		<td>
+			{CURRENT_ID}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{LANG[AUTHOR]}:
+		</td>
+		<td>
+			<b>{MODULE_AUTHOR}</b>
+		</td>
+		<td>
+			{CURRENT_AUTHOR}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{LANG[VERSION]}:
+		</td>
+		<td>
+			<b>{MODULE_VERSION}</b>
+		</td>
+		<td>
+			{CURRENT_VERSION}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{LANG[FILE_INFO]}:
+		</td>
+		<td colspan="2">
+			{list FILE_INFO}
+
+				{if FILE_INFO.OVERWRITE}
+					<span style='color: #C66413'>Overwrite file
+				{else}
+					<span style='color: #009900'>New file
+				{/if}	=> {FILE_INFO.FILE}</span><br />
+
+			{/list}
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			{LANG[TEMPLATE_INFO]}:
+			
+		</td>
+		<td colspan="2">
+			{list TEMPLATE_INFO}
+
+				{if TEMPLATE_INFO.COPY}
+					<span style='color: #009900'>New Template file will be copied to default template
+				{else}
+					<span style='color: #C66413'>Existing Template will not be changed (for new features see examples)
+				{/if}	=> {TEMPLATE_INFO.FILE}</span><br />
+
+			{/list}
+		</td>
+	</tr>
+	
+	<tr class="submit">
+		<td colspan="3">
+			<a href="?action=module-manager.install&step=2" class="button">Installation durchführen</a>
+		</td>
+	</tr>
+
+</table>
+

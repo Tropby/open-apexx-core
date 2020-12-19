@@ -1,0 +1,29 @@
+<table width="100%" class="table">
+	<colgroup>
+		<col width="200" />
+		<col width="150" />
+		<col />
+	</colgroup>
+	<tr class="tableheader">
+		<td>Version</td>
+		<td>Author</td>
+		<td>Changelog</td>
+		<td>Optionen</td>
+	</tr>
+{list RELEASES}
+	<tr>
+		<td>
+			{RELEASES.VERSION}			
+		</td>
+		<td>
+			{RELEASES.USER}
+		</td>
+		<td>
+			{RELEASES.INFO}
+		</td>
+		<td>
+			<a href='?action=module-manager.repos&install={RELEASES.LINK}'><img src='design/install.gif' /></a>
+		</td>
+	</tr>
+{/list}	
+</table>

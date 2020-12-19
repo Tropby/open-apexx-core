@@ -1,0 +1,35 @@
+<table width="100%" class="tablelist">
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>Package Info</th>
+		<th>Optionen</th>
+	</tr>
+	</thead>
+
+	{list MODULES}
+		<tr>
+			<td>
+				{MODULES.ID}			
+			</td>
+			<td>
+				<small>
+					{if MODULES.FILE_LIST}
+						{list MODULES.FILE_LIST}
+							{if FILE_LIST.MISSING}<span style="color: #CC0000;"><b>MISSING:</b> {/if}{FILE_LIST.NAME}{if FILE_LIST.MISSING}</span>{else} ({FILE_LIST.SIZE} Byte){/if}<br />
+						{/list}
+					{else}
+						(no package manager)
+					{/if}
+				</small>
+			</td>
+			<td>
+				{if MODULES.REMOVE_LINK}
+					<a onclick="return confirm('Wirklich löschen?');" href="{MODULES.REMOVE_LINK}"><img src="design/uninstall.gif" title="löschen" /></a>
+				{else}
+					Installed / Active
+				{/if}
+			</td>
+		</tr>
+	{/list}
+</table>
