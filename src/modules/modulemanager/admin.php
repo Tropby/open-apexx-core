@@ -313,7 +313,7 @@ class Action
 			{
 				$tmpldata[] = array(
 					"VERSION" => $d->name,
-					"INFO" => $d->body,
+					"INFO" => nl2br( utf8_decode( $d->body ) ),
 					"LINK" => base64_encode($d->assets[0]->browser_download_url),
 					"USER" => $d->author->login
 				);
@@ -451,7 +451,7 @@ class Action
 				$d = $db->first("SELECT * FROM ".PRE."_modules WHERE module='".$module."' LIMIT 1;");
 				
 				if(!$d["active"] && !$d["installed"])
-					$tmplmodules[$i]["REMOVE_LINK"] = "action.php?action=module-manager.deleteModule&id=".$module;
+					$tmplmodules[$i]["REMOVE_LINK"] = "action.php?action=modulemanager.deleteModule&id=".$module;
 			}
 			$i++;
 		}
