@@ -7,8 +7,8 @@ Um besser mit Modulen umgehen zu können werden die Module in eigene repositorie
 |affiliates|todo|?.?|?|
 |articles|todo|?.?|?|
 |banner|todo|?.?|?|
-|calendar|todo|?.?|?|
-|comments|todo|?.?|?|
+|calendar|released|1.1.3|[REPOS](https://github.com/Tropby/open-apexx-calendar)|
+|comments|released|1.1.0|[REPOS](https://github.com/Tropby/open-apexx-comments)|
 |contact|todo|?.?|?|
 |content|released|1.1.2|[REPOS](https://github.com/Tropby/open-apexx-content)|
 |downloads|todo|?.?|?|

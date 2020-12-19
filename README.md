@@ -55,3 +55,5 @@ Bitte prüfen Sie die Systemanforderungen, bevor Sie die Software installieren:
 |Sitemap|Zeigt den inhalt der kompletten Seite an (Modul support vorrausgesetzt). Kann den Inhalt im Google Sitemap XML-Format anzeigen.|[src](https://github.com/Tropby/open-apexx-sitemap)|[releases](https://github.com/Tropby/open-apexx-sitemap/releases)|
 |Content|Modul zur anzeige von Inhalten.|[src](https://github.com/Tropby/open-apexx-content)|[releases](https://github.com/Tropby/open-apexx-content/releases)|
 |FAQ|  |[src](https://github.com/Tropby/open-apexx-faq)|[releases](https://github.com/Tropby/open-apexx-faq/releases)|
+|Kalender|  |[src](https://github.com/Tropby/open-apexx-calendar)|[releases](https://github.com/Tropby/open-apexx-calendar/releases)|
+|Kommentare|  |[src](https://github.com/Tropby/open-apexx-comments)|[releases](https://github.com/Tropby/open-apexx-comments/releases)|
