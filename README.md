@@ -53,5 +53,5 @@ Bitte prüfen Sie die Systemanforderungen, bevor Sie die Software installieren:
 |-----|------------|-----------|--------|
 |Hello World|Ein kleines Paket was die Grundlagen eines Paketes darstellt.|[src](https://github.com/Tropby/open-apexx-helloworld)|[releases](https://github.com/Tropby/open-apexx-helloworld/releases)|
 |Sitemap|Zeigt den inhalt der kompletten Seite an (Modul support vorrausgesetzt). Kann den Inhalt im Google Sitemap XML-Format anzeigen.|[src](https://github.com/Tropby/open-apexx-sitemap)|[releases](https://github.com/Tropby/open-apexx-sitemap/releases)|
-|Module-Manager|Modul um andere Module dynamisch dazu zu installieren. Die Module können als ZIP-Datei hochgeladen werden oder automatisch von Github geladen werden.|[src](https://github.com/Tropby/open-apexx-module-manager)|[releases](https://github.com/Tropby/open-apexx-module-manager/releases)|
 |Content|Modul zur anzeige von Inhalten.|[src](https://github.com/Tropby/open-apexx-content)|[releases](https://github.com/Tropby/open-apexx-content/releases)|
+|FAQ|  |[src](https://github.com/Tropby/open-apexx-faq)|[releases](https://github.com/Tropby/open-apexx-faq/releases)|
