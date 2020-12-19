@@ -61,7 +61,8 @@ noscript.jsrequired div {
 .login {
 	padding:30px;
 	color:#fff;
-	background:#383838 url('login_bg.gif') left bottom no-repeat;
+	background: #383838 url('logo_open-apexx_bg.svg');
+	background-size: cover;
 	border:1px solid #000;
 }
 
