@@ -29,5 +29,4 @@ Um besser mit Modulen umgehen zu können werden die Module in eigene repositorie
 |sitemap|pre-release|1.0.0_RC|[REPOS](https://github.com/Tropby/open-apexx-sitemap)|
 |teaser|todo|?.?|?|
 |twitter|todo|?.?|?|
-|user|todo|?.?|?|
 |videos|todo|?.?|?|
