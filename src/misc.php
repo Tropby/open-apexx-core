@@ -15,25 +15,25 @@
 
 
 define('APXRUN',true);
+define('NOSTATS',true);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if ( $set['main']['index_forwarder'] ) {
-	header("HTTP/1.1 301 Moved Permanently");
-	header('location:'.$set['main']['index_forwarder']);
-	exit;
+
+//Funktionen laden
+foreach ( $apx->modules AS $module => $info ) {
+	if ( !file_exists(BASEDIR.getmodulepath($module).'misc.php') ) continue;
+	include_once(BASEDIR.getmodulepath($module).'misc.php');
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$apx->module('main');
-$apx->lang->drop('index');
-headline($apx->lang->get('HEADLINE'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
-titlebar($apx->lang->get('HEADLINE'));
+$call='misc_'.$_REQUEST['action'];
+if ( !function_exists($call) ) die('action does not exist!');
 
-$apx->tmpl->parse('index','/');
+//Aktion ausführen
+$call();
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
