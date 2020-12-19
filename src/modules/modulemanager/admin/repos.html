@@ -1,0 +1,29 @@
+<table width="100%" class="table">
+	<colgroup>
+		<col width="200" />
+		<col width="150" />
+		<col />
+	</colgroup>
+	<tr class="tableheader">
+		<td>Module ID</td>
+		<td>Git Author</td>
+		<td>Repos Name</td>
+		<td>Optionen</td>
+	</tr>
+{list REPOS}
+	<tr>
+		<td>
+			{REPOS.ID}
+		</td>
+		<td>
+			{REPOS.USER}
+		</td>
+		<td>
+			<a href='https://github.com/{REPOS.USER}/{REPOS.NAME}' target='_blank'>{REPOS.NAME}</a>
+		</td>
+		<td>
+			<a href='?action=modulemanager.repos&show={REPOS.ID}&user={REPOS.USER}&repos={REPOS.NAME}'><img src='design/info.gif' /></a>
+		</td>
+	</tr>
+{/list}	
+</table>

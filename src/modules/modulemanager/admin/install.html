@@ -1,0 +1,33 @@
+{*
+
+*}
+
+<form action="action.php" method="post" enctype="multipart/form-data">
+	<table width="100%" class="table">
+		<colgroup>
+			<col width="200" />
+			<col />
+		</colgroup>
+		<tr class="tableheader">
+			<td colspan="2">{LANG[TITLE_MODULE-MANAGER_INSTALL]}</td>
+		</tr>
+		<tr>
+			<td>
+				{LANG[MODULE_PACKAGE]}:
+			</td>
+			<td>
+				<input type="file" name="package_upload" accept=".zip" />
+			</td>
+		</tr>
+		
+		<tr class="submit">
+			<td colspan="2">
+				<input type="hidden" name="action" value="modulemanager.install" />
+				<input type="hidden" name="step" value="1" />
+				<input type="submit" value="{LANG[UPLOAD]}" class="button" />
+			</td>
+		</tr>
+
+	</table>
+	
+</form>

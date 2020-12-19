@@ -1,0 +1,14 @@
+{*
+    OPTIONS = list of years
+
+    OPTIONS.VALUE = year
+    OPTIONS.SELECTED = selected year    
+
+    NAME = name of the select
+    CLASSES = CSS classes
+*}
+<select name="{NAME}" class="{CLASSES}">
+    {list OPTIONS}
+        <option value="{OPTIONS.VALUE}" {if OPTIONS.SELECTED}selected="selected"{/if}>{OPTIONS.VALUE}</option>
+    {/list}
+</select>
