@@ -7,6 +7,7 @@
 	FILE_INFO.FILE = Filename of the file
 *}
 
+{HAS_ERROR=0}
 
 
 <table width="100%" class="table">
@@ -21,7 +22,7 @@
 	<tr class="tableheader">
 		<td>&nbsp;</td>
 		<td>Neu</td>
-		<td>Aktuell</td>
+		<td>Installiert</td>
 	</tr>
 	<tr>
 		<td>
@@ -55,6 +56,52 @@
 		<td>
 			{CURRENT_VERSION}
 		</td>
+	</tr>
+	<tr>
+		<td>
+			Required modules:
+		</td>
+		<td colspan="2">
+			<table width="100%">
+				<tr>
+					<td>
+						<b>Module</b>
+					</td>
+					<td>
+						<b>Required version</b>
+					</td>
+					<td>
+						<b>Installed version</b>
+					</td>
+					<td>
+						<b>Fulfilled</b>
+					</td>
+				</tr>
+						
+				{list MODULE_REQUIREMENT}
+					<tr>
+						<td>
+							{MODULE_REQUIREMENT.MODULE}
+						</td>
+						<td>
+							{MODULE_REQUIREMENT.REQUIRED_VERSION}
+						</td>
+						<td>
+							{MODULE_REQUIREMENT.CURRENT_VERSION}
+						</td>
+						<td>
+							{if MODULE_REQUIREMENT.FULFILLED == 1}
+								<span style='color: #009900'>YES
+							{else}
+								{HAS_ERROR=1}
+								<span style='color: #C66413'><b>NO</b>
+							{/if}
+							</span>
+						</td>
+					</tr>
+				{/list}
+			</table>
+		</td>		
 	</tr>
 	<tr>
 		<td>
@@ -92,7 +139,11 @@
 	
 	<tr class="submit">
 		<td colspan="3">
-			<a href="?action=modulemanager.install&step=2" class="button">Installation durchführen</a>
+			{if HAS_ERROR == 1}
+				<b>Installation kann nicht durchgeführt werden da nicht alle REQUIREMENTS erfüllt sind!</b>
+			{else}
+				<a href="?action=modulemanager.install&step=2" class="button">Installation durchführen</a>
+			{/if}
 		</td>
 	</tr>
 

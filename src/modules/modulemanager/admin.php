@@ -242,14 +242,34 @@ class Action
 			
 			$m = $modules[2];
 			
-			include_once( BASEDIR."tmp/modules/".$m."/init.php" );												
+			include_once( BASEDIR."tmp/modules/".$m."/init.php" );
 			$apx->tmpl->assign( "MODULE_ID", $module["id"]);
 			$apx->tmpl->assign( "MODULE_VERSION", $module["version"]);
-			$apx->tmpl->assign( "MODULE_AUTHOR", $module["author"]);											
+			$apx->tmpl->assign( "MODULE_AUTHOR", $module["author"]);
+			
+			$requ = array();
+			foreach( $module["requirement"] as $k => $v )
+			{
+				$currentVersion = $apx->modules[$k]["version"];
+				$newVersion = $v;
+				
+				$currentVersion = implode("", explode(".", $currentVersion));
+				$newVersion = implode("", explode(".", $newVersion));
+				
+				$requ[] = array(
+					"MODULE" => $k,
+					"REQUIRED_VERSION" => $v,
+					"CURRENT_VERSION" => $apx->modules[$k]["version"],
+					"FULFILLED" => ( $currentVersion >= $newVersion ? "1" : "0")
+				);
+			}
+			
+			
+			$apx->tmpl->assign( "MODULE_REQUIREMENT", $requ);
 			
 			if( file_exists(BASEDIR."modules/".$m."/init.php" ) )
 			{
-				include_once( BASEDIR."tmp/modules/".$m."/init.php" );
+				include_once( BASEDIR."modules/".$m."/init.php" );
 				$apx->tmpl->assign( "CURRENT_ID", $module["id"]);
 				$apx->tmpl->assign( "CURRENT_VERSION", $module["version"]);
 				$apx->tmpl->assign( "CURRENT_AUTHOR", $module["author"]);																		
