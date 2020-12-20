@@ -60,34 +60,45 @@ Weiterleitung definiert (z.B. zur News-Seite).
 
 <table width="100%"><tr><td width="100%" valign="top">
 
-{TEASER()}
+{if MODULE_TEASER}
+	{TEASER()}
+{/if}
 
-<table width="100%">
-<tr><td class="header1">{LANG[LASTNEWS]}</td></tr>
-<tr><td class="color"><div class="index_news">{LASTNEWS()}</div></td></tr>
-<tr><td class="space1">&nbsp;</td></tr>
-<tr><td class="header1">{LANG[LASTARTICLES]}</td></tr>
-<tr><td class="color">{LASTARTICLES(5)}</td></tr>
-<tr><td class="space1">&nbsp;</td></tr>
-<tr><td class="header1">{LANG[LASTDOWNLOADS]}</td></tr>
-<tr><td class="color">{LASTDOWNLOADS(5)}</td></tr>
-</table>
+	<table width="100%">
+	
+{if MODULE_NEWS}
+		<tr><td class="header1">{LANG[LASTNEWS]}</td></tr>
+		<tr><td class="color"><div class="index_news">{LASTNEWS()}</div></td></tr>		
+		<tr><td class="space1">&nbsp;</td></tr>
+{/if}
+{if MODULE_ARTICLES}
+		<tr><td class="header1">{LANG[LASTARTICLES]}</td></tr>
+		<tr><td class="color">{LASTARTICLES(5)}</td></tr>		
+		<tr><td class="space1">&nbsp;</td></tr>
+{/if}
+{if MODULE_DOWNLOADS}
+		<tr><td class="header1">{LANG[LASTDOWNLOADS]}</td></tr>
+		<tr><td class="color">{LASTDOWNLOADS(5)}</td></tr>
+{/if}
+	</table>
 
 </td><td valign="top">
 
-<div class="index_box">
-<div class="index_box_head">{LANG[LASTGALLERY]}</div>
-<div class="index_box_content">{GALLERY_LAST(3)}</div>
-</div>
+{if MODULE_GALLERY}
+	<div class="index_box">
+		<div class="index_box_head">{LANG[LASTGALLERY]}</div>
+		<div class="index_box_content">{GALLERY_LAST(3)}</div>
+	</div>
 
-<div class="index_box">
-<div class="index_box_head">POTM</div>
-<div class="index_box_content" align="center">{GALLERY_POTM()}</div>
-</div>
+	<div class="index_box">
+		<div class="index_box_head">POTM</div>
+		<div class="index_box_content" align="center">{GALLERY_POTM()}</div>
+	</div>
 
-<div class="index_box">
-<div class="index_box_head">POTW</div>
-<div class="index_box_content" align="center">{GALLERY_POTW()}</div>
-</div>
+	<div class="index_box">
+		<div class="index_box_head">POTW</div>
+		<div class="index_box_content" align="center">{GALLERY_POTW()}</div>
+	</div>
+{/if}
 
 </td></tr></table>

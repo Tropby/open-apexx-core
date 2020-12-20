@@ -272,6 +272,7 @@ function compile($content) {
 	
 	//Includes
 	$content=preg_replace_callback('#{include +(.*?)}#s',array(&$this,'compile_include'),$content);
+	$content=preg_replace_callback('#{includemoduletemplate +(.*?) +(.*?)}#s',array(&$this,'compile_include_from_module'),$content);
 	
 	//Funktionen
 	$content=preg_replace_callback('#{([A-Z0-9_-]+)\((.*?)\)}#s',array(&$this,'compile_function'),$content);
@@ -701,6 +702,33 @@ function compile_static($match) {
 	return '<?php $this->assign_static("'.strtoupper($varname).'", ); ?>';
 }
 
+function compile_include_from_module($match)
+{
+	global $apx, $tmpl;
+	
+	$modulename=strtolower($match[1]);
+	if( !isset($apx->modules[$modulename]) )
+		return "";
+	
+	$incfile=$match[2];
+	$incfile=trim($incfile);
+	$incfile=preg_replace_callback('#/{2,}#',function($m) {return '/';},$incfile);
+	$incfile=preg_replace_callback('#\\+#',function($m) {return '/';},$incfile);
+	
+	//Korrekten Dateipfad prüfen
+	if ( !preg_match('#/?([A-Z0-9_-]+/)*[A-Z0-9_-]+.html#si',$incfile) ) {
+		return '<br /><b>parse error:</b> invalid inclusion of "'.$param.'<br />';
+	}
+	
+	//Releativer Include
+	if ( substr($incfile,0,1)=='/' ) $incfile=substr($incfile,1);
+	$incfile = $apx->tmpl->get_templatepath($modulename).$incfile;
+	
+	//Include registrieren
+	$this->used_includes[]=$incfile;
+	
+	return '<?php $this->include_file(\''.addslashes($incfile).'\'); ?>';	
+}
 
 
 /*** Includes ***/
