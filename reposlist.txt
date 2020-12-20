@@ -6,3 +6,4 @@ content;Tropby;open-apexx-content
 calendar;Tropby;open-apexx-calendar
 comments;Tropby;open-apexx-comments
 articles;Tropby;open-apexx-articles
+news;Tropby;open-apexx-news
