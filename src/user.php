@@ -83,16 +83,16 @@ $guestFunc = array(
 
 
 ////////////////////////////////////////////////////////////////////////////////////////// ÖFFENTLICHE FUNKTIONEN
-
-if ( in_array($_REQUEST['action'], $publicFunc) ) {
-	require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
+if( isset($_REQUEST['action']) )
+{
+	if ( in_array($_REQUEST['action'], $publicFunc) ) {
+		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
+	}	
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////// USER-FUNKTIONEN
 
-elseif ( $user->info['userid'] ) {
+elseif ( isset($user->info['userid']) && $user->info['userid'] ) {
 	if ( in_array($_REQUEST['action'], $userFunc) ) {
 		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
 	}
@@ -105,8 +105,8 @@ elseif ( $user->info['userid'] ) {
 
 ////////////////////////////////////////////////////////////////////////////////////////// GAST-FUNKTIONEN
 
-elseif ( !$user->info['userid'] ) {
-	if ( in_array($_REQUEST['action'], $guestFunc) ) {
+elseif ( !isset($user->info['userid']) || !$user->info['userid'] ) {	
+	if ( isset($_REQUEST['action']) && in_array($_REQUEST['action'], $guestFunc) ) {
 		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
 	}
 	else {

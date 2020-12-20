@@ -319,6 +319,7 @@ function addslashes_like($text) {
 //Zufalls-Zeichkette
 function random_string($len=10,$keyspace='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') {
 	mt_srand((double)microtime()*1000000);
+	$key="";
 	while ( strlen($key)<$len ) $key.=substr($keyspace,mt_rand(0,strlen($keyspace)-1),1);
 	return $key;
 }
@@ -792,8 +793,8 @@ function getorder($info,$add='',$pos=1) {
 	if ( !is_array($info) || !count($info) ) return '';
 	if ( !$info[0] ) echo 'WARNING: No default "sort by" column defined!';
 	
-	$sort=explode('.',$_REQUEST['sortby']);
-	$sort[1]=strtoupper($sort[1]);
+	$sort=explode('.',$_REQUEST['sortby']);	
+	$sort[1]=strtoupper($sort[1]??"");
 	if ( $sort[1]!='ASC' && $sort[1]!='DESC' ) $sort[1]='ASC';
 	if ( !array_key_exists($sort[0],$info) ) {
 		$_REQUEST['sortby']=$info[0].'.'.$info[$info[0]][1];

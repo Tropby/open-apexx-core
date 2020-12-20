@@ -128,7 +128,7 @@ class database extends mysqli {
 		$getcols=$this->mkcols($postcols);
 
 		$info = $this->fetch("SHOW COLUMNS FROM ".$table);
-		if ( !count($info) ) error('Anforderung der Tabellen-Spalten fehlgeschlagen<br />Tabelle: '.$table);
+		if ( !is_array($info) || !count($info) ) error('Anforderung der Tabellen-Spalten fehlgeschlagen<br />Tabelle: '.$table);
 
 		$colcache = array();
 		$valcache = array();

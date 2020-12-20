@@ -4,7 +4,7 @@ $apx->lang->drop('login');
 headline($apx->lang->get('HEADLINE_LOGIN'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
 titlebar($apx->lang->get('HEADLINE_LOGIN'));
 
-if ( $_POST['send'] ) {
+if ( isset($_POST['send']) ) {
 	if ( !$_POST['login_user'] || !$_POST['login_pwd'] ) message('back');
 	else {
 		$res=$db->first("SELECT userid,password,salt,active,reg_key FROM ".PRE."_user WHERE LOWER(username_login)='".addslashes(strtolower($_POST['login_user']))."' LIMIT 1");

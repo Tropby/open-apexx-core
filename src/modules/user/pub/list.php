@@ -25,12 +25,14 @@ if ( in_array('TODAYCOUNT',$parse) ) {
 	$apx->tmpl->assign('TODAYCOUNT',$todaycount);
 }
 
-if ( !$_REQUEST['letter'] ) $_REQUEST['letter']='0';
+if ( !isset( $_REQUEST['letter'] ) ) $_REQUEST['letter']='0';
+
+$_REQUEST['sortby']=$_REQUEST['sortby']??"";
 
 //Buchstaben-Liste
 letters(mklink(
-	'user.php?action=list&amp;sortby='.$_REQUEST['sortby'],
-	'user,list,{LETTER},1.html'.iif($_REQUEST['sortby'],'?sortby='.$_REQUEST['sortby'])
+	'user.php?action=list&amp;sortby='.($_REQUEST['sortby']??""),
+	'user,list,{LETTER},1.html'.iif(isset($_REQUEST['sortby']),'?sortby='.($_REQUEST['sortby']??""))
 ));
 
 if ( $_REQUEST['letter'] ) {
@@ -61,10 +63,12 @@ if ( $apx->is_module('forum') ) {
 }
 $data=$db->fetch("SELECT ".$fields." FROM ".PRE."_user WHERE ( active='1' ".$where." ) ".getorder($orderdef)." ".getlimit($set['user']['userlistepp']));
 if ( count($data) ) {
+	$i=0;
 	foreach ( $data AS $res ) {
 		++$i;
 		
 		$age = 0;
+		$birthday=0;
 		if ( $res['birthday'] ) {
 			$bd=explode('-',$res['birthday']);
 			$birthday=intval($bd[0]).'. '.getcalmonth($bd[1]).iif($bd[2],' '.$bd[2]);
@@ -103,12 +107,12 @@ if ( count($data) ) {
 		
 		//Custom-Felder
 		for ( $ii=1; $ii<=10; $ii++ ) {
-			$tabledata[$i]['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)];
+			$tabledata[$i]['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)]??"";
 			$tabledata[$i]['CUSTOM'.$ii] = compatible_hsc($res['custom'.$ii]);
 		}
 		
 		//Interaktions-Links
-		if ( $user->info['userid'] ) {
+		if ( $user->info['userid']??0 ) {
 			$tabledata[$i]['LINK_SENDPM']=mklink(
 				'user.php?action=newpm&amp;touser='.$res['userid'],
 				'user,newpm,'.$res['userid'].'.html'

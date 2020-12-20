@@ -38,9 +38,9 @@ function __construct($firsttime=false) {
 	//Einstellungen
 	$this->cachepath=getpath('cache');
 	$this->templatepath='';
-	$this->cache_expire=1*24*3600; //1 Tag
+	//$this->cache_expire=1*24*3600; //1 Tag
 	//$this->cache_expire=7*24*3600; //7 Tage
-	//$this->cache_expire=0; //Immer
+	$this->cache_expire=0; //Immer
 	//$this->cache_expire=false; //Nie
 	
 	//Erstes mal initalisieren der Klasse
@@ -70,6 +70,17 @@ function __construct($firsttime=false) {
 	
 	//WHOIS-Abfrage
 	$this->whois=$set['tmplwhois'];
+}
+
+
+function &get_var($var_name)
+{
+	return $this->parsevars[$var_name] ?? "";
+}
+
+function &get_list_var($listid, $keyid)
+{
+	return $this->parsevars['#LIST#'][$listid][$keyid] ?? "";	
 }
 
 

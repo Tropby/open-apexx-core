@@ -22,6 +22,7 @@ class templates extends tengine {
 var $designid='default';
 var $titlebar='';
 var $headline=array();
+var $errorreport=false;
 
 ////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
@@ -29,8 +30,8 @@ var $headline=array();
 function __construct() {
 	global $apx,$set;
 	
-	$this->assign_static('CHARSET',$set['main']['charset']);
-	$this->assign_static('ACTIVE_MODULE',''); //Alt, Abwï¿½rtskompatiblitï¿½t
+	$this->assign_static('CHARSET',isset($set['main']['charset']) ? $set['main']['charset'] : "ISO-8859-1");
+	$this->assign_static('ACTIVE_MODULE',''); //Alt, Abwärtskompatiblität
 	$this->assign_static('APEXX_MODULE','');
 	
 	//Basis

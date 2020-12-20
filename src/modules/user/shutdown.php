@@ -22,7 +22,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 
 //PM-Popup
-if ( $user->info['pmpopup'] ) {
+if ( isset($user->info['pmpopup']) && $user->info['pmpopup'] ) {
 	$apx->lang->drop('pmpopup','user');
 	$db->query("UPDATE ".PRE."_user SET pmpopup='0' WHERE userid='".$user->info['userid']."' LIMIT 1");
 	

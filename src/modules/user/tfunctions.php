@@ -120,7 +120,7 @@ function user_loginbox($template='loginbox') {
 	$tmpl=new tengine;
 	$apx->lang->drop('func_loginbox','user');
 	
-	if ( !$user->info['userid'] ) $tmpl->assign('POSTTO',mklink('user.php','user.html'));
+	if ( !isset($user->info['userid']) || !$user->info['userid'] ) $tmpl->assign('POSTTO',mklink('user.php','user.html'));
 	$tmpl->parse('functions/'.$template,'user');
 }
 
@@ -249,12 +249,14 @@ function user_print($data, $template, $varname='USER', $buddylist = false, $temp
 	
 	$tmpl=new tengine;
 	$parse = $tmpl->used_vars($template, $templatemodule);
-	
+	$tabledata=array();
 	if ( count($data) ) {
+		$i=0;
 		foreach ( $data AS $res ) {
 			++$i;
 			
 			$age = 0;
+			$birthday=0;
 			if ( $res['birthday'] ) {
 				$bd=explode('-',$res['birthday']);
 				$birthday=intval($bd[0]).'. '.getcalmonth($bd[1]).iif($bd[2],' '.$bd[2]);
@@ -293,12 +295,12 @@ function user_print($data, $template, $varname='USER', $buddylist = false, $temp
 			
 			//Custom-Felder
 			for ( $ii=1; $ii<=10; $ii++ ) {
-				$tabledata[$i]['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)];
+				$tabledata[$i]['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)] ?? "";
 				$tabledata[$i]['CUSTOM'.$ii] = compatible_hsc($res['custom'.$ii]);
 			}
 			
 			//Interaktions-Links
-			if ( $user->info['userid'] ) {
+			if ( isset($user->info['userid']) && $user->info['userid'] ) {
 				$tabledata[$i]['LINK_SENDPM']=mklink(
 					'user.php?action=newpm&amp;touser='.$res['userid'],
 					'user,newpm,'.$res['userid'].'.html'

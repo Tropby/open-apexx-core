@@ -32,6 +32,7 @@ $pathcfg['tmpl_base_admin']     = 'admin/templates/';
 $pathcfg['tmpl_modules_public'] = 'templates/{THEME}/{MODULE}/';
 $pathcfg['tmpl_modules_admin']  = 'modules/{MODULE}/admin/';
 
+$pathcfg['langdir']             = 'language/';
 $pathcfg['lang_base']           = 'language/{LANGID}/';
 $pathcfg['lang_modules']        = 'language/{LANGID}/{MODULE}/';
 

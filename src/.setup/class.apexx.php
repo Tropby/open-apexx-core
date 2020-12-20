@@ -41,7 +41,7 @@ var $coremodules=array('main','mediamanager','user');
 ////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
 //System starten
-function apexx() {
+function __construct() {
 	global $set;
 
 	error_reporting(E_ALL ^ E_NOTICE);
@@ -60,7 +60,7 @@ function apexx() {
 	$this->language_default='de';
 
 	//Zeitzone
-	define('TIMEDIFF',(date('Z')/3600-$set['main']['timezone']-date('I'))*3600);
+	define('TIMEDIFF',(date('Z')/3600-(isset($set['main']['timezone']) ? $set['main']['timezone'] : 0)-date('I'))*3600);
 }
 
 
@@ -83,7 +83,7 @@ function prepare_vars() {
 //Scripslashes von Variablen
 function strpsl($array) {
 	static $trimvars,$magicquotes;
-	if ( !isset($trimvars) ) $trimvars=iif((int)$_REQUEST['apx_notrim'] && MODE=='admin',0,1);
+	if ( !isset($trimvars) ) $trimvars=iif(isset($_REQUEST['apx_notrim']) && (int)$_REQUEST['apx_notrim'] && MODE=='admin',0,1);
 
 	foreach($array AS $key => $val) {
 		if( is_array($val) ) {

@@ -35,6 +35,7 @@ function __construct() {
 //Sektion wählen
 function init_section() {
 	global $set;
+	if( !isset($_REQUEST['sec']) ) $_REQUEST['sec'] = 0;
 	$_REQUEST['sec']=(int)$_REQUEST['sec'];
 	
 	//Sektion auswählen
@@ -58,10 +59,10 @@ function init_section() {
 	
 	$this->tmpl->assign_static('WEBSITE_NAME',$set['main']['websitename']); 
 	$this->tmpl->assign_static('SECTION_ID',$this->section_id());
-	$this->tmpl->assign_static('SECTION_TITLE',$this->section['title']);
-	$this->tmpl->assign_static('SECTION_LANG',$this->section['lang']);
-	$this->tmpl->assign_static('SECTION_VIRTUAL',$this->section['virtual']);
-	$this->tmpl->assign_static('SECTION_THEME',$this->section['theme']);
+	$this->tmpl->assign_static('SECTION_TITLE',isset($this->section['title'])?$this->section['title']:"");
+	$this->tmpl->assign_static('SECTION_LANG',isset($this->section['lang'])?$this->section['lang']:"");
+	$this->tmpl->assign_static('SECTION_VIRTUAL',isset($this->section['virtual'])?$this->section['virtual']:"");
+	$this->tmpl->assign_static('SECTION_THEME',isset($this->section['theme'])?$this->section['theme']:"");
 }
 
 

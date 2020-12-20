@@ -62,7 +62,7 @@ function __construct() {
 	//Module auslesen
 	$this->get_modules();
 	$this->get_config();
-
+	
 	//Sprachpakete
 	$this->get_languages();
 
@@ -107,8 +107,7 @@ function prepare_vars() {
 //Stripslashes von Variablen
 function strpsl($array) {
 	static $trimvars,$magicquotes;
-	if ( !isset($trimvars) ) $trimvars=iif((int)$_REQUEST['apx_notrim'] && MODE=='admin',0,1);
-	if ( !isset($magicquotes) ) $magicquotes=get_magic_quotes_gpc();
+	if ( !isset($trimvars) ) $trimvars=iif(isset($_REQUEST['apx_notrim']) && (int)$_REQUEST['apx_notrim'] && MODE=='admin',0,1);
 
 	foreach($array AS $key => $val) {
 		if( is_array($val) ) {
@@ -117,7 +116,7 @@ function strpsl($array) {
 		}
 
 		if ( $trimvars ) $val=trim($val);
-		if ( $magicquotes ) $val=stripslashes($val);
+		$val=stripslashes($val);
 		if ( is_string($val) ) {
 			if( substr($val, -6, 6) == '<br />' ) {
 				$val = substr($val, 0, -6);
@@ -198,8 +197,9 @@ function get_modules() {
 	  	require(BASEDIR.getmodulepath($modulename).'init.php');
   		$this->register_module($modulename,$module);
 	  	$this->register_actions($modulename,$action);
-  		$this->register_functions($modulename,$func);
-			$this->register_functions($modulename,$afunc,'admin');
+		if( isset($func) )
+			$this->register_functions($modulename,$func);
+		$this->register_functions($modulename,$afunc,'admin');
 
 	  	unset($module,$action,$func);
   	}
@@ -339,7 +339,7 @@ function get_languages() {
 		if ( $res['default'] ) $this->language_default=$dir;
 		$this->languages[$dir]=$res['title'];
 	}
-
+	
 	if ( !isset($this->language_default) ) {
 		reset($this->languages);
 		list($key,$val)=each($this->languages);

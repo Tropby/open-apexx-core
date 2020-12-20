@@ -18,6 +18,7 @@ else {
 $count['total']=$count['users']+$count['guests'];
 
 $data=$db->fetch("SELECT b.userid,b.username,b.email,b.pub_hidemail,b.groupid,b.realname,b.gender,b.city,b.plz,b.country,b.city,b.lastactive,b.pub_invisible,b.avatar,b.avatar_title FROM ".PRE."_user AS b WHERE ( b.lastactive>=".(time()-$set['user']['timeout']*60)." AND b.pub_invisible='0' ) ORDER BY b.username ASC");
+$tabledata=array();
 if ( count($data) ) {
 	foreach ( $data AS $res ) {
 		++$i;

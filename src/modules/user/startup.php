@@ -22,10 +22,10 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 
 //Statische Variablen setzen
-$apx->tmpl->assign_static('LOGGED_ID',$user->info['userid']);
+$apx->tmpl->assign_static('LOGGED_ID',isset($user->info['userid'])?$user->info['userid']:0);
 $apx->tmpl->assign_static('LOGGED_GROUPID',$user->info['groupid']);
 $apx->tmpl->assign_static('LOGGED_GROUPNAME',replace($user->info['name']));
-if ( $user->info['userid'] ) {
+if ( isset($user->info['userid']) && $user->info['userid']) {
 	
 	$apx->tmpl->assign_static('LOGGED_USERNAME',replace($user->info['username']));
 	$apx->tmpl->assign_static('LOGGED_EMAIL',replace($user->info['email']));
@@ -55,7 +55,7 @@ if ( $user->info['userid'] ) {
 
 
 //Theme erzwingen
-if ( $user->info['pub_theme'] ) {
+if ( isset($user->info['pub_theme']) && $user->info['pub_theme'] ) {
 	$apx->tmpl->set_theme($user->info['pub_theme']);
 }
 

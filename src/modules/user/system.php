@@ -29,7 +29,7 @@ var $info=array();
 	function init() {
 		global $set,$db,$apx;
 		
-		if ( $_COOKIE[$set['main']['cookie_pre'].'_userid'] && $_COOKIE[$set['main']['cookie_pre'].'_password'] ) {
+		if ( isset($_COOKIE[$set['main']['cookie_pre'].'_userid']) && isset($_COOKIE[$set['main']['cookie_pre'].'_password']) ) {
 			$this->info=$db->first("SELECT * FROM ".PRE."_user AS a LEFT JOIN ".PRE."_user_groups AS b USING (groupid) WHERE ( userid='".intval($_COOKIE[$set['main']['cookie_pre'].'_userid'])."' AND password='".addslashes($_COOKIE[$set['main']['cookie_pre'].'_password'])."' ) LIMIT 1",1);
 			
 			if ( ( !$this->info['userid'] || !$this->info['active'] || $this->info['reg_key'] ) && $apx->module()!='user' && $_REQUEST['action']!='logout' ) {
@@ -48,7 +48,7 @@ var $info=array();
 			$this->info=$db->first("SELECT * FROM ".PRE."_user_groups WHERE groupid='3' LIMIT 1",1);
 		}
 		
-		$apx->lang->langid($this->info['pub_lang']);
+		$apx->lang->langid(isset($this->info['pub_lang'])?$this->info['pub_lang']:"");
 		if ( $set['user']['onlinelist'] ) {
 			$this->update_onlinelist();
 		}
@@ -88,8 +88,8 @@ var $info=array();
 	//Onlineliste
 	function update_onlinelist() {
 		global $db,$set;
-		$db->query("DELETE FROM ".PRE."_user_online WHERE ( time<'".(time()-$set['user']['timeout']*60)."' OR ip='".ip2integer(get_remoteaddr())."' ".iif($this->info['userid']," OR userid='".$this->info['userid']."' ").")");
-		$db->query("INSERT IGNORE INTO ".PRE."_user_online VALUES ('".$this->info['userid']."','".ip2integer(get_remoteaddr())."','".time()."','".$this->info['pub_invisible']."','".addslashes($_SERVER['REQUEST_URI'])."')");
+		$db->query("DELETE FROM ".PRE."_user_online WHERE ( time<'".(time()-$set['user']['timeout']*60)."' OR ip='".ip2integer(get_remoteaddr())."' ".iif(isset($this->info['userid'])," OR userid='".(isset($this->info['userid'])?$this->info['userid']:"")."' ").")");
+		$db->query("INSERT IGNORE INTO ".PRE."_user_online VALUES ('".(isset($this->info['userid'])?$this->info['userid']:"")."','".ip2integer(get_remoteaddr())."','".time()."','".(isset($this->info['pub_invisible'])?$this->info['pub_invisible']:"")."','".addslashes($_SERVER['REQUEST_URI'])."')");
 	}
 	
 	

@@ -54,7 +54,7 @@ function main_filter_url($params=array()) {
 
 
 //Druckversion
-if ( $_REQUEST['print']=='1' ) {
+if ( isset($_REQUEST['print']) && $_REQUEST['print']=='1' ) {
 	$currenturl=main_filter_url(array('print'));
 	
 	$apx->tmpl->assign_static('WEBSITE_NAME',$set['main']['websitename']);
@@ -67,7 +67,7 @@ if ( $_REQUEST['print']=='1' ) {
 
 
 //Seite empfehlen
-if ( $_REQUEST['tell']=='1' && $set['main']['tell'] ) {
+if ( isset($_REQUEST['tell']) && $_REQUEST['tell']=='1' && $set['main']['tell'] ) {
 	$apx->module('main');
 	$apx->lang->drop('tell');
 	

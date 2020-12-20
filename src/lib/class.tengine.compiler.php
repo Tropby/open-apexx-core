@@ -35,7 +35,7 @@ var $mod=array(
 	'breaks' => 'nl2br',
 	'urlencode' => 'urlencode'
 );
-
+var $failed = false;
 
 //Startup
 function __construct($filename) {
@@ -110,6 +110,7 @@ function validate($content) {
 	$openelement=array();
 	$level=0;
 	$lines=explode("\n",$content);
+	$linenumber=0;
 	
 	//Zeile für Zeile durchlaufen
 	foreach ( $lines AS $line ) {
@@ -130,7 +131,7 @@ function validate($content) {
 			
 			//ELSEIF
 			elseif ( substr($element,0,7)=='{elseif' ) {
-				if ( $openelement[$level]!='{/if}' || $openelse[$level]===true ) {
+				if ( $openelement[$level]!='{/if}' || (isset($openelse[$level]) && $openelse[$level]===true) ) {
 					$this->validate_error($element,$linenumber,$openelement[$level]);
 					return false;
   			}
@@ -151,7 +152,11 @@ function validate($content) {
   				$this->validate_error($element,$linenumber,$openelement[$level]);
 					return false;
   			}
-  			unset($openelement[$level],$openelse[$level]);
+  			unset($openelement[$level]);
+			
+			// TODO: Check if this Variable can be set
+			if(isset($openelse[$level]))
+				unset($openelse[$level]);
   			--$level;
   		}
   		
@@ -290,7 +295,7 @@ function compile($content) {
 	$content=$this->add_header($content);
 	
 	//Clean Code
-	$content=preg_replace_callback("#\?>([ 	]*\r?\n[ 	]*)*<\?php#",function($m) {return $m[1] ;},$content);
+	$content=preg_replace_callback("#\?>([ 	]*\r?\n[ 	]*)*<\?php#",function($m) {return count($m)>=2 ? $m[1] : "" ;},$content);
 	
 	return $content;
 }
@@ -360,12 +365,12 @@ function get_compiled_var($varname) {
 		$listid=$parts[count($parts)-2];
 		$keyid=$parts[count($parts)-1];
 		$this->used_vars[]=$varname;
-		return '$this->parsevars[\'#LIST#\'][\''.$listid.'\'][\''.$keyid.'\']';
+		return '$this->get_list_var(\''.$listid.'\', \''.$keyid.'\')';
 	}
 	
 	if ( preg_match('#^'.$this->pattern_var.'$#',$varname) ) {
 		$this->used_vars[]=$varname;
-		return '$this->parsevars[\''.$varname.'\']';
+		return '$this->get_var(\''.$varname.'\')';
 	}
 	
 	return false;
@@ -392,6 +397,7 @@ function compile_expression($expression,$isboole=false) {
 	}
 	
 	//Prüfen, ob der Ausdruck komplett eingelesen wurde
+	$check="";
 	foreach ( $match AS $part ) {
 		$check.=$part[0];
 	}
@@ -469,7 +475,7 @@ function compile_expression($expression,$isboole=false) {
 	}
 	
 	//Fehlerinfos ausgeben
-	if ( $this->parseerror && $errcode ) {
+	if ( $this->parseerror && isset($errcode) && $errcode ) {
 		echo 'stopped at '.$i.' of '.count($match).', '.iif($isnot,'ISNOT, ').'ERRCODE: '.$errcode.'<br />';
 		print_r($match);
 	}
@@ -485,6 +491,7 @@ function compile_expression($expression,$isboole=false) {
 	}
 	
 	//IF zusammenbauen
+	$newexpression="";
 	foreach ( $match AS $element ) {
 		$newexpression.=$element[0];
 	}
@@ -512,7 +519,7 @@ function compile_set($match) {
 		return '<?php $this->assign_static("'.$varname.'", '.$value.'); ?>';
 	}
 	else {
-		return '<?php '.$this->get_compiled_var($varname).'='.$value.'; ?>';
+		return '<?php $help=&'.$this->get_compiled_var($varname).'; $help='.$value.'; ?>';
 	}
 }
 
@@ -540,7 +547,7 @@ function compile_set_calculate($match) {
 		return '<?php $this->assign_static("'.$varname.'", ('.$compiled_expr.')); ?>';
 	}
 	else {
-		return '<?php '.$this->get_compiled_var($varname).'=('.$compiled_expr.'); ?>';
+		return '<?php $help=&'.$this->get_compiled_var($varname).'; $help=('.$compiled_expr.'); ?>';
 	}
 }
 
@@ -571,7 +578,7 @@ function compile_calculate($match) {
 
 /*** Math: ++ -- Variable ***/
 function compile_calculate_addsub($operator,$varname) {
-	return '<?php '.$operator.$this->get_compiled_var($varname).'; ?>';
+	return '<?php $help=&'.$this->get_compiled_var($varname).'; $help'.$operator.'; ?>';
 }
 
 
@@ -617,7 +624,7 @@ function compile_list($match) {
 	//Kompilierte Variable
 	$comp_varname=$this->get_compiled_var($varname);
 	
-	return '<?php if ( isset('.$comp_varname.') && !is_array('.$comp_varname.') ): echo "<b>runtime error:</b> '.$varname.' is not listable!"; elseif ( is_array('.$comp_varname.') ): foreach ( '.$comp_varname.' AS $list_'.$listid.' ): $this->parsevars[\'#LIST#\'][\''.$listid.'\']=&$list_'.$listid.'; ?>';
+	return '<?php if ( ('.$comp_varname.') && !is_array('.$comp_varname.') ): echo "<b>runtime error:</b> '.$varname.' is not listable!"; elseif ( is_array('.$comp_varname.') ): foreach ( '.$comp_varname.' AS $list_'.$listid.' ): $this->parsevars[\'#LIST#\'][\''.$listid.'\']=&$list_'.$listid.'; ?>';
 }
 
 
@@ -661,7 +668,7 @@ function compile_function($match) {
 		break;
 	}
 	
-	if ( !$funccode ) return '<br /><b>parse error:</b> function "'.$funcname.'" does not exist!<br />';
+	if ( !isset($funccode) || !$funccode ) return '<br /><b>parse error:</b> function "'.$funcname.'" does not exist!<br />';
 	if ( !$funcs[$funcname][1] || !$params ) return '<?php '.$funccode.'(); endif; ?>';
 	
 	//Parameter scanen

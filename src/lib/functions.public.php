@@ -94,7 +94,7 @@ function pages($link,$count,$epp=0,$varname='p',$pre='') {
 	}*/
 	
 	//Variablen vorbereiten
-	$_REQUEST[$varname]=(int)$_REQUEST[$varname];
+	$_REQUEST[$varname]=(int)($_REQUEST[$varname]??0);
 	if ( strpos($link,'?')!==false ) $sticky='&amp;'; else $sticky='?';
 	
 	//Seitenzahlen berechnen, evtl. REQUEST berichtigen
@@ -149,13 +149,13 @@ function pages($link,$count,$epp=0,$varname='p',$pre='') {
 		else $link_last=$link.$sticky.$varname.'='.$pages;
 	}
 	
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_PREVIOUS',$link_previous);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_NEXT',$link_next);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_FIRST',$link_first);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_LAST',$link_last);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_COUNT',$pages);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_SELECTED',$_REQUEST[$varname]);
-	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE',$pagedata);
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_PREVIOUS',$link_previous??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_NEXT',$link_next??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_FIRST',$link_first??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_LAST',$link_last??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_COUNT',$pages??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE_SELECTED',$_REQUEST[$varname]??"");
+	$apx->tmpl->assign(iif($pre,$pre.'_').'PAGE',$pagedata??"");
 }
 
 
@@ -209,7 +209,7 @@ function section_filter($and=true,$fieldname='secid') {
 //Order Variablen
 function ordervars($orderdef,$link) {
 	global $apx;
-	list($currentkey,$currentord)=explode('.',$_REQUEST['sortby']);
+	list($currentkey,$currentord)=explode('.',($_REQUEST['sortby']??""));
 	
 	foreach ( $orderdef AS $key => $info ) {
 		if ( $key==$currentkey ) {
@@ -217,7 +217,7 @@ function ordervars($orderdef,$link) {
 			else $sortlink=$link.'?sortby='.$key.'.'.iif($currentord=='ASC','DESC','ASC');
 		}
 		else {
-			if ( strpos($link,'?')!==false ) $sortlink=$link.'&amp;sortby='.$key.'.'.$info[1];
+			if ( strpos($link,'?')!==false ) $sortlink=$link.'&amp;sortby='.$key.'.'.($info[1]??"");
 			else $sortlink=$link.'?sortby='.$key.'.'.$info[1];
 		}
 		

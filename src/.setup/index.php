@@ -13,8 +13,6 @@
 | SOFTWARE BELONGS TO ITS AUTHORS!                              |
 \***************************************************************/
 
-
-
 define('APXRUN',true);
 define('MODE','public');
 define('BASEDIR',dirname(dirname(__file__)).'/');
@@ -54,15 +52,15 @@ $apx->tmpl = new templates();
 $pathcfg['tmpl_base_public']    = 'setup/';
 
 //Setup-Variablen
+if( !isset($_REQUEST['step']) ) $_REQUEST['step'] = 1;
 $_REQUEST['step']=(int)$_REQUEST['step'];
-if ( !$_REQUEST['step'] ) $_REQUEST['step']=1;
 $apx->tmpl->assign_static('STEP',$_REQUEST['step']);
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////// ENDE
 
-if ( $_REQUEST['finish'] ) {
+if ( isset($_REQUEST['finish']) && $_REQUEST['finish'] ) {
 	$apx->tmpl->overwrite('STEP',999);
 	$apx->tmpl->parse('finish','/');
 }
@@ -72,7 +70,7 @@ if ( $_REQUEST['finish'] ) {
 ///////////////////////////////////////////////////////////////////////////////////////////// SCHRITT 3
 
 elseif ( $_REQUEST['step']==4 ) {
-	if ( $_POST['next'] ) {
+	if ( isset($_POST['next']) && $_POST['next'] ) {
 		if ( !is_array($_POST['modules']) ) $_POST['modules']=array();
 		$_POST['modules']=array_merge($_POST['modules']);
 		define('SETUPMODE','install');
@@ -93,7 +91,7 @@ elseif ( $_REQUEST['step']==4 ) {
 			include(BASEDIR.getmodulepath($modulename).'setup.php');
 		}
 		
-		header("HTTP/1.1 301 Moved Permanently");
+		header("HTTP/1.1 307 Moved Permanently");
 		header('location:index.php?finish=1');
 		exit;
 	}
@@ -110,7 +108,8 @@ elseif ( $_REQUEST['step']==4 ) {
 	}
 	closedir($handle);
 	
-	//Auswahlliste f�r Setup generieren
+	//Auswahlliste für Setup generieren
+	$i=0;
 	foreach ( $dirs AS $module ) {
 		if ( in_array($module,$apx->coremodules) ) continue;
 		++$i;
@@ -126,7 +125,7 @@ elseif ( $_REQUEST['step']==4 ) {
 ///////////////////////////////////////////////////////////////////////////////////////////// SCHRITT 3
 
 elseif ( $_REQUEST['step']==3 ) {
-	if ( $_POST['next'] ) {
+	if ( isset($_POST['next']) && $_POST['next'] ) {
 		if ( !$_POST['username_login'] || !$_POST['username'] || !$_POST['pwd1'] || !$_POST['pwd2'] ) message('back');
 		elseif ( $_POST['pwd1']!=$_POST['pwd2'] ) message('Passwort und Passwort-Wiederholung stimmen nicht �berein!','back');
 		else {
@@ -147,9 +146,9 @@ elseif ( $_REQUEST['step']==3 ) {
 		}
 	}
 	
-	$apx->tmpl->assign('USERNAME',compatible_hsc($_POST['username']));
-	$apx->tmpl->assign('USERNAME_LOGIN',compatible_hsc($_POST['username_login']));
-	$apx->tmpl->assign('EMAIL',compatible_hsc($_POST['email']));
+	$apx->tmpl->assign('USERNAME',compatible_hsc(isset($_POST['username'])?$_POST['username']:""));
+	$apx->tmpl->assign('USERNAME_LOGIN',compatible_hsc(isset($_POST['username_login'])?$_POST['username_login']:""));
+	$apx->tmpl->assign('EMAIL',compatible_hsc(isset($_POST['email'])?$_POST['email']:""));
 	
 	$apx->tmpl->parse('step3','/');
 }
@@ -159,7 +158,7 @@ elseif ( $_REQUEST['step']==3 ) {
 ///////////////////////////////////////////////////////////////////////////////////////////// SCHRITT 2
 
 elseif ( $_REQUEST['step']==2 ) {
-	if ( $_POST['next'] ) {
+	if ( isset($_POST['next']) && $_POST['next'] ) {
 		header("HTTP/1.1 301 Moved Permanently");
 		header('location:index.php?step=3');
 		exit;
@@ -180,6 +179,8 @@ elseif ( $_REQUEST['step']==2 ) {
 		$db->query("INSERT INTO ".PRE."_modules (module,installed,active,version) VALUES ('".addslashes($modulename)."','1','1','".$version."')");
 	}
 	
+	$apx->tmpl->assign('FAILED',0);
+	
 	$apx->tmpl->parse('step2','/');
 }
 
@@ -188,16 +189,18 @@ elseif ( $_REQUEST['step']==2 ) {
 ///////////////////////////////////////////////////////////////////////////////////////////// SCHRITT 1
 
 else {
-	if ( $_POST['next'] ) {
-		header("HTTP/1.1 301 Moved Permanently");
+	if ( isset($_POST['next']) && $_POST['next'] ) {
+		header("HTTP/1.1 307 Moved Permanently");
 		header('location:index.php?step=2');
 		exit;
 	}
 	
 	if ( is_writeable(BASEDIR.getpath('uploads')) ) $apx->tmpl->assign('WRITEABLE_UPLOADS',1);
-	if ( is_writeable(BASEDIR.getpath('templates')) ) $apx->tmpl->assign('WRITEABLE_TEMPLATES',1);
-	if ( is_writeable(BASEDIR.getpath('modules')) ) $apx->tmpl->assign('WRITEABLE_MODULES',1);
-	if ( is_writeable(BASEDIR.getpath('language')) ) $apx->tmpl->assign('WRITEABLE_LANGUAGE',1);
+	if ( is_writeable(BASEDIR.getpath('tmpldir')) ) $apx->tmpl->assign('WRITEABLE_TEMPLATES',1);
+	if ( is_writeable(BASEDIR.getpath('moduledir')) ) $apx->tmpl->assign('WRITEABLE_MODULES',1);
+	if ( is_writeable(BASEDIR.getpath('langdir')) ) $apx->tmpl->assign('WRITEABLE_LANGUAGE',1);
+	
+	$apx->tmpl->assign('FAILED',0);
 	
 	$apx->tmpl->parse('step1','/');
 }
@@ -215,8 +218,8 @@ $apx->tmpl->out();
 //MySQL Verbindung schlie�en
 $db->close();
 
-//Cache l�schen wenn Setup abgeschlossen
-if ( $_REQUEST['finish'] ) {
+//Cache löschen wenn Setup abgeschlossen
+if ( isset($_REQUEST['finish']) && $_REQUEST['finish'] ) {
 	$apx->tmpl->clear_cache();
 }
 

@@ -29,9 +29,11 @@ titlebar($apx->lang->get('HEADLINE'));
 
 //Daten erzeugen
 function createTeamData($res, $parse) {
-	global $apx, $db, $set, $user;
+	global $apx, $db, $set, $user, $varname;
 	$userdata = array();
 	
+	$birthday = 0;
+	$age = 0;
 	if ( $res['birthday'] ) {
 		$bd=explode('-',$res['birthday']);
 		$birthday=intval($bd[0]).'. '.getcalmonth($bd[1]).iif($bd[2],' '.$bd[2]);
@@ -70,12 +72,12 @@ function createTeamData($res, $parse) {
 	
 	//Custom-Felder
 	for ( $ii=1; $ii<=10; $ii++ ) {
-		$userdata['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)];
+		$userdata['CUSTOM'.$ii.'_NAME'] = $set['user']['cusfield_names'][($ii-1)] ?? "";
 		$userdata['CUSTOM'.$ii] = compatible_hsc($res['custom'.$ii]);
 	}
 	
 	//Interaktions-Links
-	if ( $user->info['userid'] ) {
+	if ( $user->info['userid'] ?? 0 ) {
 		$userdata['LINK_SENDPM']=mklink(
 			'user.php?action=newpm&amp;touser='.$res['userid'],
 			'user,newpm,'.$res['userid'].'.html'
@@ -114,6 +116,7 @@ $gi=0;
 $lastgroup = 0;
 $groupdata = array();
 if ( count($data) ) {
+	$i=0;
 	foreach ( $data AS $res ) {
 		++$i;
 		

@@ -9,7 +9,7 @@ titlebar($apx->lang->get('HEADLINE_SEARCH'));
 $parse = $apx->tmpl->used_vars('search');
 
 //Suche durchführen
-if ( $_POST['send'] ) {
+if ( isset( $_POST['send'] ) ) {
 	$_POST['locid'] = (int)$_POST['locid'];
 	$_POST['age_min'] = (int)$_POST['age_min'];
 	$_POST['age_max'] = (int)$_POST['age_max'];
@@ -205,7 +205,7 @@ if ( $_POST['send'] ) {
 
 
 //Suchergebnisse
-if ( $_REQUEST['searchid'] ) {
+if ( isset( $_REQUEST['searchid'] ) ) {
 	list($results,$options) = $db->first("SELECT results,options FROM ".PRE."_search WHERE object='usersearch' AND searchid='".addslashes($_REQUEST['searchid'])."' ORDER BY time DESC");
 	$results = unserialize($results);
 	$_POST = unserialize($options);
@@ -297,14 +297,14 @@ else {
 }
 
 //Formular erzeugen
-$apx->tmpl->assign('ITEM',compatible_hsc($_POST['item']));
-$apx->tmpl->assign('AGE_MIN',intval($_POST['age_min']));
-$apx->tmpl->assign('AGE_MAX',intval($_POST['age_max']));
-$apx->tmpl->assign('GENDER',intval($_POST['gender']));
-$apx->tmpl->assign('CITY',compatible_hsc($_POST['city']));
-$apx->tmpl->assign('PLZ',compatible_hsc($_POST['plz']));
-$apx->tmpl->assign('DISTANCE',intval($_POST['distance']));
-$apx->tmpl->assign('ONLINE',intval($_POST['online']));
+$apx->tmpl->assign('ITEM',compatible_hsc($_POST['item']??""));
+$apx->tmpl->assign('AGE_MIN',intval($_POST['age_min']??""));
+$apx->tmpl->assign('AGE_MAX',intval($_POST['age_max']??""));
+$apx->tmpl->assign('GENDER',intval($_POST['gender']??""));
+$apx->tmpl->assign('CITY',compatible_hsc($_POST['city']??""));
+$apx->tmpl->assign('PLZ',compatible_hsc($_POST['plz']??""));
+$apx->tmpl->assign('DISTANCE',intval($_POST['distance']??""));
+$apx->tmpl->assign('ONLINE',intval($_POST['online']??""));
 $postto = mklink(
 	'user.php?action=search',
 	'user,search.html'
