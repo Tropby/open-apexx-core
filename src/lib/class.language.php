@@ -177,9 +177,10 @@ function drop($type,$module=false) {
 	if ( $module===false ) $module=$apx->module();
 	$this->module_load($module);
 	
-	if ( !is_array($this->cached[$module][$type]) ) return;
+	if ( isset($this->cached[$module][$type]) && !is_array($this->cached[$module][$type]) ) return;
 	if ( $this->is_dropped($module.'-'.$type) ) return;
 	
+	if( !isset($this->cached[$module][$type]) ) return;
 	$this->mergepack($this->cached[$module][$type]);
 	$this->dropped($module.'-'.$type);
 }
@@ -206,7 +207,7 @@ function dropaction($module=false,$action=false) {
 	$this->module_load($module);
 	
 	if ( $action===false ) $action=$apx->action();
-	if ( !is_array($this->cached[$module]['actions'][$action]) ) return;
+	if ( !isset($this->cached[$module]['actions'][$action]) || !is_array($this->cached[$module]['actions'][$action]) ) return;
 	if ( $this->is_dropped($module.'-action-'.$action) ) return;
 	
 	$this->mergepack($this->cached[$module]['actions'][$action]);
@@ -249,8 +250,8 @@ function insertpack($text) {
 
 
 //Sprach-Platzhalter
-function get($id,$input=array()) {
-	$lang=$this->langpack[$id];
+function get($id,$input=array()) {	
+	$lang=$this->langpack[$id]??"de";
 	if ( !is_array($input) || !count($input) ) return $lang;
 	
 	$lang=$this->insert($lang,$input);

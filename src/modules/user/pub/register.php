@@ -4,7 +4,7 @@ $apx->lang->drop('register');
 headline($apx->lang->get('HEADLINE_REGISTER'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
 titlebar($apx->lang->get('HEADLINE_REGISTER'));
 
-if ( $_POST['send'] ) {
+if ( isset( $_POST['send'] ) ) {
 	$_POST['email1']=trim($_POST['email1']);
 	$_POST['email2']=trim($_POST['email2']);
 	$check=$check2=false;

@@ -146,7 +146,7 @@ function layer_footer() {
 
 //Tabellen-Inhalt
 function table($cols,$footer_actions=array()) {
-	global $apx;
+	global $apx, $optwidth;
 	if ( MODE!='admin' ) return;
 	
 	//Colspan + Footer
@@ -154,6 +154,7 @@ function table($cols,$footer_actions=array()) {
 	if ( is_array($footer_actions) && count($footer_actions) ) $colspan+=1;
 	
 	//Header
+	$i=0;
 	foreach ( $cols AS $col ) {
 		++$i;
 		

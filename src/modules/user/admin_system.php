@@ -29,7 +29,7 @@ var $info=array();
 var $timeout=10;
 
 //Benutzersystem starten
-function user() {
+function __construct() {
 	global $apx;
 	
 	//URL-Rewriter deaktivieren
@@ -40,7 +40,7 @@ function user() {
 	$this->get_userinfo();
 	
 	//Rechte Holen + Lastonline
-	if ( $this->info['userid'] ) {
+	if ( $this->info['userid']??0 ) {
 		$this->get_rights();
 		$this->update_lastonline();
 	}
@@ -112,7 +112,7 @@ function start_session() {
 	$sespwd = $apx->session->get('apxses_password');
 	
 	//Cookie-Login
-	if ( ( !$sesuser || !$sespwd ) && ( $_COOKIE[$set['main']['cookie_pre'].'_admin_userid'] && $_COOKIE[$set['main']['cookie_pre'].'_admin_password'] ) ) {
+	if ( ( !$sesuser || !$sespwd ) && ( $_COOKIE[$set['main']['cookie_pre'].'_admin_userid']??null && $_COOKIE[$set['main']['cookie_pre'].'_admin_password']??null ) ) {
 		$apx->session->set('apxses_userid', $_COOKIE[$set['main']['cookie_pre'].'_admin_userid']);
 		$apx->session->set('apxses_password', $_COOKIE[$set['main']['cookie_pre'].'_admin_password']);
 	}
@@ -176,8 +176,8 @@ function is_team_member($userid=false) {
 function has_right($action) {
 	if ( MODE!='admin' ) return;
 	
-	if ( $this->rights['global']=='global' ) return true;
-	if ( in_array($action,$this->rights) ) return true;
+	if ( isset($this->rights['global']) && $this->rights['global']=='global' ) return true;
+	if ( is_array($this->rights) && in_array($action,$this->rights) ) return true;
 	
 	return false;
 }
@@ -188,7 +188,7 @@ function has_right($action) {
 function has_spright($action) {
 	if ( MODE!='admin' ) return;
 
-	if ( $this->sprights['global']=='global' ) return true;
+	if ( is_array($this->sprights) && $this->sprights['global']=='global' ) return true;
 	if ( is_array($this->sprights) && in_array($action,$this->sprights) ) return true;
 	
 	return false;

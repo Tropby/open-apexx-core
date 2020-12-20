@@ -64,8 +64,11 @@ function __construct($firsttime=false) {
 	
 	//Statische Variablen importieren
 	else {
-		$this->parsevars=$apx->tmpl->export_statics();
-		$this->theme=$apx->tmpl->theme;
+		if( isset( $apx->tmpl ) )
+		{
+			$this->parsevars=$apx->tmpl->export_statics();
+			$this->theme=$apx->tmpl->theme;
+		}
 	}
 	
 	//WHOIS-Abfrage
@@ -144,6 +147,7 @@ function overwrite($varname,$value,$ref=false) {
 
 /*** Variable erweitern ***/
 function extend($varname,$value) {
+	if(!isset($this->parsevars[$varname]))$this->parsevars[$varname]="";
 	$this->parsevars[$varname].=$value;
 }
 

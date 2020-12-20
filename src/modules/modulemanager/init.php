@@ -25,7 +25,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 //Modul registrieren
 $module = array(1,99980,
-	'id' => 'module-manager',
+	'id' => 'modulemanager',
 	'dependence' => array(),
 	'requirement' => array('main' => '1.2.0'),
 	'version' => '1.0.0',

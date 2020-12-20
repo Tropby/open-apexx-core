@@ -64,7 +64,7 @@ var $colorconfig = array(
 
 
 //Konstruktor
-function captcha() {
+function __construct() {
 	srand((double)microtime()*1000000);
 }
 

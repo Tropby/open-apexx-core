@@ -27,7 +27,7 @@ class session {
 	
 	
 	//Session erzeugen
-	function session($varname = 'sid') {
+	function __construct($varname = 'sid') {
 		$this->varname = $varname;
 		session_name($this->varname);
 		$this->now = time();

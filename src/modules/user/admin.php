@@ -34,11 +34,10 @@ function login() {
 	global $set,$apx,$db;
 	
 	//Weiterleiten auf Startseite, wenn angemeldet
-	if ( $apx->user->info['userid'] ) {
+	if ( $apx->user->info['userid']??0 ) {
 		header('Location: index.php');
 	}
-	
-	if ( $_POST['send'] ) {
+	if ( isset( $_POST['send'] ) ) {
 		
 		if ( $_POST['login_user'] && $_POST['login_pwd'] ) {
 			$res = $db->first("SELECT userid,password,salt,active,gtype FROM ".PRE."_user AS a LEFT JOIN ".PRE."_user_groups AS b USING(groupid) WHERE LOWER(username_login)='".addslashes(strtolower($_POST['login_user']))."' LIMIT 1");

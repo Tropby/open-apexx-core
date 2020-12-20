@@ -31,7 +31,7 @@ var $session;
 //STARTUP
 function __construct() {
 	parent::__construct();
-	if ( !$_REQUEST['action'] ) $_REQUEST['action']='main.index';
+	if ( !isset($_REQUEST['action']) ) $_REQUEST['action']='main.index';
 	
 	$loadmodule=explode('.',$_REQUEST['action']);
 	$this->module($loadmodule[0]);

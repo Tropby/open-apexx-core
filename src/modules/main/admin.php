@@ -23,6 +23,8 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 class action {
 
+var $refresh = "";
+
 //STARTUP
 function action() {
 	//Code um die Explorer-Leiste zu aktualisieren
@@ -84,12 +86,12 @@ function mshow() {
 	global $set,$apx,$db,$html;
 	
 	//Navi aktualisieren
-	if ( $_REQUEST['resetnav'] ) {
+	if ( $_REQUEST['resetnav']??0 ) {
 		echo $this->refresh;
 	}
 	
 	//Liste aktualisieren
-	if ( $_REQUEST['do']=='refresh' ) {
+	if ( isset($_REQUEST['do']) && $_REQUEST['do']=='refresh' ) {
 		$this->mshow_refresh();
 		return;
 	}
@@ -113,6 +115,7 @@ function mshow() {
 	$col[]=array('COL_REQUIREMENTS',15,'align="center"');
 	
 	//STATISCHE MODULE
+	$i=0;
 	foreach ( $apx->coremodules AS $modulename ) {
 		++$i;
 		$module=$regmods[$modulename];
@@ -176,6 +179,7 @@ function mshow() {
 		}
 
 		//Optionen
+		$tabledata[$i]['OPTIONS'] = "";
 		$tabledata[$i]['OPTIONS'].='<a href="javascript:void(0)" onclick="alert(\''.$alert.'\')"><img src="design/info.gif" alt="" style="vertical-align:middle;" /></a>';
 		$tabledata[$i]['OPTIONS'].='<img src="design/ispace.gif" alt="" />';
 		
@@ -261,6 +265,7 @@ function mshow() {
 			$tabledata[$i]['COL5']=$requiredModules;
 	
 			//Optionen
+			$tabledata[$i]['OPTIONS'] = "";
 			$tabledata[$i]['OPTIONS'].='<a href="javascript:void(0)" onclick="alert(\''.$alert.'\')"><img src="design/info.gif" alt="" style="vertical-align:middle;" /></a>';
 			
 			//Aktivieren/Deaktivieren
@@ -333,7 +338,10 @@ function regmod_readout($res) {
 	$info['installed_version']=$res['version'];
 	$info['current_version']=intval(str_replace('.','',$info['version']));
 	
-	$info['installed_version_dotted']=$res['version'][0].'.'.$res['version'][1].'.'.$res['version'][2];
+	if( isset($res['version']) && is_string($res['version']) && strlen($res['version'])>=3 )
+		$info['installed_version_dotted']=$res['version'][0].'.'.$res['version'][1].'.'.$res['version'][2];
+	else
+		$info['installed_version_dotted']="unknown";
 	$info['current_version_dotted']=$info['version'];
 	//unset($info['version']);
 	
@@ -398,7 +406,7 @@ function menable() {
 	global $set,$apx,$db;
 	
 	//Mehrere
-	if ( is_array($_REQUEST['multiid']) ) {
+	if ( isset($_REQUEST['multiid']) && is_array($_REQUEST['multiid']) ) {
 		if ( !checkToken() ) printInvalidToken();
 		else {
 			foreach ( $_REQUEST['multiid'] AS $module ) {
@@ -433,7 +441,7 @@ function menable() {
 		if ( !is_array($module) ) die('unknown module!');
 		if ( !$module['installed'] ) die('can not enable, module is not installed!'); 
 		
-		if ( $_POST['send'] ) {
+		if ( isset( $_POST['send'] ) ) {
 			if ( !checkToken() ) printInvalidToken();
 			else {
 				$db->query("UPDATE ".PRE."_modules SET active='1' WHERE module='".addslashes($_REQUEST['module'])."' LIMIT 1");
@@ -463,7 +471,7 @@ function mdisable() {
 	global $set,$apx,$db;
 	
 	//Mehrere
-	if ( is_array($_REQUEST['multiid']) ) {
+	if ( isset($_REQUEST['multiid']) && is_array($_REQUEST['multiid']) ) {
 		if ( !checkToken() ) printInvalidToken();
 		else {
 			foreach ( $_REQUEST['multiid'] AS $module ) {
@@ -501,7 +509,7 @@ function mdisable() {
 		if ( in_array($_REQUEST['module'],$apx->coremodules) ) die('can not disable core-modules!');
 		
 		//Dependence-Check	
-		if ( $_POST['send'] ) {
+		if ( isset( $_POST['send'] ) ) {
 			if ( !checkToken() ) printInvalidToken();
 			else {
 				$db->query("UPDATE ".PRE."_modules SET active='0' WHERE module='".addslashes($_REQUEST['module'])."' LIMIT 1");
@@ -540,7 +548,7 @@ function minstall() {
 	require_once(BASEDIR.'lib/functions.setup.php');
 	
 	//Mehrere
-	if ( is_array($_REQUEST['multiid']) ) {
+	if ( isset($_REQUEST['multiid']) && is_array($_REQUEST['multiid']) ) {
 		if ( !checkToken() ) printInvalidToken();
 		else {
 			$regmods=$this->get_modinfo();
@@ -580,7 +588,7 @@ function minstall() {
 	
 	//Einzeln
 	else {
-		if ( !$_REQUEST['module'] ) die('missing module!');
+		if ( !isset($_REQUEST['module']) ) die('missing module!');
 		
 		$regmods=$this->get_modinfo();
 		$module=$regmods[$_REQUEST['module']];
@@ -591,7 +599,7 @@ function minstall() {
 		
 		define('SETUPMODE','install');
 		
-		if ( $_POST['send']==1 ) {
+		if ( $_POST['send']??0==1 ) {
 			if ( !checkToken() ) printInvalidToken();
 			else {
 				if ( !file_exists(BASEDIR.getmodulepath($_REQUEST['module']).'setup.php') ) die('missing setup.php');
@@ -627,7 +635,7 @@ function muninstall() {
 	require_once(BASEDIR.'lib/functions.setup.php');
 	
 	//Mehrere
-	if ( is_array($_REQUEST['multiid']) ) {
+	if ( isset($_REQUEST['multiid']) && is_array($_REQUEST['multiid']) ) {
 		if ( !checkToken() ) printInvalidToken();
 		else {
 			$regmods=$this->get_modinfo();
@@ -678,7 +686,7 @@ function muninstall() {
 		
 		define('SETUPMODE','uninstall');
 		
-		if ( $_POST['send']==1 ) {
+		if ( ($_POST['send']??0)==1 ) {
 			if ( !checkToken() ) printInvalidToken();
 			else {
 				if ( !file_exists(BASEDIR.getmodulepath($_REQUEST['module']).'setup.php') ) die('missing setup.php');
@@ -804,7 +812,7 @@ function mconfig() {
 	global $set,$apx,$db;
 	if ( !$_REQUEST['module'] ) die('missing module!');
 	
-	if ( $_POST['send'] ) {
+	if ( isset( $_POST['send'] ) ) {
 		if ( !checkToken() ) infoInvalidToken();
 		else {
 			$info=array();
@@ -893,6 +901,7 @@ function mconfig() {
 		$buckets = array();
 		$data=$db->fetch("SELECT * FROM ".PRE."_config WHERE ( module='".addslashes($_REQUEST['module'])."' AND addnl!='BLOCK' ) ORDER BY ord ASC");
 		if ( count($data) ) {
+			$i=0;
 			foreach ( $data AS $res ) {
 				if ( !$res['type'] ) continue;
 				
@@ -1012,6 +1021,7 @@ function secshow() {
 	global $set,$apx,$db,$html;
 	
 	//Aktionen
+	$_REQUEST['do'] = $_REQUEST['do']??"";
 	if ( $_REQUEST['do']=='add' ) return $this->secshow_add();
 	if ( $_REQUEST['do']=='edit' ) return $this->secshow_edit();
 	if ( $_REQUEST['do']=='del' ) return $this->secshow_del();
@@ -1027,7 +1037,9 @@ function secshow() {
 	$col[]=array('COL_THEME',28,'align="center"');
 	
 	$data=$db->fetch("SELECT * FROM ".PRE."_sections ORDER BY title ASC");
+	$tabledata=array();
 	if ( count($data) ) {
+		$i=0;
 		foreach ( $data AS $res ) {
 			++$i;
 			
@@ -1043,7 +1055,7 @@ function secshow() {
 			$tabledata[$i]['COL6']=$res['theme'];
 			
 			//Optionen
-			$tabledata[$i]['OPTIONS'].=optionHTML('edit.gif', 'main.secshow', 'do=edit&id='.$res['id'], $apx->lang->get('CORE_EDIT'));
+			$tabledata[$i]['OPTIONS']=optionHTML('edit.gif', 'main.secshow', 'do=edit&id='.$res['id'], $apx->lang->get('CORE_EDIT'));
 			if ( !$res['default'] ) $tabledata[$i]['OPTIONS'].=optionHTMLOverlay('del.gif', 'main.secshow', 'do=del&id='.$res['id'], $apx->lang->get('CORE_DEL'));
 			else $tabledata[$i]['OPTIONS'].='<img src="design/ispace.gif" alt="" />';
 			if ( !$res['default'] && $res['active'] ) $tabledata[$i]['OPTIONS'].=optionHTML('mkdefault.gif', 'main.secshow', 'do=default&id='.$res['id'], $apx->lang->get('MKDEFAULT'));
@@ -1072,7 +1084,7 @@ function secshow_add() {
 	global $set,$apx,$db;
 	$apx->lang->dropaction('main','secadd');
 	
-	if ( $_POST['send']==1 ) {
+	if ( $_POST['send']??0==1 ) {
 		list($check)=$db->first("SELECT id FROM ".PRE."_sections WHERE LOWER(title)='".strtolower($_POST['title'])."' LIMIT 1");
 		
 		if ( !checkToken() ) infoInvalidToken();
@@ -1094,8 +1106,11 @@ function secshow_add() {
 	}
 	else {
 		$_POST['active']=1;
+		$_POST['theme']=$_POST['theme']??"";
+		$_POST['lang']=$_POST['lang']??"";
 		
 		//Themes auslesen
+		$designlist = "";
 		$handle=opendir(BASEDIR.getpath('tmpldir'));
 		while ( $file=readdir($handle) ) {
 			if ( $file=='.' || $file=='..' ) continue;
@@ -1111,12 +1126,12 @@ function secshow_add() {
 			$lang.='<option value="'.$id.'"'.iif($_POST['lang']==$id,' selected="selected"').'>'.$name.'</option>';
 		}
 		
-		$apx->tmpl->assign('TITLE',compatible_hsc($_POST['title']));
-		$apx->tmpl->assign('VIRTUAL',compatible_hsc($_POST['virtual']));
+		$apx->tmpl->assign('TITLE',compatible_hsc($_POST['title']??""));
+		$apx->tmpl->assign('VIRTUAL',compatible_hsc($_POST['virtual']??""));
 		$apx->tmpl->assign('THEME',$designlist);
 		$apx->tmpl->assign('LANG',$lang);
-		$apx->tmpl->assign('ACTIVE',(int)$_POST['active']);
-		$apx->tmpl->assign('MSG_NOACCESS',compatible_hsc($_POST['msg_noaccess']));
+		$apx->tmpl->assign('ACTIVE',(int)$_POST['active']??0);
+		$apx->tmpl->assign('MSG_NOACCESS',compatible_hsc($_POST['msg_noaccess']??""));
 		$apx->tmpl->assign('ACTION','add');
 		
 		$apx->tmpl->parse('secadd_secedit');
@@ -1133,7 +1148,7 @@ function secshow_edit() {
 	$_REQUEST['id']=(int)$_REQUEST['id'];
 	if ( !$_REQUEST['id'] ) die('missing ID!');
 	
-	if ( $_POST['send']==1 ) {
+	if ( $_POST['send']??0==1 ) {
 		list($check)=$db->first("SELECT id FROM ".PRE."_sections WHERE ( LOWER(title)='".strtolower($_POST['title'])."' AND id!='".$_REQUEST['id']."' ) LIMIT 1");
 		
 		if ( !checkToken() ) infoInvalidToken();
@@ -1153,6 +1168,7 @@ function secshow_edit() {
 		
 		//Themes auslesen
 		$handle=opendir(BASEDIR.getpath('tmpldir'));
+		$designlist="";
 		while ( $file=readdir($handle) ) {
 			if ( $file=='.' || $file=='..' ) continue;
 			if ( !is_dir(BASEDIR.getpath('tmpldir').$file) ) continue;

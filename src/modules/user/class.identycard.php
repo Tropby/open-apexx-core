@@ -18,7 +18,7 @@ class IdentyCard {
 	
 	
 	//Konstruktor
-	function IdentyCard($part1, $part2, $part3, $part4) {
+	function __construct($part1, $part2, $part3, $part4) {
 		$this->values = array($part1, $part2, $part3, $part4);
 		$this->valitity[] = $this->analyzePart1($part1);
 		$this->valitity[] = $this->analyzePart2($part2);

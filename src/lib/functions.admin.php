@@ -26,6 +26,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 function checkToken() {
 	global $apx;
+	
 	$token = $apx->session->get('sectoken');
 	if ( $_REQUEST['sectoken']==$token ) {
 		return true;

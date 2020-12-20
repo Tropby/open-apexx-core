@@ -21,14 +21,14 @@ class templates extends tengine {
 
 var $designid='default';
 var $headline=array();
-
+var $errorreport=false;
 
 ////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
-function templates() {
+function __construct() {
 	global $apx,$set;
 	
-	//Variablen
+	//Variablen	
 	$this->assign_static('SECTOKEN',$apx->session->get('sectoken'));
 	$this->assign_static('CHARSET',$set['main']['charset']);
 	$this->assign_static('ACTIVE_MODULE',$apx->module());
@@ -39,9 +39,9 @@ function templates() {
 	$this->assign_static('SERVER_REQUEST_METHOD',$_SERVER['REQUEST_METHOD']);
 	
 	//Benutzerinfos
-	$this->assign_static('LOGGED_ID',$apx->user->info['userid']);
-	$this->assign_static('LOGGED_USERNAME',replace($apx->user->info['username']));
-	$this->assign_static('LOGGED_EDITOR',$apx->user->info['admin_editor']);
+	$this->assign_static('LOGGED_ID',$apx->user->info['userid']??0);
+	$this->assign_static('LOGGED_USERNAME',replace($apx->user->info['username']??""));
+	$this->assign_static('LOGGED_EDITOR',$apx->user->info['admin_editor']??"");
 	
 	//Sektionen verwendet?
 	if ( count($apx->sections) ) {
@@ -116,7 +116,7 @@ function out() {
 	ob_clean();
 	
 	$this->assign('HEADLINE',$apx->lang->get('TITLE_'.strtoupper($apx->module()).'_'.strtoupper($apx->action())));
-	$this->extend('JS_FOOTER',$script);
+	$this->extend('JS_FOOTER',$script??"");
 	
 	//Assign Content
 	$this->assign('CONTENT',$this->cache);

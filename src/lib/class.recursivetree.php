@@ -10,7 +10,7 @@ class RecursiveTree {
 	
 	
 	//Konstruktor
-	function RecursiveTree($table, $primary) {
+	function __construct($table, $primary) {
 		$this->table = $table;
 		$this->primary = $primary;
 	}

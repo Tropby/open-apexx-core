@@ -105,7 +105,7 @@ elseif ( isset($user->info['userid']) && $user->info['userid'] ) {
 
 ////////////////////////////////////////////////////////////////////////////////////////// GAST-FUNKTIONEN
 
-elseif ( !isset($user->info['userid']) || !$user->info['userid'] ) {	
+elseif ( !isset($user->info['userid']) && !$user->info['userid'] ) {	
 	if ( isset($_REQUEST['action']) && in_array($_REQUEST['action'], $guestFunc) ) {
 		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
 	}

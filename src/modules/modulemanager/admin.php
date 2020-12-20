@@ -379,7 +379,7 @@ class Action
 	{
 		global $apx; 
 		
-		switch( (int)$_REQUEST["step"] )
+		switch( (int)($_REQUEST["step"]??0) )
 		{
 			case 2:
 			

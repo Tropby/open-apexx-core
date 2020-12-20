@@ -10,7 +10,7 @@ class OrderedList {
 	
 	
 	//Konstruktor
-	function OrderedList($table, $primary) {
+	function __construct($table, $primary) {
 		$this->table = $table;
 		$this->primary = $primary;
 	}
