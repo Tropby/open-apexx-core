@@ -57,3 +57,4 @@ Bitte prüfen Sie die Systemanforderungen, bevor Sie die Software installieren:
 |FAQ|  |[src](https://github.com/Tropby/open-apexx-faq)|[releases](https://github.com/Tropby/open-apexx-faq/releases)|
 |Kalender|  |[src](https://github.com/Tropby/open-apexx-calendar)|[releases](https://github.com/Tropby/open-apexx-calendar/releases)|
 |Kommentare|  |[src](https://github.com/Tropby/open-apexx-comments)|[releases](https://github.com/Tropby/open-apexx-comments/releases)|
+|News|  |[src](https://github.com/Tropby/open-apexx-news)|[releases](https://github.com/Tropby/open-apexx-news/releases)|
