@@ -21,7 +21,7 @@ Um besser mit Modulen umgehen zu können werden die Module in eigene repositorie
 |helloworld|released|1.0.0|[REPOS](https://github.com/Tropby/open-apexx-helloworld)|
 |links|todo|?.?|?|
 |navi|todo|?.?|?|
-|news|todo|?.?|?|
+|news|released|1.1.1|[REPOS](https://github.com/Tropby/open-apexx-news)|
 |newsletter|todo|?.?|?|
 |poll|todo|?.?|?|
 |products|todo|?.?|?|
