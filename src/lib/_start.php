@@ -13,7 +13,6 @@
 | SOFTWARE BELONGS TO ITS AUTHORS!                              |
 \***************************************************************/
 
-
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
@@ -22,58 +21,34 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 //BENCHMARK
 $_BENCH=microtime();
 
+// Setup base directory and execution type
 define('MODE','public');
-define('BASEDIR',dirname(dirname(__file__)).'/');
-$set=array(); //Variable schützen
+define('BASEDIR',dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 
 //Setup suchen
 if ( file_exists(BASEDIR.'setup/index.php') ) die('Bitte l&ouml;schen Sie zuerst den Ordner "setup"!');
 
 //Globale Module und Funktionen laden
+require_once(BASEDIR.'lib/_deprecated.vars.php');
 require_once(BASEDIR.'lib/config.php');
-require_once(BASEDIR.'lib/path.php');
 require_once(BASEDIR.'lib/functions.php');
 require_once(BASEDIR.'lib/functions.public.php');
-require_once(BASEDIR.'lib/class.apexx.php');
-require_once(BASEDIR.'lib/class.apexx.public.php');
-require_once(BASEDIR.'lib/class.database.php');
-require_once(BASEDIR.'lib/class.tengine.php');
-require_once(BASEDIR.'lib/class.templates.public.php');
-require_once(BASEDIR.'lib/class.language.php');
 
+// Load Global Classes
+require_once(BASEDIR.'lib/autoload.class.php');
 
-//Datenbank Verbindung aufbauen
+// set database prefix
 define('PRE',$set['mysql_pre']);
-$db = new database($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
 
-//apexx-Klasse laden
-$apx = new apexx_public;
+/**
+ * Apexx System
+ * @var apexx_public
+ */
+$apx = apexx::startApexxPublic();
 
-//Sprach-Klasse
-$apx->lang = new language;
-$apx->lang->langid($apx->language_default);
-
-//Template Engine
-$apx->tmpl = new templates();
-
-
-//Modul-Funktionen laden
-foreach ( $apx->modules AS $module => $info ) {
-	include_once(BASEDIR.getmodulepath($module).'system.php');
+if( $apx->config('debugCheck') )
+{
+    $apx->debugCheck();
 }
-
-
-//Sektionen initialisieren
-$apx->init_section();
-
-//Sprachpaket initialisieren
-$apx->lang->init();
-
-
-//Modul-Startup durchführen
-foreach ( $apx->modules AS $module => $info ) {
-	include_once(BASEDIR.getmodulepath($module).'startup.php');
-}
-
 
 ?>

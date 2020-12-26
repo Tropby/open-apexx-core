@@ -22,8 +22,6 @@
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-
-
 function checkToken() {
 	global $apx;
 	
@@ -35,8 +33,6 @@ function checkToken() {
 		return false;
 	}
 }
-
-
 
 //String für Javascript Escapen
 function jsString($text, $type = '"') {
@@ -50,8 +46,6 @@ function jsString($text, $type = '"') {
 		return strtr($text, array('"' => '\\"', "'" => "\\'", '\\' => '\\\\', "\n" => '\\n', "\r" => ''));
 	}
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////// -> INFO
 
@@ -165,7 +159,7 @@ function choosetime($id,$empty=0,$sel=0) {
 	if ( $sel>0 ) $date=getdate($sel-TIMEDIFF);
 	
 	//JS
-	$string.='<script type="text/javascript" src="../lib/yui/calendar/calendar-min.js"></script>';
+	$string='<script type="text/javascript" src="../lib/yui/calendar/calendar-min.js"></script>';
 	$string.='<script type="text/javascript" src="../lib/yui/container/container_core-min.js"></script>';
 	$string.='<script type="text/javascript" src="../lib/yui/element/element-min.js"></script>';
 	$string.='<script type="text/javascript" src="../lib/javascript/calendarselection.js"></script>';
@@ -315,6 +309,8 @@ function mktemplates($fields) {
 	
 	$data=$db->fetch("SELECT * FROM ".PRE."_templates ORDER BY title ASC");
 	if ( count($data) ) {
+		$options = "";
+		$source = "";
 		foreach ( $data AS $res ) {
 			$options.='<option value="'.$res['id'].'">'.$res['title'].'</option>';
 			$source.="templates[".$res['id']."] = '".strtr($res['code'],$sourcereplace)."';\n";
@@ -425,7 +421,8 @@ function parse_tree($data,$img=false) {
 function parse_tree_follow($data) {
 	$follow=array();
 	$prev_in_level=array();
-	
+
+	$lastlevel = -1;
 	foreach ( $data AS $res ) {
 		$level=$res['level'];
 		$id=$res['id'];
@@ -574,7 +571,7 @@ function mediamanager($module=false) {
 ////////////////////////////////////////////////////////////////////////////////// -> SEITENZAHLEN + LETTERS
 
 function pages($link,$count,$epp=0,$varname='p') {
-	global $set;
+	global $set, $apx;
 	$count=(int)$count;
 	$epp=(int)$epp;
 	
@@ -582,9 +579,10 @@ function pages($link,$count,$epp=0,$varname='p') {
 	$_REQUEST[$varname]=(int)$_REQUEST[$varname];
 	if ( strpos($link,'?') ) $sticky='&amp;'; else $sticky='?';
 	if ( !$epp ) $epp=$set['main']['admin_epp'];
-	$tmpl = new tengine;
+	$tmpl = new \tengine($apx);
 	
 	//Seitenzahlen bereichnen, evtl. REQUEST berichtigen
+	if(!$epp) $epp=1;
 	$pages=ceil($count/$epp);
 	if ( $_REQUEST[$varname]<1 || $_REQUEST[$varname]>$pages ) $_REQUEST[$varname]=1;
 	

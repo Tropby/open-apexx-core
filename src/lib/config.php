@@ -52,9 +52,19 @@ $set['mysql_utf8'] = false;
 // funktionieren, versuchen sie es mit der Einstellung "db"
 $set['session_api'] = 'db';
 
-
+// This will fail on all older modules! Try only for development!
+$set['high_security'] = false;
 
 // DEBUG ///////////////////////////////////////////////////////////////////////////////////
+
+// show auto include file names
+$set['debug_autoload'] = false;
+
+// show session data
+$set['debug_session'] = false;
+
+// Will check if all modules + actions + templates are executable
+$set['debugCheck'] = false;
 
 // Kritische Fehlermeldungen anzeigen (true/false)
 $set['showerror'] = true;

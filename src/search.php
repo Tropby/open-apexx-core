@@ -1,24 +1,33 @@
 <?php 
 
-/***************************************************************\
-|                                                               |
-|                   apexx CMS & Portalsystem                    |
-|                 ============================                  |
-|           (c) Copyright 2005-2009, Christian Scheb            |
-|                  http://www.stylemotion.de                    |
-|                                                               |
-|---------------------------------------------------------------|
-| THIS SOFTWARE IS NOT FREE! MAKE SURE YOU OWN A VALID LICENSE! |
-| DO NOT REMOVE ANY COPYRIGHTS WITHOUT PERMISSION!              |
-| SOFTWARE BELONGS TO ITS AUTHORS!                              |
-\***************************************************************/
+/*
+	Open Apexx Core
+	(c) Copyright 2020 Carsten Grings
+	(c) Copyright 2005-2009, Christian Scheb
 
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 2.1 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 define('APXRUN',true);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$apx->execute_module('main', 'search');
+
+
 
 $apx->module('main');
 $apx->lang->drop('search');
@@ -65,17 +74,6 @@ if ( $_POST['send'] ) {
 	$items = explode(' ',preg_replace('#\s{2,}#',' ',trim($_POST['item'])));
 	$items = array_map('strtolower', $items);
 	$items = array_unique($items);
-	/*foreach ( $it AS $item ) {
-		if ( trim($item) ) {
-			//$string=preg_quote(trim($item));
-			//$string=preg_replace('#[\W_]+#','[^0-9a-zA-Z]*',$item);
-			//$string=preg_replace('#_|-#','[ _-]*',$string); //Verbindungszeichen austauschbar
-			//$string=preg_replace('#\\\.|:#','[ \.:]?',$string); //Punkte und Doppelpunkte optional
-			//if ( preg_match('#^[0-9a-zA-Z]+$#',$string) ) $items[]=" LIKE '%".addslashes_like($string)."%' ";
-			//else $items[]=" REGEXP '".addslashes(preg_quote($string))."' ";
-			$items[]=" LIKE '%".addslashes_like($item)."%' ";
-		}
-	}*/
 	
 	//Verbindungswort
 	if ( $_POST['conn']=='or' ) $conn=' OR ';

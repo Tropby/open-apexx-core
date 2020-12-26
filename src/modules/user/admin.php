@@ -22,7 +22,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 
 //CityMatch laden
-include(BASEDIR.getmodulepath('user').'citymatch.php');
+include(BASEDIR.getmodulepath('user').'func/func.citymatch.php');
 
 
 class action {

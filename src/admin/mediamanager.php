@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /***************************************************************\
 |                                                               |
@@ -14,7 +14,7 @@
 \***************************************************************/
 
 
-define('APXRUN',true);
+define('APXRUN', true);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 require('includes/_start.php');  /////////////////////////////////////////////////////// SYSTEMSTART ///
@@ -22,17 +22,19 @@ require('includes/_start.php');  ///////////////////////////////////////////////
 
 
 //CKEditor-Funcnum
-if ( $_REQUEST['CKEditorFuncNum'] ) {
+if ($_REQUEST['CKEditorFuncNum'])
+{
 	$apx->session->set('CKEditorFuncNum', $_REQUEST['CKEditorFuncNum']);
 }
 
 
-if ( $apx->user->info['userid'] ) {
+if ($apx->user->info['userid'])
+{
 	$apx->tmpl->loaddesign('blank');
-	$apx->tmpl->parse('mediamanager','/');
+	$apx->tmpl->parse('mediamanager', '/');
 }
-else {
-	header("HTTP/1.1 301 Moved Permanently");
+else
+{
 	header('Location: action.php?action=user.login');
 	exit;
 }
@@ -41,5 +43,3 @@ else {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 require('includes/_end.php');  ////////////////////////////////////////////////////// SCRIPT BEENDEN ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-?>

@@ -312,7 +312,7 @@ if ( SETUPMODE=='install' ) {
 	
 	//Locations einfügen
 	require_once(BASEDIR.'lib/class.linereader.php');
-	$locReader = new LineReader(BASEDIR.getmodulepath('user').'locations.sql', ";\n");
+	$locReader = new LineReader(BASEDIR.getmodulepath('user').'sql/locations.sql', ";\n");
 	$command = '';
 	while ( ($line = $locReader->getNext())!==false ) {
 		if ( $line ) {
@@ -490,17 +490,6 @@ elseif ( SETUPMODE=='update' ) {
 			$queries=split_sql($mysql);
 			foreach ( $queries AS $query ) $db->query($query);
 			
-			//Locations einfügen
-			/*require_once(BASEDIR.'lib/class.linereader.php');
-			$locReader = new LineReader(BASEDIR.getmodulepath('user').'locations.sql', ";\n");
-			$command = '';
-			while ( ($line = $locReader->getNext())!==false ) {
-				if ( $line ) {
-					$line=str_replace('`apx_','`'.PRE.'_',$line);
-					$db->query($line);
-				}
-			}*/
-			
 			//User-Gallery-DIR
 			require_once(BASEDIR.'lib/class.mediamanager.php');
 			$mm=new mediamanager;
@@ -560,20 +549,9 @@ elseif ( SETUPMODE=='update' ) {
 			";
 			$queries=split_sql($mysql);
 			foreach ( $queries AS $query ) $db->query($query);
-			
-			//Locations einfügen
-			/*require_once(BASEDIR.'lib/class.linereader.php');
-			$locReader = new LineReader(BASEDIR.getmodulepath('user').'locations.sql', ";\n");
-			$command = '';
-			while ( ($line = $locReader->getNext())!==false ) {
-				if ( $line ) {
-					$line=str_replace('`apx_','`'.PRE.'_',$line);
-					$db->query($line);
-				}
-			}*/
-			
+
 			//CityMatch laden
-			include(BASEDIR.getmodulepath('user').'citymatch.php');
+			include(BASEDIR . getmodulepath('user') . 'func/func.citymatch.php');			
 			
 			//Updates auf Tabellen durchführen
 			$data = $db->fetch("SELECT userid,city,plz,country,buddies,birthday FROM ".PRE."_user");
@@ -768,7 +746,7 @@ elseif ( SETUPMODE=='update' ) {
 			
 			//Locations einfügen
 			require_once(BASEDIR.'lib/class.linereader.php');
-			$locReader = new LineReader(BASEDIR.getmodulepath('user').'locations.sql', ";\n");
+			$locReader = new LineReader(BASEDIR.getmodulepath('user').'sql/locations.sql', ";\n");
 			$command = '';
 			while ( ($line = $locReader->getNext())!==false ) {
 				if ( $line ) {

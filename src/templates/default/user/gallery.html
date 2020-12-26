@@ -59,10 +59,18 @@ GALLERY.COMMENT_LAST_TIME = Zeitpunkt des letzten Kommentars (Timestamp)
 <div class="tabbar clearfix">
 <ul>
 <li><a href="{LINK_PROFILE}">{LANG[USER_PROFILE]}</a></li>
+{if LINK_BLOG}
 <li><a href="{LINK_BLOG}">{LANG[USER_BLOG]}</a></li>
+{/if}
+{if LINK_GALLERY}
 <li class="selected"><a href="{LINK_GALLERY}">{LANG[USER_GALLERY]}</a></li>
+{/if}
+{if LINK_COLLECTION != ""}
 <li><a href="{LINK_COLLECTION}">{LANG[USER_COLLECTION]}</a></li>
+{/if}
+{if LINK_GUESTBOOK}
 <li><a href="{LINK_GUESTBOOK}">{LANG[USER_GUESTBOOK]}</a></li>
+{/if}
 </ul>
 </div>
 <div class="tabbody">

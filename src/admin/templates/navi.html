@@ -44,7 +44,7 @@ menu[mi++]='{NAVI.ID}';
 {/list}
 
 
-var selectedSection = {SELSECTION};
+var selectedSection = {if SELSECTION}{SELSECTION}{else}""{/if};
 
 function updateSection(select) {
 	var confirmed = confirm('{LANG[CORE_CHANGESEC]}');

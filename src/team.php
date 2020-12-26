@@ -23,9 +23,8 @@ require('lib/_start.php');  ////////////////////////////////////////////////////
 
 $apx->module('user');
 $apx->lang->drop('team');
-headline($apx->lang->get('HEADLINE'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
-titlebar($apx->lang->get('HEADLINE'));
-
+$apx->headline($apx->lang->get('HEADLINE'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
+$apx->titlebar($apx->lang->get('HEADLINE'));
 
 //Daten erzeugen
 function createTeamData($res, $parse) {

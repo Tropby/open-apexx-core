@@ -20,14 +20,11 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 //////////////////////////////////////////////////////////////////////////////////
 
-
 //IIF Funktion
 function iif($arg,$true,$false='') {
 	if ( $arg ) return $true;
 	else return $false;
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////// -> SUCHE
 
@@ -104,7 +101,6 @@ function apxdate($time=false,$forceformat=false) {
 	return getcalmonth(getweekday($string));
 }
 
-
 //Zeit formatieren
 function apxtime($time=false,$forceformat=false) {
 	global $set,$apx;
@@ -116,7 +112,6 @@ function apxtime($time=false,$forceformat=false) {
 	
 	return date($format,$time-TIMEDIFF).$apx->lang->get('CORE_OCLOCK');
 }
-
 
 //Kalendermonat holen
 function getcalmonth($string) {
@@ -212,12 +207,12 @@ function mklink($link1,$link2,$secid=false) {
 	if ( $secid===false ) $secid=$apx->section_id();
 	
 	//Link auswählen
-	if ( $set['main']['staticsites'] ) $link=$link2;
+	if ( $set['main']['staticsites']??false ) $link=$link2;
 	else $link=$link1;
 	
 	//Sektion gewählt
 	if ( $secid ) {
-		if ( $set['main']['staticsites'] ) {
+		if ( $set['main']['staticsites'] ?? false ) {
 			if ( $set['main']['staticsites_virtual']==1 && isset($apx->sections[$secid]['virtual']) ) $virtual=$apx->sections[$secid]['virtual'].'/';
 			$link=HTTPDIR.$virtual.$link;
 		}
@@ -232,7 +227,7 @@ function mklink($link1,$link2,$secid=false) {
 	//Keine Sektion gewählt
 	else $link=HTTPDIR.$link;
 	
-	if ( $set['main']['staticsites_separator'] ) $link=str_replace(',',$set['main']['staticsites_separator'],$link);
+	if ( $set['main']['staticsites_separator'] ?? false ) $link=str_replace(',',$set['main']['staticsites_separator'],$link);
 	return $link;
 }
 
@@ -736,9 +731,11 @@ function get_ids($array,$key='id') {
 
 
 //Höchster Key
-function array_key_max($array) {
+function array_key_max($array) 
+{
 	if ( !is_array($array) ) return false;
-	
+
+	$max = -1;
 	foreach ( $array AS $key => $trash ) {
 		if ( !is_int($key) ) continue;
 		if ( $key>$max ) $max=$key;
@@ -861,7 +858,8 @@ function message($text,$link=false) {
 
 
 //Message aus Template senden
-function tmessage($file,$input=array(),$dir=false,$form=true) {
+function tmessage($file,$input=array(),$dir=false,$form=true) 
+{
 	global $set,$db,$apx;
 	
 	if ( is_array($input) && count($input) ) {

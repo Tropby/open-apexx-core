@@ -1,0 +1,86 @@
+
+<div id="cookies" style="display: none;">
+	Wir verwenden Cookies, um Inhalte und Anzeigen zu personalisieren und die Zugriffe auf unsere Website zu analysieren. 
+	Außerdem geben wir Informationen zu Ihrer Verwendung unserer Website an unsere Partner für soziale Medien, Werbung und Analysen weiter. 
+	Unsere Partner führen diese Informationen möglicherweise mit weiteren Daten zusammen, die Sie ihnen bereitgestellt haben oder die sie im 
+	Rahmen Ihrer Nutzung der Dienste gesammelt haben.
+	<br /><br />
+	<a class="btn btn-success right" href="javascript: acceptCookies();" >akzeptieren</a>
+	<a class="btn btn-outline-success right" href="javascript: noCookies();" >ablehnen</a>
+</div>
+
+<script>
+	window.addEventListener("load", function(event) 
+	{
+		if( parseInt(getCookie("acceptCookies")) !== 1 )
+		{
+			var v = document.getElementById("cookies");
+			v.style.display = "block";
+		}
+	
+		var s = getCookie("fontSize");
+		if( s !== "" )
+			setFontSize(s);
+	});		
+
+	function getCookie(cname) 
+	{
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) 
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') 
+			{
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) 
+			{
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}		
+
+	function setCookie(cname, cvalue, exdays) 
+	{
+		if( getCookie("acceptCookies") == 1 )
+		{
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			var expires = "expires="+ d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+		else
+		{
+			console.log("Can not set Cookie. Cookies not accepted by user!");
+		}
+	}
+	
+	function noCookies()
+	{
+		var v = document.getElementById("cookies");
+		v.style.display = "none";
+	}
+	
+	function acceptCookies()
+	{
+		var d = new Date();
+		d.setTime(d.getTime() + (365*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = "acceptCookies=1;" + expires + ";path=/";
+		
+		if(getCookie("acceptCookies") == 1)
+		{
+			var v = document.getElementById("cookies");
+			v.style.display = "none";
+		}				
+	}
+	
+	function setFontSize(size)
+	{
+		document.body.style.fontSize = size + "em";
+		setCookie("fontSize", size, 365);
+	}
+</script>

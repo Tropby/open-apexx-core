@@ -35,13 +35,13 @@ if ( !is_writeable(BASEDIR.getpath('cache')) ) die('cache-Ordner hat keine Schre
 
 //Datenbank Verbindung aufbauen
 define('PRE',$set['mysql_pre']);
-$db = new database($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
+$db = new DatabaseMysqli($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
 
 //apexx-Klasse laden
 $apx  = new apexx;
 
 //Sprach-Klasse
-$apx->lang = new language;
+$apx->lang = new language($apx);
 $apx->lang->langid($apx->language_default);
 $apx->lang->init();
 

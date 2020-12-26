@@ -23,35 +23,30 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 $_BENCH=microtime();
 
 define('MODE','admin');
-define('BASEDIR',dirname(dirname(dirname(__file__))).'/');
+define('BASEDIR',dirname(dirname(dirname(__FILE__))).'/');
 define('BASEREL','../');
 $set=array(); //Variable schützen
 
 //Setup suchen
 if ( file_exists(BASEDIR.'setup/index.php') ) die('Bitte löschen Sie zuerst den Ordner "setup"!');
 
+require_once(BASEDIR . 'lib/autoload.class.php');
+
+
 //Globale Module und Funktionen laden
 require_once(BASEDIR.'lib/config.php');
-require_once(BASEDIR.'lib/path.php');
 require_once(BASEDIR.'lib/functions.php');
 require_once(BASEDIR.'lib/functions.admin.php');
-require_once(BASEDIR.'lib/class.apexx.php');
 require_once(BASEDIR.'lib/class.apexx.admin.php');
-require_once(BASEDIR.'lib/class.database.php');
-require_once(BASEDIR.'lib/class.tengine.php');
 require_once(BASEDIR.'lib/class.templates.admin.php');
-require_once(BASEDIR.'lib/class.language.php');
-require_once(BASEDIR.'lib/class.session.php');
-require_once(BASEDIR.'lib/class.html.php');
-
 
 //Datenbank Verbindung aufbauen
 define('PRE',$set['mysql_pre']);
-$db = new database($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
+$db = new DatabaseMysqli($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
 
 //Apexx-Klasse initialisieren
 $apx  = new apexx_admin;
-$apx->lang = new language;   //Sprache
+$apx->lang = new language($apx);   //Sprache
 $apx->lang->langid($apx->language_default); //Standard-Sprachpaket
 
 //Session starten

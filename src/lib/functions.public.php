@@ -23,17 +23,24 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 
 ////////////////////////////////////////////////////////////////////////////////// -> HEADLINES
 
-//Headline
-function headline($text,$url='') {
+/**
+ * Headline
+ * @deprecated deprecated since version 2.0
+ **/
+function headline($text,$url='') 
+{
 	global $apx;
-	$apx->tmpl->headline(strip_tags($text),$url);
+	$apx->headline($text,$url) ;
 }
 
-
-//Titelleiste
-function titlebar($text) {
+/**
+ * Titelleiste
+ * @deprecated deprecated since version 2.0
+ **/
+function titlebar($text) 
+{
 	global $apx;
-	$apx->tmpl->titlebar(strip_tags($text));
+	$apx->titlebar($text) ;	
 }
 
 

@@ -31,6 +31,7 @@ function search_user($items,$conn) {
 	//Ergebnisse
 	$data=$db->fetch("SELECT userid,username FROM ".PRE."_user WHERE ( ".implode($conn,$search)." ) ORDER BY username ASC");
 	if ( count($data) ) {
+		$i=0;
 		foreach ( $data AS $res ) {
 			++$i;
 			$result[$i]['TITLE']=$res['username'];

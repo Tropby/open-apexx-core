@@ -16,7 +16,7 @@
 
 define('APXRUN',true);
 define('MODE','public');
-define('BASEDIR',dirname(dirname(dirname(__file__))).'/');
+define('BASEDIR',dirname(dirname(dirname(__FILE__))).'/');
 define('BASEREL','../../');
 define('DEBUG',false);
 $set=array(); //Variable schützen
@@ -35,7 +35,7 @@ require_once(BASEDIR.'lib/config.php');
 require_once(BASEDIR.'lib/functions.php');
 require_once(BASEDIR.'lib/class.database.php');
 define('PRE',$set['mysql_pre']);
-$db = new database($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
+$db = new DatabaseMysqli($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
 
 
 //Wenn kein Fehler aufgetreten ist, dann wird ein Leerpixel ausgegeben
@@ -79,7 +79,7 @@ require_once(BASEDIR.'lib/class.apexx.public.php');
 require_once(BASEDIR.'lib/class.language.php');
 
 //apexx-Klasse laden
-$apx  = new apexx_public;
+$apx = apexx::start_apexx_public();
 
 //Sprach-Klasse
 $apx->lang = new language;

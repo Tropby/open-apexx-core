@@ -61,7 +61,6 @@ else {
 		return $dirdata;
 	}
 	
-	require_once(BASEDIR.'lib/class.mediamanager.php');
 	$mm = new mediamanager;
 	if ( $_REQUEST['dir'] ) {
 		$apx->tmpl->assign('DIR',get_subtree($_REQUEST['dir']));

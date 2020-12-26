@@ -1,18 +1,22 @@
 <?php 
 
-/***************************************************************\
-|                                                               |
-|                   apexx CMS & Portalsystem                    |
-|                 ============================                  |
-|           (c) Copyright 2005-2009, Christian Scheb            |
-|                  http://www.stylemotion.de                    |
-|                                                               |
-|---------------------------------------------------------------|
-| THIS SOFTWARE IS NOT FREE! MAKE SURE YOU OWN A VALID LICENSE! |
-| DO NOT REMOVE ANY COPYRIGHTS WITHOUT PERMISSION!              |
-| SOFTWARE BELONGS TO ITS AUTHORS!                              |
-\***************************************************************/
+/*
+	Open Apexx Core
+	(c) Copyright 2020 Carsten Grings
 
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 2.1 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 define('APXRUN',true);
 
@@ -20,110 +24,14 @@ define('APXRUN',true);
 require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$apx->module('user');
-$apx->lang->drop('all');
-headline($apx->lang->get('HEADLINE'),mklink('user.php','user.html'));
-titlebar($apx->lang->get('HEADLINE'));
+$action = "index";
+if($apx->param()->getIf('action'))
+	$action = $apx->param()->getString('action');
 
-//Alte PNs der User löschen
-$db->query("DELETE FROM ".PRE."_user_pms WHERE ( del_to='1' AND del_from='1' )");
+if($action==="list") $action="listuser";
 
-//Funktionen laden
-include(BASEDIR.getmodulepath('user').'citymatch.php');
-include(BASEDIR.getmodulepath('user').'functions.php');
-
-if( file_exists(BASEDIR.getmodulepath('comments').'functions.php') )
-	include(BASEDIR.getmodulepath('comments').'functions.php');
-
-
-////////////////////////////////////////////////////////////////////////////////////////// LOGOUT
-
-$publicFunc = array(
-	'logout',
-	'profile',
-	'newmail',
-	'guestbook',
-	'blog',
-	'gallery',
-	'collection',
-	'report',
-	'list',
-	'search',
-	'online',
-	'usermap'
-);
-
-$userFunc = array(
-	'myprofile',
-	'setstatus',
-	'signature',
-	'avatar',
-	'pms',
-	'newpm',
-	'readpm',
-	'delpm',
-	'ignorelist',
-	'friends',
-	'addbuddy',
-	'delbuddy',
-	'addbookmark',
-	'delbookmark',
-	'myblog',
-	'mygallery',
-	'subscriptions',
-	'subscribe'
-);
-
-$guestFunc = array(
-	'register',
-	'activate',
-	'getregkey',
-	'getpwd'
-);
-
-
-////////////////////////////////////////////////////////////////////////////////////////// ÖFFENTLICHE FUNKTIONEN
-if( isset($_REQUEST['action']) )
-{
-	if ( in_array($_REQUEST['action'], $publicFunc) ) {
-		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
-	}	
-}
-
-////////////////////////////////////////////////////////////////////////////////////////// USER-FUNKTIONEN
-
-elseif ( isset($user->info['userid']) && $user->info['userid'] ) {
-	if ( in_array($_REQUEST['action'], $userFunc) ) {
-		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
-	}
-	else {
-		require(BASEDIR.getmodulepath('user').'pub/index.php');
-	}
-	
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////// GAST-FUNKTIONEN
-
-elseif ( !isset($user->info['userid']) && !$user->info['userid'] ) {	
-	if ( isset($_REQUEST['action']) && in_array($_REQUEST['action'], $guestFunc) ) {
-		require(BASEDIR.getmodulepath('user').'pub/'.$_REQUEST['action'].'.php');
-	}
-	else {
-		require(BASEDIR.getmodulepath('user').'pub/login.php');
-	}
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////// 404
-
-else {
-	filenotfound();
-}
-
+$apx->execute_module('user', $action);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 require('lib/_end.php');  /////////////////////////////////////////////////////////// SCRIPT BEENDEN ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-?>

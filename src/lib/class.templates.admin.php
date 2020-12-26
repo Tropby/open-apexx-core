@@ -77,7 +77,7 @@ function __construct() {
 	
 	ob_start();
 	
-	parent::__construct(true);
+	parent::__construct($apx, true);
 }
 
 

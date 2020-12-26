@@ -24,7 +24,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 function main_mkdate($pattern='d.m.Y - H:i:s',$time=false) {
 	global $apx,$set;
 	static $yesterday,$today,$tomorrow;
-	
+
 	if ( $time===false ) $time=time();
 	$time=(int)$time;
 	
@@ -55,7 +55,7 @@ function main_mkdate($pattern='d.m.Y - H:i:s',$time=false) {
 //Suchefeld ausgeben
 function main_searchbox($module='', $template='search') {
 	global $apx;
-	$tmpl=new tengine;
+	$tmpl=new tengine($apx);
 	$apx->lang->drop('search_basic','main');
 	
 	if ( $apx->is_module($module) ) $tmpl->assign('SEARCHIN',$module);
@@ -146,10 +146,11 @@ function main_snippet($id=0) {
 //Sektionen
 function main_sections($template='sections') {
 	global $apx,$set,$db;
-	$tmpl = new tengine();
+	$tmpl = new tengine($apx);
 	
 	$secdata = array();
 	if ( count($apx->sections) ) {
+		$i = 0;
 		foreach ( $apx->sections AS $id => $info ) {
 			++$i;
 			$secdata[$i]['ID'] = $id;
@@ -167,7 +168,8 @@ function main_sections($template='sections') {
 // Creates a select input for year selection
 function main_yearselect($name, $selected, $classes)
 {
-	$tmpl = new tengine();
+	global $apx;
+	$tmpl = new tengine($apx);
 
 	$year = date("Y");
 	$yearlist = array();
