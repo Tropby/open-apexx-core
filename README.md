@@ -1,10 +1,28 @@
 # Open Apexx Core
 
+## Was ist "Open Apexx Core"?
+
+Open Apexx Core entspricht einer Grundinstallation von Open Apexx ohne zusatzmodule. Die verwendeten Module werden nachinstalliert. Dafür steht der Modulemanager zur Verfügung. Der Modulemanager kann automatisch Module von Github laden und diese auf dem Webspace in Open Apexx Core installieren. Dadurch ist ein einfaches updaten der Module nun möglich.
+
 ## Status
 
 ### Open Apexx Erweiterung by Tropby
 
 Ich verwende schon seit sehr langer Zeit das Apexx bzw. Open Apexx. Daher habe ich beschlossen dieses weiter zu entwickeln und versuche dabei die Kompatibilität mit dem Open Apexx soweit wie möglich zu behalten. Die Änderungen werden sich auf neue PHP-Versionen und Verbesserungen bzw. Sicherheitsupdate belaufen. Um besser mit den Modulen arbeiten zu können werde ich pro Modul ein Repository anlegen und einen kleinen Modul-Manager schreiben der es ermöglicht Module nachzuinstallieren. Der Status der Module kann in der [Modulliste](MODULES.md) eingesehen werden.
+
+Da ich dabei bin open-apexx auseinander zu nehmen und dadurch eine besseres weiter arbeiten an einzelnen Modulen ermögliche habe ich mich entschieden das Repository von dem open-apexx zu trennen. Mein neues Repository nennt sich nun open-apexx-core und beinhaltet nur die Core-Module. Für jedes weitere Modul wird dann ein eigenes Repositorx angelegt und in der Modulliste verlinkt. 
+
+#### Open Apexx und PHP 8
+Die neue PHP-Version fordert einige Überarbeitetungen am Open Apexx System. Zurzeit werden die Core-Module überarbeitet so dass diese ohne Fehler oder Warnungen lauffähig sind. Schaltet man die Warnungen ab, so sind schon die meisten Funktionen unter PHP 8 funktionsfähig. 
+
+Dafür muss die Zeile 47 in /lib/class.apexx.php erweitert werden durch `^ E_WARNING`
+```PHP
+error_reporting(E_ALL ^ E_NOTICE);
+```
+zu
+```PHP
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+```
 
 ### Open Apexx by Scheb
 
@@ -31,16 +49,13 @@ betreiben möglichen.
 
 Das System ist nur auf Deutsch verfügbar, es besitzt jedoch Funktionen zur Lokalisierung.
 
-# Was ist "Open Apexx Core"?
-
-Open Apexx Core entspricht einer Grundinstallation von Open Apexx ohne zusatzmodule. Die verwendeten Module werden nachinstalliert. Dafür steht der Modulemanager zur Verfügung. Der Modulemanager kann automatisch Module von Github laden und diese auf dem Webspace in Open Apexx Core installieren. Dadurch ist ein einfaches updaten der Module nun möglich.
 
 # Systemanforderung
 
 Bitte prüfen Sie die Systemanforderungen, bevor Sie die Software installieren:
 
  * 25MB Festplattenspeicher
- * PHP 5
+ * PHP 7
  * PHP Safe-Mode = OFF
  * PHP Erweiterung gd
  * PHP Erweiterung curl
