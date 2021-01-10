@@ -34,7 +34,8 @@ abstract class Module implements IModule
     private Array $info = array();
 
     private \PublicModule $publicModule;
-    //private \AdminModule $adminModule;    
+    private \AdminModule $adminModule;    
+    private \Setup $setup;
 
     private Array $admin_actions = array();
     private Array $admin_template_functions = array();
@@ -90,7 +91,7 @@ abstract class Module implements IModule
     {
         if (isset($this->template_functions[$funcname]))
         {
-            include_once(BASEDIR . $this->apx()->path()->getmodulepath($this->getId()) . "tfunctions.php");
+            include_once(BASEDIR . $this->apx()->path()->getmodulepath($this->id()) . "tfunctions.php");
             if (function_exists($this->template_functions[$funcname][0]))
             {
                 call_user_func_array($this->template_functions[$funcname][0], $params);
@@ -107,6 +108,19 @@ abstract class Module implements IModule
     public function &apx(): \apexx
     {
         return $this->apx;
+    }
+
+    protected function registerSetup(\Setup &$setup)
+    {
+        $this->setup = &$setup;
+    }
+
+    /**
+     * @return \Setup 
+     */
+    public function &setup()
+    {
+        return $this->setup;
     }
 
     protected function registerPublicModule(\PublicModule &$module)
@@ -128,7 +142,7 @@ abstract class Module implements IModule
     {
         if( !isset( $this->publicModule ) )
         {
-            ApexxError::WARNING( "\"".$this->getId()."\" has no public module!");
+            ApexxError::WARNING( "\"".$this->id()."\" has no public module!");
             return;
         }        
         $this->publicModule->debugCheckActions();

@@ -404,9 +404,17 @@ class apexx
 		}
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function get_module($module_name)
 	{
-		return $this->module_objects[$module_name]??NULL; 
+		return $this->getModule($module_name);
+	}
+
+	public function getModule($moduleName)
+	{
+		return $this->module_objects[$moduleName]??NULL; 
 	}
 
 	//Ist ein Modul aktiv?

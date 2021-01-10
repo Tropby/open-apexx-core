@@ -10,6 +10,12 @@ class Signature extends \PublicAction
 		$db = $apx->db();
 		$user = $apx->get_registered_object('user');
 
+		if (!isset($user->info['userid']) || !$user->info['userid'])
+		{
+			(new Login($this->publicModule()))->execute();
+			return;
+		}
+		
 		$apx->lang->drop('signature');
 		headline($apx->lang->get('HEADLINE_SIGNATURE'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 		titlebar($apx->lang->get('HEADLINE_SIGNATURE'));

@@ -38,29 +38,8 @@ class Module extends \Module
 		);
 
 		$this->registerPublicModule(new PublicModule($this));
+		$this->registerSetup(new Setup());
 
-		//$this->register_template_function('USER_INFO', 'user_info', true);
-		$this->register_template_function('USERONLINE', 'user_online', false);
-		$this->register_template_function('NEWPMS', 'user_newpms', false);
-		$this->register_template_function('NEWGBENTRIES', 'user_newgbs', false);
-		$this->register_template_function('ONLINELIST', 'user_onlinelist', true);
-		$this->register_template_function('LOGINBOX', 'user_loginbox', false);
-		$this->register_template_function('BIRTHDAYS', 'user_birthdays', true);
-		$this->register_template_function('BIRTHDAYS_TOMORROW', 'user_birthdays_tomorrow', true);
-		$this->register_template_function('BIRTHDAYS_NEXTDAYS', 'user_birthdays_nextdays', true);
-		$this->register_template_function('BUDDYLIST', 'user_buddylist', true);
-		$this->register_template_function('NEWUSER', 'user_new', true);
-		$this->register_template_function('RANDOMUSER', 'user_random', true);
-		$this->register_template_function('PROFILE', 'user_profile', true);
-		$this->register_template_function('BOOKMARK', 'user_bookmarklink', false);
-		$this->register_template_function('SHOWBOOKMARKS', 'user_bookmarks', true);
-		$this->register_template_function('ONLINERECORD', 'user_onlinerecord', true);
-		$this->register_template_function('USERBLOGS', 'user_blogs_last', true);
-		$this->register_template_function('USERGALLERY_LAST', 'user_gallery_last', true);
-		$this->register_template_function('USERGALLERY_UPDATED', 'user_gallery_updated', true);
-		$this->register_template_function('USERGALLERY_LASTPICS', 'user_gallery_lastpics', true);
-		$this->register_template_function('USERGALLERY_POTM', 'user_gallery_potm', true);		
-		//$this->register_template_function('USERSTATUS', 'user_status', true);
 
 		// Admin Aktionen registrieren 
 		$this->register_admin_action('login', 0, 0, 1, 1);
@@ -153,124 +132,6 @@ class Module extends \Module
 		}
 	}
 
-	/*
-	public function execute()
-	{
-		$this->apx->headline($this->apx->lang->get('HEADLINE'),mklink('user.php','user.html'));
-		$this->apx->titlebar($this->apx->lang->get('HEADLINE'));
-		
-		//Alte PNs der User lÃ¶schen
-		$this->apx->db()->query("DELETE FROM ".PRE."_user_pms WHERE ( del_to='1' AND del_from='1' )");
-
-		//Funktionen laden
-		include(BASEDIR.getmodulepath('user').'func/func.citymatch.php');
-		include(BASEDIR.getmodulepath('user').'functions.php');
-
-		if( file_exists(BASEDIR.getmodulepath('comments').'functions.php') )
-			include(BASEDIR.getmodulepath('comments').'functions.php');
-
-		////////////////////////////////////////////////////////////////////////////////////////// LOGOUT
-
-		$publicFunc = array(
-			'logout',
-			'profile',
-			'newmail',
-			'guestbook',
-			'blog',
-			'gallery',
-			'collection',
-			'report',
-			'list',
-			'search',
-			'online',
-			'usermap'
-		);
-
-		$userFunc = array(
-			'myprofile',
-			'setstatus',
-			'signature',
-			'avatar',
-			'pms',
-			'newpm',
-			'readpm',
-			'delpm',
-			'ignorelist',
-			'friends',
-			'addbuddy',
-			'delbuddy',
-			'addbookmark',
-			'delbookmark',
-			'myblog',
-			'mygallery',
-			'subscriptions',
-			'subscribe'
-		);
-
-		$guestFunc = array(
-			'register',
-			'activate',
-			'getregkey',
-			'getpwd'
-		);
-
-		////////////////////////////////////////////////////////////////////////////////////////// 
-
-		// Extract action from request parameters
-		$action = NULL;
-		if( $this->apx->param()->requestIf('action') )
-			$action = $this->apx->param()->requestString('action');
-			
-		$user = $this->apx->get_registered_object('user');
-
-		////////////////////////////////////////////////////////////////////////////////////////// Ã–FFENTLICHE FUNKTIONEN
-
-		// set old style variables!
-		$apx = $this->apx;
-		$set = $this->apx->get_config_array();
-		$db = $this->apx->db();
-
-		if ( in_array($action, $publicFunc) ) 
-		{
-			require(BASEDIR.getmodulepath('user').'pub/'.$this->apx->param()->requestString('action').'.php');
-		}	
-
-		////////////////////////////////////////////////////////////////////////////////////////// USER-FUNKTIONEN
-
-		elseif ( isset($user->info['userid']) && $user->info['userid'] ) 
-		{
-			if ( in_array($action, $userFunc) ) 
-			{
-				require(BASEDIR.getmodulepath('user').'pub/'.$action.'.php');
-			}
-			else 
-			{
-				require(BASEDIR.getmodulepath('user').'pub/index.php');
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////// GAST-FUNKTIONEN
-
-		elseif ( !isset($user->info['userid']) || !$user->info['userid'] )
-		{	
-			if ($this->apx->param()->requestIf('action') && in_array($this->apx->param()->requestString('action'), $guestFunc) )
-			{
-				require(BASEDIR.getmodulepath('user').'pub/'. $this->apx->param()->requestString('action').'.php');
-			}
-			else {
-				require(BASEDIR.getmodulepath('user').'pub/login.php');
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////// 404
-
-		else
-		{
-			filenotfound();
-		}
-	}
-	*/
-
 	public function shutdown()
 	{
 		$user = $this->apx->get_registered_object('user');
@@ -305,4 +166,122 @@ class Module extends \Module
 				CODE;
 		}		
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Download-Größe
+	function getsize($fsize, $digits = 1)
+	{
+		$fsize = (float)$fsize;
+		if ($digits) $format = '%01.' . $digits . 'f';
+		else $format = '%01d';
+
+		if ($fsize < 1024) return $fsize . ' Byte';
+		if ($fsize >= 1024 && $fsize < 1024 * 1024) return  number_format($fsize / (1024), $digits, ',', '') . ' KB';
+		if ($fsize >= 1024 * 1024 && $fsize < 1024 * 1024 * 1024) return number_format($fsize / (1024 * 1024), $digits, ',', '') . ' MB';
+		if ($fsize >= 1024 * 1024 * 1024 && $fsize < 1024 * 1024 * 1024 * 1024) return number_format($fsize / (1024 * 1024 * 1024), $digits, ',', '') . ' GB';
+		return number_format($fsize / (1024 * 1024 * 1024 * 1024), $digits, ',', '') . ' TB';
+	}
+
+
+
+
+	//Besuch zählen
+	function count_visit($object, $id)
+	{
+		global $apx, $set, $db, $user;
+		if (!$user->info['userid']) return;
+		$db->query("DELETE FROM " . PRE . "_user_visits WHERE object='" . $object . "' AND userid='" . $user->info['userid'] . "'");
+		$db->query("INSERT INTO " . PRE . "_user_visits (object,id,userid,time) VALUES ('" . $object . "','" . $id . "','" . $user->info['userid'] . "','" . time() . "')");
+	}
+
+
+
+	//Besucher assign
+	function assign_visitors($object, $id, &$tmpl)
+	{
+		global $apx, $set, $db, $user;
+
+		$userdata = array();
+		$data = $db->fetch("SELECT u.userid,u.username,u.groupid,u.realname,u.gender,u.city,u.plz,u.country,u.city,u.lastactive,u.pub_invisible,u.avatar,u.avatar_title,u.custom1,u.custom2,u.custom3,u.custom4,u.custom5,u.custom6,u.custom7,u.custom8,u.custom9,u.custom10 FROM " . PRE . "_user_visits AS v LEFT JOIN " . PRE . "_user AS u USING(userid) WHERE v.object='" . addslashes($object) . "' AND v.id='" . intval($id) . "' AND v.time>='" . (time() - 24 * 3600) . "' ORDER BY u.username ASC");
+		if (count($data))
+		{
+			$i = 0;
+			foreach ($data as $res)
+			{
+				++$i;
+
+				$userdata[$i]['ID'] = $res['userid'];
+				$userdata[$i]['USERID'] = $res['userid'];
+				$userdata[$i]['USERNAME'] = replace($res['username']);
+				$userdata[$i]['GROUPID'] = $res['groupid'];
+				$userdata[$i]['ONLINE'] = iif(!$res['pub_invisible'] && ($res['lastactive'] + $set['user']['timeout'] * 60) >= time(), 1, 0);
+				$userdata[$i]['REALNAME'] = replace($res['realname']);
+				$userdata[$i]['GENDER'] = $res['gender'];
+				$userdata[$i]['CITY'] = replace($res['city']);
+				$userdata[$i]['PLZ'] = replace($res['plz']);
+				$userdata[$i]['COUNTRY'] = $res['country'];
+				$userdata[$i]['LASTACTIVE'] = $res['lastactive'];
+				$userdata[$i]['AVATAR'] = $user->mkavatar($res);
+				$userdata[$i]['AVATAR_TITLE'] = $user->mkavtitle($res);
+
+				//Custom-Felder
+				for ($ii = 1; $ii <= 10; $ii++)
+				{
+					$tabledata[$i]['CUSTOM' . $ii . '_NAME'] = $set['user']['cusfield_names'][($ii - 1)];
+					$tabledata[$i]['CUSTOM' . $ii] = compatible_hsc($res['custom' . $ii]);
+				}
+			}
+		}
+
+		$tmpl->assign('VISITOR', $userdata);
+	}
+
+
+
+	//Links zu Profil-Funktionen
+	function assign_profile_links(&$tmpl, $userinfo)
+	{
+		global $apx, $set, $db, $user;
+
+		$link_profile = mklink(
+			'user.php?action=profile&amp;id=' . $userinfo['userid'],
+			'user,profile,' . $userinfo['userid'] . urlformat($userinfo['username']) . '.html'
+		);
+		if ($set['user']['blog'])
+		{
+			$link_blog = mklink(
+				'user.php?action=blog&amp;id=' . $userinfo['userid'],
+				'user,blog,' . $userinfo['userid'] . ',1.html'
+			);
+		}
+		if ($set['user']['gallery'])
+		{
+			$link_gallery = mklink(
+				'user.php?action=gallery&amp;id=' . $userinfo['userid'],
+				'user,gallery,' . $userinfo['userid'] . ',0,0.html'
+			);
+		}
+		if ($set['user']['guestbook'] && $userinfo['pub_usegb'])
+		{
+			$link_guestbook = mklink(
+				'user.php?action=guestbook&amp;id=' . $userinfo['userid'],
+				'user,guestbook,' . $userinfo['userid'] . ',1.html'
+			);
+		}
+		if ($apx->is_module('products') && $set['products']['collection'])
+		{
+			$link_collection = mklink(
+				'user.php?action=collection&amp;id=' . $userinfo['userid'],
+				'user,collection,' . $userinfo['userid'] . ',0,1.html'
+			);
+		}
+
+		$tmpl->assign('LINK_PROFILE', $link_profile);
+		$tmpl->assign('LINK_BLOG', $link_blog);
+		$tmpl->assign('LINK_GALLERY', $link_gallery);
+		$tmpl->assign('LINK_GUESTBOOK', $link_guestbook);
+		$tmpl->assign('LINK_COLLECTION', $link_collection);
+	}
+
 }

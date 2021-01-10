@@ -4,14 +4,9 @@ namespace Modules\User\PublicTemplateFunction;
 
 class Stats extends \PublicTemplateFunction
 {
-    public function __construct(\Module $module)
-    {
-        parent::__construct($module, "USER_STATS");
-    }
-
     public function execute($template = 'stats'): void
     {
-        $apx = $this->module()->apx();
+        $apx = $this->publicModule()->module()->apx();
         $db = $apx->db();
         $tmpl = new \tengine($apx);
 

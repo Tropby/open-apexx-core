@@ -17,8 +17,8 @@ class Register extends \PublicAction
 		}	
 
 		$apx->lang->drop('register');
-		headline($apx->lang->get('HEADLINE_REGISTER'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
-		titlebar($apx->lang->get('HEADLINE_REGISTER'));
+		$apx->headline($apx->lang->get('HEADLINE_REGISTER'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
+		$apx->titlebar($apx->lang->get('HEADLINE_REGISTER'));
 
 		if (isset($_POST['send']))
 		{
@@ -33,7 +33,7 @@ class Register extends \PublicAction
 			if ($apx->config('user')['captcha'])
 			{
 				require(BASEDIR . 'lib/class.captcha.php');
-				$captcha = new captcha;
+				$captcha = new \captcha;
 				$captchafailed = $captcha->check();
 			}
 
@@ -173,7 +173,7 @@ class Register extends \PublicAction
 			if ($apx->config('user')['captcha'])
 			{
 				require(BASEDIR . 'lib/class.captcha.php');
-				$captcha = new captcha;
+				$captcha = new \captcha;
 				$captchacode = $captcha->generate();
 			}
 

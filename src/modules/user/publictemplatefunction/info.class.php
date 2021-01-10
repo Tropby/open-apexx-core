@@ -6,9 +6,14 @@ class Info extends \PublicTemplateFunction
 {
     public function execute($userid, $template="information") : void
     {        
-        $apx = $this->module()->apx();
+        $apx = $this->publicModule()->module()->apx();
         $user = $apx->get_registered_object('user');
         $tmpl = new \tengine($apx);
+
+        /**
+         * @var \Modules\User\Module
+         */
+        $m = $this->publicModule()->module();
 
         $apx->lang->drop('profile', 'user');
 
@@ -112,9 +117,8 @@ class Info extends \PublicTemplateFunction
         $tmpl->assign('LINK_SENDPM', $link_sendpm);
         $tmpl->assign('LINK_SENDEMAIL', $link_sendmail);
 
-        //Links zu den Profil-Funktionen
-        require_once(dirname(__FILE__) . '/../functions.php');
-        user_assign_profile_links($tmpl, $res);
+
+        $m->assign_profile_links($tmpl, $res);
 
         //Buddyliste
         $tabledata = array();

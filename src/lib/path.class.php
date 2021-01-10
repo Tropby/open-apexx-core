@@ -42,7 +42,7 @@ class Path
 	}
 
 	//Pfad holen
-	function getpath($id,$input=array()) {
+	public function getpath($id,$input=array()) {
 		global $pathcfg;
 		$path=$this->pathcfg[$id];
 		
@@ -54,9 +54,20 @@ class Path
 	}
 
 	//Pfad zum Modul
-	function getmodulepath($modulename) {
+	public function getmodulepath($modulename) {
 		return $this->getpath('module',array('MODULE'=>$modulename));
 	}
+
+	/**
+	 * Absolute path to module
+	 * @param string module Module ID
+	 * @return string Path to module
+	 */
+	public function getAbsoliteModulePath($modulename)
+	{
+		return BASEDIR.$this->getModulePath($modulename);
+	}
+
 }
 
 /**

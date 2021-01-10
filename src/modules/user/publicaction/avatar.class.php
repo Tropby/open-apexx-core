@@ -10,6 +10,12 @@ class Avatar extends \PublicAction
 		$db = $apx->db();
 		$user = $apx->get_registered_object('user');
 
+		if (!isset($user->info['userid']) || !$user->info['userid'])
+		{
+			(new Login($this->publicModule()))->execute();
+			return;
+		}
+
 		$apx->lang->drop('avatar');
 		$apx->headline($apx->lang->get('HEADLINE_AVATAR'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 		$apx->titlebar($apx->lang->get('HEADLINE_AVATAR'));

@@ -29,13 +29,23 @@ class PublicModule implements IPublicModule
         return $this->module;
     }
 
+    public function call(string $func, array $param) 
+    {
+        if( method_exists($this, $func) )
+            return call_user_func_array( array($this, $func), $param );
+        else
+        {
+            ApexxError::ERROR("Calling nox existing function \"".$func."\" on public module \"".$this->module()->id()."\"!");
+        }
+    }
+
     /**
      * 
      * @param action Name of the 
      */
     protected function registerAction(string $action)
     {
-        $m = $this->module->getId();
+        $m = $this->module->id();
         $m = strtoupper($m[0]).substr($m, 1);
         $actionClass = "\\Modules\\".$m."\\PublicAction\\".$action;
         $this->registeredModules[$action] = $actionClass;
@@ -48,7 +58,7 @@ class PublicModule implements IPublicModule
      */
     public function registerTemplateFunction(string $functionName, string $templateId) : void
     {
-        $m = "\\Modules\\" . ucwords($this->module->getId()) . "\\PublicTemplateFunction\\" . ucwords($functionName);
+        $m = "\\Modules\\" . ucwords($this->module->id()) . "\\PublicTemplateFunction\\" . ucwords($functionName);
         $this->templateFunctions[$templateId] = $m;
     }
 
@@ -62,7 +72,7 @@ class PublicModule implements IPublicModule
         if ($this->templateFunctions[$templateId])
         {
             $t = $this->templateFunctions[$templateId];
-            $t = new $t($this->module);
+            $t = new $t($this);
             if (is_callable(array($t, "execute")))
             {
                 call_user_func_array(array($t, "execute"), $params);
@@ -89,7 +99,7 @@ class PublicModule implements IPublicModule
         }
         else
         {
-            ApexxError::ERROR("Action \"".$action."\" not found in module \"".$this->module->getId()."\"!");
+            ApexxError::ERROR("Action \"".$action."\" not found in module \"".$this->module->id()."\"!");
         }
     }
 
