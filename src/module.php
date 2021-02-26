@@ -24,6 +24,14 @@ define('APXRUN', true);
 require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+if( !isset($set['installed']) || !$set['installed'] )
+{
+	$setup = new \setup\Setup($apx);
+	$setup->execute();
+	$apx->shutdown();
+	exit;
+}
+
 /**
  * Standard Module to execute
  * @var string

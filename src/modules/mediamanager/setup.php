@@ -74,7 +74,6 @@ if ( SETUPMODE=='install' ) {
 	foreach ( $queries AS $query ) $db->query($query);
 	
 	//Ordner für Inline-Screens
-	require_once(BASEDIR.'lib/class.mediamanager.php');
 	$mm=new mediamanager;
 	$mm->createdir('inline');
 }
@@ -102,7 +101,6 @@ elseif ( SETUPMODE=='update' ) {
 			foreach ( $queries AS $query ) $db->query($query);
 			
 			//Ordner für Inline-Screens
-			require_once(BASEDIR.'lib/class.mediamanager.php');
 			$mm=new mediamanager;
 			$mm->createdir('inline');
 		

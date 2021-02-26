@@ -1,0 +1,17 @@
+<h2>Step 3</h2>
+<h3>Install database</h3>
+<p>    
+    Database connection okay.<br /> <br />
+    <ul>
+    {list STEP3_FINISHED}
+        <li>{STEP3_FINISHED.TEXT}</li>
+    {/list}
+    </ul>
+</p>
+<p>
+    {if STEP3_FINISHED}
+        <a class="button" href="?module=setup&action=step4">next</a>
+    {else}
+        <a class="button" href="?module=setup&action=step3&install=true">start database installation</a>
+    {/if}
+</p>

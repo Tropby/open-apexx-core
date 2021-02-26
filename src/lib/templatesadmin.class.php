@@ -17,7 +17,7 @@
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
 
-class templates extends tengine {
+class TemplatesAdmin extends tengine {
 
 var $designid='default';
 var $headline=array();
@@ -25,11 +25,12 @@ var $errorreport=false;
 
 ////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
-function __construct() {
+function __construct() 
+{
 	global $apx,$set;
 	
 	//Variablen	
-	$this->assign_static('SECTOKEN',$apx->session->get('sectoken'));
+	$this->assign_static('SECTOKEN',$apx->session()->get('sectoken'));
 	$this->assign_static('CHARSET',$set['main']['charset']);
 	$this->assign_static('ACTIVE_MODULE',$apx->module());
 	$this->assign_static('ACTIVE_ACTION',$apx->action());
@@ -63,17 +64,24 @@ function __construct() {
 	}
 	
 	//Rechte
-	foreach ( $apx->actions AS $module => $actions ) {
-		foreach ( $actions AS $action => $trash ) {
-			if ( $apx->user->has_right($module.'.'.$action) ) {
+	/*
+	foreach ( $apx->actions AS $module => $actions ) 
+	{
+		foreach ( $actions AS $action => $trash ) 
+		{
+			$user = $apx->get_registered_object("user");
+			if ( $user->has_right($module.'.'.$action) ) 
+			{
 				$this->assign_static('RIGHT_'.strtoupper($module).'_'.strtoupper($action),1);
 			}
 			
-			if ( $apx->user->has_spright($module.'.'.$action) ) {
+			if ( $user->has_spright($module.'.'.$action) ) 
+			{
 				$this->assign_static('SPRIGHT_'.strtoupper($module).'_'.strtoupper($action),1);
 			}
 		}
 	}
+	*/
 	
 	ob_start();
 	

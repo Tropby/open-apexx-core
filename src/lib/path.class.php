@@ -22,6 +22,8 @@ class Path
 		$this->pathcfg['lang_base']           = 'language/{LANGID}/';
 		$this->pathcfg['lang_modules']        = 'language/{LANGID}/{MODULE}/';
 
+		$this->pathcfg['lib']             	  = 'lib/';
+
 		$this->pathcfg['uploads']             = 'uploads/';
 		$this->pathcfg['content']             = 'content/';
 		$this->pathcfg['cache']               = 'cache/';
@@ -42,7 +44,7 @@ class Path
 	}
 
 	//Pfad holen
-	public function getpath($id,$input=array()) {
+	public function getPath($id,$input=array()) {
 		global $pathcfg;
 		$path=$this->pathcfg[$id];
 		
@@ -54,8 +56,8 @@ class Path
 	}
 
 	//Pfad zum Modul
-	public function getmodulepath($modulename) {
-		return $this->getpath('module',array('MODULE'=>$modulename));
+	public function getModulePath($modulename) {
+		return $this->getPath('module',array('MODULE'=>$modulename));
 	}
 
 	/**

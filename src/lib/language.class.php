@@ -42,6 +42,9 @@ class language
 
 	function init()
 	{
+
+		if( !$this->apx->config("installed") ) return;
+
 		if (!$this->langid) die('can not load langpack, no langid defined!');
 
 		$this->core_load();     //Core Sprachpakete in den Cache laden und ablegen

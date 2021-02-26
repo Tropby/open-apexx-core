@@ -162,10 +162,12 @@ if ( SETUPMODE=='install' ) {
 	";
 	
 	$queries=split_sql($mysql);
-	foreach ( $queries AS $query ) $db->query($query);
+	foreach ( $queries AS $query )
+	{
+		$db->query($query);
+	}
 	
 	//Temp-DIR
-	require_once(BASEDIR.'lib/class.mediamanager.php');
 	$mm=new mediamanager;
 	$mm->createdir('temp');
 }
@@ -192,7 +194,6 @@ elseif ( SETUPMODE=='update' ) {
 		
 		case 101: //zu 1.0.2
 			//Temp-DIR
-			require_once(BASEDIR.'lib/class.mediamanager.php');
 			$mm=new mediamanager;
 			$mm->createdir('temp');
 		

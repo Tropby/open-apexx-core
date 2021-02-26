@@ -17,7 +17,7 @@
 //Security-Check
 if (!defined('APXRUN')) die('You are not allowed to execute this file directly!');
 
-class apexx_public extends apexx
+class ApexxPublic extends Apexx
 {
 	// Current Language
 	var $lang;
@@ -44,7 +44,8 @@ class apexx_public extends apexx
 		$this->init_section();
 
 		//Sprachpaket initialisieren
-		$this->lang->init();
+		if( isset( $this->lang ) )
+			$this->lang->init();
 
 		// Init all modules
 		$this->start_modules();		

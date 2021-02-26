@@ -1,0 +1,59 @@
+<h2>Step 1</h2>
+<h3>Check access rights</h3>
+
+<p>
+    <ul>
+        {if WRITEABLE_UPLOADS}
+            <li class="color-okay">&quot;uploads&quot;-Ordner hat Schreibrechte</li>
+        {else}
+            <li class="color-critical">&quot;uploads&quot;-Ordner hat KEINE Schreibrechte</li>
+        {/if}
+
+        {if WRITEABLE_TEMPLATES}
+            <li class="color-okay">&quot;templates&quot;-Ordner hat Schreibrechte</li>
+        {else}
+            <li class="color-critical">&quot;templates&quot;-Ordner hat KEINE Schreibrechte</li>
+        {/if}
+
+        {if WRITEABLE_MODULES}
+            <li class="color-okay">&quot;modules&quot;-Ordner hat Schreibrechte</li>
+        {else}
+            <li class="color-critical">&quot;modules&quot;-Ordner hat KEINE Schreibrechte</li>
+        {/if}
+
+        {if WRITEABLE_LIB}
+            <li class="color-okay">&quot;lib&quot;-Ordner hat Schreibrechte</li>
+        {else}
+            <li class="color-critical">&quot;lib&quot;-Ordner hat KEINE Schreibrechte</li>
+        {/if}
+
+        {if WRITEABLE_SETUP}
+            <li class="color-okay">&quot;setup&quot;-Ordner hat Schreibrechte</li>
+        {else}
+            <li class="color-critical">&quot;setup&quot;-Ordner hat KEINE Schreibrechte</li>
+        {/if}        
+
+    </ul>
+</p>    
+<p>
+    <ul>
+
+        {if WRITEABLE_LIB}
+            <li class="color-okay">&quot;lib&quot;-Ordner hat Schreibrechte für die Installation</li>
+        {else}
+            <li class="color-critical">&quot;lib&quot;-Ordner hat KEINE Schreibrechte für die Installation</li>
+        {/if}
+        
+    </ul>
+</p>
+
+{if STEP1_FINISHED}
+<p>
+    <a href="module.php?module=setup&action=step2" class="button">next</a>
+</p>
+{else}
+<p>
+    <a href="module.php?module=setup&action=step1" class="button">retry</a>
+</p>
+{/if}
+

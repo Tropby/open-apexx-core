@@ -895,7 +895,8 @@ function filenotfound() {
 
 
 //Fehlermeldung ausgeben
-function error($text,$die=false) {
+function error($text,$die=false) 
+{
 	global $set,$apx;
 	if ( $set['showerror'] ) echo'<div class="error">'.$text.'</div>';
 	if ( $set['errorreport'] ) $apx->tmpl->errorreport.='<div class="error">'.$text.'</div>';

@@ -13,12 +13,11 @@
 | SOFTWARE BELONGS TO ITS AUTHORS!                              |
 \***************************************************************/
 
-
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-
-class apexx_admin extends apexx {
+class ApexxAdmin extends Apexx 
+{
 
 var $active_action;
 
@@ -27,19 +26,21 @@ var $tmpl;
 var $lang;
 var $session;
 
-
-//STARTUP
-function __construct() {
+function __construct() 
+{
 	parent::__construct();
-	if ( !isset($_REQUEST['action']) ) $_REQUEST['action']='main.index';
+
+	if ( !isset($_REQUEST['action']) ) 
+		$_REQUEST['action']='main.index';
 	
+
 	$loadmodule=explode('.',$_REQUEST['action']);
-	$this->module($loadmodule[0]);
-	$this->action($loadmodule[1]);
-	
-	if ( count($loadmodule)!=2 ) {
+	if ( count($loadmodule)!=2 ) 
+	{
 		die('WRONG SYNTAX OF ACTION PARAM!');
 	}
+	$this->module($loadmodule[0]);
+	$this->action($loadmodule[1]);	
 }
 
 

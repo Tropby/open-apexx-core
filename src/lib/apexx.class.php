@@ -22,7 +22,7 @@
 //Security-Check
 if (!defined('APXRUN')) die('You are not allowed to execute this file directly!');
 
-class apexx
+class Apexx
 {
 
 	var $modules = array();
@@ -58,14 +58,14 @@ class apexx
 	static public function &startApexxAdmin()
 	{
 		if( !isset(apexx::$instance) )
-			apexx::$instance = new apexx_admin();
+			apexx::$instance = new ApexxAdmin();
 		return apexx::$instance;
 	}
 
 	static public function &startApexxPublic()
 	{
 		if (!isset(apexx::$instance))
-			apexx::$instance = new apexx_public();
+			apexx::$instance = new ApexxPublic();
 		return apexx::$instance;
 	}
 
@@ -103,36 +103,45 @@ class apexx
 		if ($this->config('high_security'))
 			unset($set);
 
-		$this->db = new DatabaseMysqli($this->config['mysql_server'], $this->config['mysql_user'], $this->config['mysql_pwd'], $this->config['mysql_db'], $this->config['mysql_utf8']);
-
+		// Startup mysql server connection ONLY if configuration is awailable
+		if( $this->config('mysql_server') !== NULL && 
+			$this->config('mysql_user') !== NULL &&
+			$this->config('mysql_pwd') !== NULL &&
+			$this->config('mysql_db') !== NULL &&
+			$this->config('mysql_utf8') !== NULL		
+		)
 		{
-			$GLOBALS["db"] = $this->db();
+			$this->db = new DatabaseMysqli($this->config['mysql_server'], $this->config['mysql_user'], $this->config['mysql_pwd'], $this->config['mysql_db'], $this->config['mysql_utf8']);
+
+			{
+				$GLOBALS["db"] = $this->db();
+			}	
+
+			//Module auslesen
+			$this->get_modules();
+			$this->get_config();
+
+			{
+				$GLOBALS["user"] = $this->get_registered_object('user');
+			}
+
+			//Sprachpakete
+			$this->get_languages();
+
+			//Sektionen auslesen
+			$this->get_sections();
+
+			//Module + Actions sortieren
+			$this->sort_modules();
+			$this->sort_actions();
+
+			//Sprach-Klasse
+			$this->lang = new language($this);
+			$this->lang->langid($this->language_default);
 		}
-
-		//Module auslesen
-		$this->get_modules();
-		$this->get_config();
-
-		{
-			$GLOBALS["user"] = $this->get_registered_object('user');
-		}
-
-		//Sprachpakete
-		$this->get_languages();
-
-		//Sektionen auslesen
-		$this->get_sections();
-
-		//Module + Actions sortieren
-		$this->sort_modules();
-		$this->sort_actions();
 
 		//Zeitzone
 		define('TIMEDIFF', (date('Z') / 3600 - $this->config['main']['timezone'] - date('I')) * 3600);
-
-		//Sprach-Klasse
-		$this->lang = new language($this);
-		$this->lang->langid($this->language_default);
 	}
 
 	public function session() : Session
@@ -170,7 +179,9 @@ class apexx
 	}
 
 	public function db(): DatabaseMysqli
-	{
+	{		
+		if( !isset( $this->db ) )
+			throw new Exception("Can not access database. Database not initialized!");
 		return $this->db;
 	}
 
@@ -365,6 +376,8 @@ class apexx
 	//Modul-Informationen holen
 	private function get_modules()
 	{
+		if( !$this->config("installed") ) return;
+
 		$data = $this->db->fetch("SELECT * FROM " . PRE . "_modules WHERE active='1'");
 
 		if (count($data))
@@ -412,6 +425,16 @@ class apexx
 		return $this->getModule($module_name);
 	}
 
+	public function getModuleList() : Array
+	{
+		$result = array();
+		foreach( $this->module_objects as $key => $module )
+		{
+			$result[] = $key;
+		}
+		return $result;
+	}
+
 	public function getModule($moduleName)
 	{
 		return $this->module_objects[$moduleName]??NULL; 
@@ -450,6 +473,8 @@ class apexx
 	//Modul-Konfiguration auslesen
 	function get_config()
 	{
+		if( !$this->config("installed") ) return;
+
 		$data = $this->db->fetch("SELECT * FROM " . PRE . "_config");
 		if (!count($data)) return;
 
@@ -560,6 +585,8 @@ class apexx
 	//Sprachpakete registrieren
 	function get_languages()
 	{
+		if( !$this->config("installed") ) return;
+		
 		$langinfo = &$this->config['main']['languages'];
 		if (!is_array($langinfo) || !count($langinfo)) die('no langpack registered!');
 
@@ -583,7 +610,9 @@ class apexx
 	//Sektionen auslesen
 	function get_sections()
 	{
-		global $db;
+		if( !$this->config("installed") ) return;
+		$db = $this->db();
+		
 		$data = $this->db->fetch("SELECT * FROM " . PRE . "_sections ORDER BY title ASC", 1);
 		if (!count($data)) return;
 
@@ -656,7 +685,14 @@ class apexx
 		$this->tmpl->out();
 
 		//MySQL Verbindung schließen
-		$this->db()->close();
+		try
+		{
+			$this->db()->close();
+		}
+		catch( Exception  $ex )
+		{
+			// Ignore: PHP will close the connection if the script ends!
+		}
 
 		//Renderzeit
 		if ($this->config('rendertime'))

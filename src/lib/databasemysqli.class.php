@@ -41,11 +41,11 @@ class DatabaseMysqli extends mysqli implements Database{
 	function __construct($server, $user, $password, $database, $utf8 = false) {
 		parent::__construct($server, $user, $password);
 		if ( $this->connect_error ) {
-			error("Verbindung konnte nicht hergestellt werden!<br />MySQL meldet: ".$this->connect_error, 1);
+			throw new Exception("Verbindung konnte nicht hergestellt werden!<br />MySQL meldet: ".$this->connect_error);
 			return;
 		}
 		if ( !$this->select_db($database) ) {
-			error("Konnte die Datenbank ".$database." nicht ausw&auml;hlen!<br />MySQL meldet: ".$this->error,1);
+			throw new Exception("Konnte die Datenbank ".$database." nicht ausw&auml;hlen!<br />MySQL meldet: ".$this->error);
 		}
 		if ( $utf8 ) {
 			$this->query("SET NAMES 'utf8'");
@@ -82,7 +82,7 @@ class DatabaseMysqli extends mysqli implements Database{
 	  $this->querystring=$query;
 
 		$this->bench_start();
-	  $result = parent::query($query);
+	  	$result = parent::query($query);
 		$this->bench_end();
 
 		if ( !$result ) error($this->error());

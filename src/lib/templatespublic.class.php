@@ -30,7 +30,7 @@ var $errorreport=false;
 ////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
 
-function __construct(apexx_public &$apx) {
+function __construct(ApexxPublic &$apx) {
 	global $set;
 	
 	$this->apx = &$apx;

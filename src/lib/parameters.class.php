@@ -71,6 +71,11 @@ class Parameters
 	{
 		return $this->_string($variable_name, INPUT_POST);
 	}
+
+	public function postSqlString(string $variable_name)
+	{
+		return $this->_sqlString($variable_name, INPUT_POST);
+	}
 	
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -148,4 +153,11 @@ class Parameters
 		}
 		return $result;
 	}	
+
+	private function _sqlString(string $variable_name, int $type = INPUT_GET) 
+	{	
+		$result = addslashes($this->_string($variable_name, $type));
+		return $result;
+	}
+	
 }

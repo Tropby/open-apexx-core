@@ -21,12 +21,14 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 //BENCHMARK
 $_BENCH=microtime();
 
+// Ab PHP 5.6 muss das Charset ISO-8859-1 erzwungen werden
+if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
+	ini_set("default_charset", "ISO-8859-1");
+}
+
 // Setup base directory and execution type
 define('MODE','public');
 define('BASEDIR',dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
-
-//Setup suchen
-if ( file_exists(BASEDIR.'setup/index.php') ) die('Bitte l&ouml;schen Sie zuerst den Ordner "setup"!');
 
 //Globale Module und Funktionen laden
 require_once(BASEDIR.'lib/_deprecated.vars.php');
@@ -38,13 +40,13 @@ require_once(BASEDIR.'lib/functions.public.php');
 require_once(BASEDIR.'lib/autoload.class.php');
 
 // set database prefix
-define('PRE',$set['mysql_pre']);
+define('PRE', $set['mysql_pre']??"");
 
 /**
  * Apexx System
- * @var apexx_public
+ * @var ApexxPublic
  */
-$apx = apexx::startApexxPublic();
+$apx = Apexx::startApexxPublic();
 
 if( $apx->config('debugCheck') )
 {

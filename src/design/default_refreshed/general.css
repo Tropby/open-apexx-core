@@ -1,0 +1,151 @@
+
+body
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0px; 
+    padding: 0px;
+    background: var(--background);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+p
+{
+    display: block;
+    width: 100%;
+}
+
+h1
+{
+    display: block;
+    font-size: 3em;
+    width: 100%;
+    margin: 0px;
+    margin-top: 20px;
+}
+
+h2
+{
+    display: block;
+    font-size: 2.5em;
+    width: 100%;
+    margin: 0px;
+    margin-top: 20px;
+}
+
+h3
+{
+    display: block;
+    font-size: 2em;
+    width: 100%;
+    margin: 0px;
+    margin-top: 20px;
+}
+
+form
+{
+    width: 100%;
+}
+
+.text-input
+{
+    display: block;
+}
+
+.button-input
+{
+    margin: 10px;
+    display: block;    
+    text-align: right;
+}
+
+.text-input label
+{
+    display: block;
+    margin: 10px 0px 5px 0px;
+}
+    
+.text-input input[type=text]
+{
+    display: block;
+    border: 1px solid var(--primary);
+    padding: 7px 3px;
+    border-radius: 2px;
+    width: calc( 100% - (2 * 7px) );    
+}    
+
+div
+{
+    display: flex;
+}
+
+.container
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 100%;
+    max-width: var(--page-max-width);
+    background: var(--text-background);
+}
+
+.box, .box-4, .box-8, .box-6, .box-2,.box-12
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    margin: var(--box-margin);
+    padding: var(--box-padding);
+}
+
+.box-4
+{
+    width: calc( 25% - 2 * var(--box-margin) - 2 * var(--box-padding));
+}
+
+.box-6
+{
+    width: calc( 50% - 2 * var(--box-margin) - 2 * var(--box-padding));
+}
+
+.box-12
+{
+    width: calc( 100% - 2 * var(--box-margin) - 2 * var(--box-padding));
+}
+
+.box-8
+{
+    width: calc( 75% - 2 * var(--box-margin) - 2 * var(--box-padding));
+}
+
+.button
+{
+    background: var(--primary);
+    color: var(--text-on-primary);
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button:hover 
+{
+    background: var(--primary-hover);
+    color: var(--text-on-primary-hover);
+}
+
+.color-critical
+{
+    color: var(--color-critical);
+}
+
+.color-okay
+{
+    color: var(--color-okay);
+}

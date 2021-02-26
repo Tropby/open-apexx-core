@@ -1,0 +1,40 @@
+<h2>Step 2</h2>
+<h3>Database connection</h3>
+<form method="POST">
+
+    {if FAILED}
+    <p>
+        <span class="color-critical">{FAILED}</span>
+    </p>
+    {/if}
+
+    <div class="text-input">
+        <label for="db_hostname">Database host</label>
+        <input type="text" name="db_hostname" id="db_hostname" value="{DB_HOSTNAME}" placeholder="localhost" />
+    </div>
+
+    <div class="text-input">
+        <label for="db_name">Database name</label>
+        <input type="text" name="db_name" id="db_name" value="{DB_NAME}" placeholder="apexx" />
+    </div>
+
+    <div class="text-input">
+        <label for="db_username">Database username</label>
+        <input type="text" name="db_username" id="db_username" value="{DB_USERNAME}" placeholder="notRoot" />
+    </div>
+
+    <div class="text-input">
+        <label for="db_password">Database password</label>
+        <input type="text" name="db_password" id="db_password" value="{DB_PASSWORD}" placeholder="password" />
+    </div>
+
+    <div class="text-input">
+        <label for="db_prefix">Database prefix</label>
+        <input type="text" name="db_prefix" id="db_prefix" value="{DB_PREFIX}" placeholder="APX" />
+    </div>
+
+    <div class="button-input">
+        <input type="submit" class="button" value="next" />
+    </div>
+
+</form>

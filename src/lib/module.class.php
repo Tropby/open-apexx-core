@@ -120,6 +120,8 @@ abstract class Module implements IModule
      */
     public function &setup()
     {
+        if( !isset($this->setup) )
+            return NULL;
         return $this->setup;
     }
 

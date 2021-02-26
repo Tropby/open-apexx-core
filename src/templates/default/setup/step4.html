@@ -1,0 +1,39 @@
+<h2>Step 4</h2>
+<h3>Create Admin User</h3>
+<p>
+    Create Admin User!
+</p>
+
+<form method="POST">
+
+    {if FAILED}
+    <p>
+        <span class="color-critical">{FAILED}</span>
+    </p>
+    {/if}
+
+    <div class="text-input">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="{USERNAME}" placeholder="username" />
+    </div>
+
+    <div class="text-input">
+        <label for="display_name">Display name</label>
+        <input type="text" name="display_name" id="display_name" value="{DISPLAY_NAME}" placeholder="name" />
+    </div>
+
+    <div class="text-input">
+        <label for="display_name">E-Mail</label>
+        <input type="text" name="email" id="email" value="{EMAIL}" placeholder="email@example.org" />
+    </div>
+
+    <div class="text-input">
+        <label for="password">Password</label>
+        <input type="text" name="password" id="password" value="{PASSWORD}" placeholder="password" />
+    </div>
+    
+    <div class="button-input">
+        <input type="submit" class="button" value="next" />
+    </div>
+
+</form>

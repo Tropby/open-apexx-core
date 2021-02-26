@@ -313,23 +313,20 @@ class Setup extends \Setup
 			('user', 'gallery_maxpics', 'int', '', '0', 'GALLERYCFG', 1219935740, 8000);
 		";
 		$queries = split_sql($mysql);
-		foreach ($queries as $query) $apx->db()->query($query);
+		foreach ($queries as $query)
+		{
+			$apx->db()->query($query);
+		} 
 
 		//Locations einfügen
-		require_once(BASEDIR . 'lib/class.linereader.php');
-		$locReader = new \LineReader(BASEDIR . getmodulepath('user') . 'sql/locations.sql', ";\n");
-		$command = '';
-		while (($line = $locReader->getNext()) !== false)
+		$mysql = file_get_contents(BASEDIR . getmodulepath('user') . 'sql/locations.sql');
+		$queries = split_sql($mysql);
+		foreach ($queries as $query)
 		{
-			if ($line)
-			{
-				$line = str_replace('`apx_', '`' . PRE . '_', $line);
-				$apx->db()->query($line);
-			}
-		}
+			$apx->db()->query($query);
+		} 
 
 		//User-DIR
-		require_once(BASEDIR . 'lib/class.mediamanager.php');
 		$mm = new \mediamanager;
 		$mm->createdir('user');
 		$mm->createdir('gallery', 'user');
@@ -761,17 +758,12 @@ class Setup extends \Setup
 				foreach ($queries as $query) $apx->db()->query($query);
 
 				//Locations einfügen
-				require_once(BASEDIR . 'lib/class.linereader.php');
-				$locReader = new \LineReader(BASEDIR . getmodulepath('user') . 'sql/locations.sql', ";\n");
-				$command = '';
-				while (($line = $locReader->getNext()) !== false)
+				$mysql = file_get_contents(BASEDIR . getmodulepath('user') . 'sql/locations.sql');
+				$queries = split_sql($mysql);
+				foreach ($queries as $query)
 				{
-					if ($line)
-					{
-						$line = str_replace('`apx_', '`' . PRE . '_', $line);
-						$apx->db()->query($line);
-					}
-				}
+					$apx->db()->query($query);
+				} 
 
 				//CityMatch laden
 				include(BASEDIR . getmodulepath('user') . 'citymatch.php');

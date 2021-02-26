@@ -13,37 +13,19 @@
 | SOFTWARE BELONGS TO ITS AUTHORS!                              |
 \***************************************************************/
 
-
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-
-// MYSQL ///////////////////////////////////////////////////////////////////////////////////
-
-// Mysql-API, zur Auswahl stehen "mysql" und "mysqli"
-// In der Regel genügt "mysql", "mysqli" sollten Sie probieren, wenn Sie PHP5 oder PHP4.1+ verwenden
-$set['mysql_api'] = 'mysqli';
-
-// IP oder Adresse des MySQL-Servers
-$set['mysql_server'] = 'localhost';
-
-// Benutzername für MySQL-Login
-$set['mysql_user'] = 'root';
-
-// Passwort für MySQL-Login
-$set['mysql_pwd'] = '';
-
-// Name der Datenbank
-$set['mysql_db'] = 'open-apexx';
-
-// Vorangestellte Tabellenbezeichnung
-$set['mysql_pre'] = 'apx';
-
-// Wird UTF8 als Zeichencodierung in der Datenbank verwenden?
-// (Standardmäßig auf false lassen, außer Sie wissen was Sie tun)
-$set['mysql_utf8'] = false;
-
-
+if( file_exists( "lib/config.database.php" ) )
+{
+	require_once("lib/config.database.php");
+	$set = json_decode( $configJSON, true );
+	unset($configJSON);
+}
+else
+{
+	$set['installed'] = false;
+}
 
 // SESSION ///////////////////////////////////////////////////////////////////////////////////
 
@@ -83,10 +65,5 @@ $set['rendertime'] = false;
 // 1 = durch HTML-Kommentare
 // 2 = sichtbare Rahmen
 $set['tmplwhois'] = 0;
-
-// Ab PHP 5.6 muss das Charset ISO-8859-1 erzwungen werden
-if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
-	ini_set("default_charset", "ISO-8859-1");
-}
 
 ?>

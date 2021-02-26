@@ -1,0 +1,27 @@
+:root
+{
+    --background: #DDDDDD;
+    --primary: #111111;
+    --text: #333333;
+    --text-on-primary: #EEEEEE;
+    --text-background: #EEEEEE;
+    
+    --text-on-primary-hover: #EEEEEE;
+    --primary-hover: #555555;
+
+    --page-max-width: 1400px;
+    --box-margin: 0px;
+    --box-padding: 10px;
+
+    --color-critical: #CC0000;
+    --color-okay: #007700;
+
+/******************************************************************/
+
+    --container-border: 0px none;
+
+    /**
+     * Enable to see all containers!
+     **/
+     --container-border: 1px solid #FF0000;
+}

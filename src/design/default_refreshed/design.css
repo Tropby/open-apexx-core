@@ -1,0 +1,17 @@
+
+.base
+{
+    border-left: 1px solid var(--primary);
+    border-right: 1px solid var(--primary);
+    width: 100%;
+}
+
+.logo
+{
+    background: url(logo_open-apexx.svg);
+    width: 250px;
+    height: 180px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;    
+}
