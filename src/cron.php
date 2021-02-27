@@ -79,10 +79,10 @@ require_once(BASEDIR.'lib/class.apexx.public.php');
 require_once(BASEDIR.'lib/class.language.php');
 
 //apexx-Klasse laden
-$apx = apexx::start_apexx_public();
+$apx = apexx::startApexxPublic();
 
 //Sprach-Klasse
-$apx->lang = new language;
+$apx->lang = new language($apx);
 $apx->lang->langid($apx->language_default);
 $apx->lang->init();
 

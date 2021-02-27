@@ -116,7 +116,7 @@ function out() {
 		//Cronjobs ausführen
 		//Prüfen, ob das Script bereits installiert ist!
 		if ( isset($set['main']) && $cronhash=cronexec() ) {
-			$extendcode.='<img src="'.HTTPDIR.'lib/cronjob/cron.php?hash='.$cronhash.'" width="1" height="1" alt="" />';
+			$extendcode.='<img src="'.HTTPDIR.'cron.php?hash='.$cronhash.'" width="1" height="1" alt="" />';
 		}
 		
 		$this->cache=$addcode.$this->cache.$extendcode;
