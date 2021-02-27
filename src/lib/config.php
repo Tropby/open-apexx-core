@@ -16,9 +16,9 @@
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-if( file_exists( "lib/config.database.php" ) )
+if( file_exists( BASEDIR."lib/config.database.php" ) )
 {
-	require_once("lib/config.database.php");
+	require_once(BASEDIR."lib/config.database.php");
 	$set = json_decode( $configJSON, true );
 	unset($configJSON);
 }
