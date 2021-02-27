@@ -251,6 +251,9 @@ class Setup
             $this->denyDirectory("templates");
             $this->denyDirectory("cache");
 
+            $this->allowDirectory("lib/javascript");
+            $this->allowDirectory("lib/yui");
+
             chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.php", 440);
             chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.database.php", 440);
 
@@ -274,6 +277,21 @@ class Setup
 
             // goto website
             header("location: index.php");
+        }
+    }
+
+    private function allowDirectory($dir)
+    {
+        $fp = fopen(BASEDIR.$dir."/.htaccess", "w");
+        if( $fp )
+        {
+            fwrite($fp, "Allow from all\n");
+            fclose($fp);
+        }
+        else
+        {
+            $this->apx->tmpl->assign("FAILED", "Can not create security '.htaccess'.");
+            return;
         }
     }
 
