@@ -30,14 +30,14 @@ if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
 define('MODE','public');
 define('BASEDIR',dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 
+// Load Global Classes
+require_once(BASEDIR.'lib/autoload.class.php');
+
 //Globale Module und Funktionen laden
 require_once(BASEDIR.'lib/_deprecated.vars.php');
 require_once(BASEDIR.'lib/config.php');
 require_once(BASEDIR.'lib/functions.php');
 require_once(BASEDIR.'lib/functions.public.php');
-
-// Load Global Classes
-require_once(BASEDIR.'lib/autoload.class.php');
 
 // set database prefix
 define('PRE', $set['mysql_pre']??"");

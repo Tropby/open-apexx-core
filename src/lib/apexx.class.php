@@ -55,14 +55,14 @@ class Apexx
 
 	////////////////////////////////////////////////////////////////////////////////// -> STARTUP
 
-	static public function &startApexxAdmin()
+	static public function &startApexxAdmin() : \Apexx
 	{
 		if( !isset(apexx::$instance) )
 			apexx::$instance = new ApexxAdmin();
 		return apexx::$instance;
 	}
 
-	static public function &startApexxPublic()
+	static public function &startApexxPublic() : \Apexx
 	{
 		if (!isset(apexx::$instance))
 			apexx::$instance = new ApexxPublic();

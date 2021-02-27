@@ -13,11 +13,8 @@
 | SOFTWARE BELONGS TO ITS AUTHORS!                              |
 \***************************************************************/
 
-
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
-
-
 
 //BENCHMARK
 $_BENCH=microtime();
@@ -27,30 +24,28 @@ define('BASEDIR',dirname(dirname(dirname(__FILE__))).'/');
 define('BASEREL','../');
 $set=array(); //Variable schützen
 
-//Setup suchen
-if ( file_exists(BASEDIR.'setup/index.php') ) die('Bitte löschen Sie zuerst den Ordner "setup"!');
-
-require_once(BASEDIR . 'lib/autoload.class.php');
-
-
 //Globale Module und Funktionen laden
+require_once(BASEDIR.'lib/autoload.class.php');
 require_once(BASEDIR.'lib/config.php');
 require_once(BASEDIR.'lib/functions.php');
 require_once(BASEDIR.'lib/functions.admin.php');
-require_once(BASEDIR.'lib/class.apexx.admin.php');
-require_once(BASEDIR.'lib/class.templates.admin.php');
 
 //Datenbank Verbindung aufbauen
 define('PRE',$set['mysql_pre']);
-$db = new DatabaseMysqli($set['mysql_server'], $set['mysql_user'], $set['mysql_pwd'], $set['mysql_db'], $set['mysql_utf8']);
 
-//Apexx-Klasse initialisieren
-$apx  = new apexx_admin;
-$apx->lang = new language($apx);   //Sprache
+/**
+ * Apexx System
+ * @var ApexxPublic
+ */
+$apx = Apexx::startApexxAdmin();
+$db = $apx->db();
+
+$apx->lang = new Language($apx);   //Sprache
 $apx->lang->langid($apx->language_default); //Standard-Sprachpaket
 
+
 //Session starten
-$apx->session = new session('sid');
+$apx->session = new Session('sid');
 $token = $apx->session->get('sectoken');
 if ( !$token ) {
 	$apx->session->set('sectoken', md5(microtime().rand()));
@@ -75,7 +70,7 @@ foreach ( $apx->modules AS $module => $info ) {
 
 
 $apx->lang->init();          //Sprachpakete initialisieren
-$apx->tmpl = new templates;  //Templates
+$apx->tmpl = new TemplatesAdmin;  //Templates
 $html = new html;            //HTML Klasse für Admin
 
 ?>

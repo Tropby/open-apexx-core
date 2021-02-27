@@ -1,1 +1,3 @@
 /src/cache/*.php
+/src/lib/config.database.php
+/src/**/.htaccess
