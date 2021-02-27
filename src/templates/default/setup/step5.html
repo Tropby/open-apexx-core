@@ -2,6 +2,9 @@
 <h3>Finish</h3>
 <p>
     The next step will delete the setup script. 
+    {if FAILED}
+        <span class="color-critical"><b>ERROR: </b><br />{FAILED}</span>
+    {/if}
 </p>
 <p>
     <a class="button" href="?module=setup&action=step5&delete=true">delete</a>

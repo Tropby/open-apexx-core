@@ -225,7 +225,29 @@ class Setup
     {
         if ($this->apx->param()->getIf("delete")) 
         {
+            $fp = fopen(BASEDIR.$this->apx->path()->getPath("lib").".htaccess", "w");
+            if( $fp )
+            {
 
+            }
+            else
+            {
+                $this->apx->tmpl->assign("FAILED", "Can not create security '.htaccess'.");
+                return;
+            }
+
+            chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.php", 440);
+            chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.database.php", 440);
+
+            $this->deleteDirectory(BASEDIR.$this->apx->path()->getPath("tmpl_modules_public", ["THEME" => "default", "MODULE" => "setup"]));
+
+            unlink(BASEDIR.$this->apx->path()->getPath("tmpldir")."design_setup.html");
+
+            // delete this file!
+            //$this->deleteDirectory(BASEDIR."setup");            
+
+            // goto website
+            header("location: index.php");
         }
     }
 
@@ -257,3 +279,4 @@ class Setup
         return rmdir($dir);
     }
 }
+
