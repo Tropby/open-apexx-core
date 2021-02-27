@@ -53,10 +53,8 @@ class Setup
                 break;
 
             default:
-                exit;
                 break;
         }
-
         $this->apx->tmpl->parse($template, 'setup');
     }
 
@@ -153,32 +151,55 @@ class Setup
     {
         $db = $this->apx->db();
         if ($this->apx->param()->getIf("install")) {
-            $modules = scandir(BASEDIR . "modules");
-            foreach ($modules as $module) {
-                if ($module[0] == ".") continue;
 
-                $setupFile = BASEDIR . $this->apx->path()->getpath("module", ["MODULE" => $module]) . "setup.php";
+            // Modules to install
+            $modules[0] = "main";
+            $modules[1] = "modulemanager";
+            $modules[2] = "mediamanager";
+            $modules[3] = "user";
+
+            foreach ($modules as $moduleName) {
+
+                $version = "unknown";
+
+                $setupFile = BASEDIR . $this->apx->path()->getpath("module", ["MODULE" => $moduleName]) . "setup.php";                
                 if (file_exists($setupFile)) {
+                    require_once(BASEDIR . $this->apx->path()->getpath("module", ["MODULE" => $moduleName]) . "init.php");                    
+                    $version = $module["version"];
                     define(SETUPMODE, "install");
-                    $output[] = ["TEXT" => "Install old style module " . $module . "!"];
+                    $output[] = ["TEXT" => "Install old style module " . $moduleName . "!"];
                     require_once($setupFile);
                 } else {
-                    $setupFile = BASEDIR . $this->apx->path()->getpath("module", ["MODULE" => $module]) . "module.class.php";
-
-
+                    $setupFile = BASEDIR . $this->apx->path()->getpath("module", ["MODULE" => $moduleName]) . "module.class.php";
                     if (file_exists($setupFile)) {
-                        $m = "\\Modules\\" . $module . "\\Module";
+                        $m = "\\Modules\\" . $moduleName . "\\Module";
                         $m = new $m($this->apx);
+                        $version = $m->version();
                         $setup = $m->setup();
                         if ($setup) {
-                            $output[] = ["TEXT" => "Install " . $module . "!"];
+                            $output[] = ["TEXT" => "Install " . $moduleName . "!"];
                             $setup->install($this->apx);
                         } else
-                            $output[] = ["TEXT" => "Skip " . $module . " (module without database usage)!"];
+                            $output[] = ["TEXT" => "Skip " . $moduleName . " (module without database usage)!"];
                     } else {
-                        $output[] = ["TEXT" => "Skip " . $module . " (module without setup routine)!"];
+                        $output[] = ["TEXT" => "Skip " . $moduleName . " (module without setup routine)!"];
                     }
                 }
+
+                $db->query("
+                    INSERT INTO 
+                        ".PRE."_modules 
+                    (
+                        module, 
+                        active, 
+                        installed, 
+                        version
+                    ) VALUES (
+                        '".$moduleName."',
+                        1,
+                        1,
+                        '".$version."'
+                    )");
             }
             $this->apx->tmpl->assign("STEP3_FINISHED", $output);
         }
@@ -225,16 +246,10 @@ class Setup
     {
         if ($this->apx->param()->getIf("delete")) 
         {
-            $fp = fopen(BASEDIR.$this->apx->path()->getPath("lib").".htaccess", "w");
-            if( $fp )
-            {
-
-            }
-            else
-            {
-                $this->apx->tmpl->assign("FAILED", "Can not create security '.htaccess'.");
-                return;
-            }
+            $this->denyDirectory("lib");
+            $this->denyDirectory("language");
+            $this->denyDirectory("templates");
+            $this->denyDirectory("cache");
 
             chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.php", 440);
             chmod(BASEDIR.$this->apx->path()->getPath("lib")."config.database.php", 440);
@@ -243,11 +258,37 @@ class Setup
 
             unlink(BASEDIR.$this->apx->path()->getPath("tmpldir")."design_setup.html");
 
+            $fp = fopen("lib/config.php", "a+");
+            if( $fp )
+            {
+                fwrite($fp, "<?php \$set['installed'] = true; ?>");
+                fclose($fp);
+            }
+            else
+            {
+                $this->apx->tmpl->assign("FAILED", "Can not create security '.htaccess'.");
+            }
+
             // delete this file!
-            //$this->deleteDirectory(BASEDIR."setup");            
+            $this->deleteDirectory(BASEDIR."setup");
 
             // goto website
             header("location: index.php");
+        }
+    }
+
+    private function denyDirectory($dir)
+    {
+        $fp = fopen(BASEDIR.$dir."/.htaccess", "w");
+        if( $fp )
+        {
+            fwrite($fp, "Deny from all\n");
+            fclose($fp);
+        }
+        else
+        {
+            $this->apx->tmpl->assign("FAILED", "Can not create security '.htaccess'.");
+            return;
         }
     }
 

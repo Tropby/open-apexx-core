@@ -56,6 +56,11 @@ abstract class Module implements IModule
         );
     }
 
+    public function version() : string
+    {
+        return $this->info["version"];
+    }
+
     public function id() : string
     {
         return $this->info["id"];
