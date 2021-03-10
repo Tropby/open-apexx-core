@@ -37,6 +37,11 @@ abstract class Module implements IModule
     private \AdminModule $adminModule;    
     private \Setup $setup;
 
+    /**
+     * @var Map<String, String> mapping object types to names
+     */
+    private Array $objectTypes = array();
+
     private Array $admin_actions = array();
     private Array $admin_template_functions = array();
     private Array $template_functions = array();
@@ -128,6 +133,33 @@ abstract class Module implements IModule
         if( !isset($this->setup) )
             return NULL;
         return $this->setup;
+    }
+
+    /**
+     * Register a Object type that will be created for another 
+     * module to use functions of this module
+     * @param $name Name of the object
+     * @param $type Typestring od the object that will be created
+     */
+    protected function registerObjectType(string $name, string $type)
+    {
+        $this->objectTypes[$name] = $type;
+    }
+
+    /**
+     * Creates a new object by Type name
+     * @param $name Typename
+     */
+    public function createObjectByType(string $name, Array $options) : ?ApexxFunctionality
+    {
+        if( isset( $this->objectTypes[$name] ) )
+        {
+            return new $this->objectTypes[$name]($this->apx, $options);
+        }
+        else
+        {
+            return NULL;
+        }
     }
 
     protected function registerPublicModule(\PublicModule &$module)

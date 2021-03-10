@@ -67,7 +67,7 @@ class ApexxPublic extends Apexx
 			$this->lang->drop('all');
 
 			// execute the module
-			$this->get_module($module)->executePublic($action);
+			$this->getModule($module)->executePublic($action);
 		}
 		else
 		{

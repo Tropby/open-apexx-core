@@ -29,7 +29,7 @@ class Login extends \PublicAction
     private function show()
     {
         $apx = $this->publicModule()->module()->apx();
-        $postto = mklink('user.php', 'user.html');
+        $postto = mklink('user.php?action=login', 'user.html?action=login');
         $apx->tmpl->assign('POSTTO', $postto);
         $apx->tmpl->parse('login');
     }
@@ -41,22 +41,51 @@ class Login extends \PublicAction
     {
         $apx = $this->publicModule()->module()->apx();
 
-        if (!$_POST['login_user'] || !$_POST['login_pwd']) message('back');
+        if (!$_POST['login_user'] || !$_POST['login_pwd']) 
+        {
+            message('back');
+        }
         else
         {
+
             $res = $apx->db()->first("SELECT userid,password,salt,active,reg_key FROM " . PRE . "_user WHERE LOWER(username_login)='" . addslashes(strtolower($_POST['login_user'])) . "' LIMIT 1");
             list($failcount) = $apx->db()->first("SELECT count(time) FROM " . PRE . "_loginfailed WHERE ( userid='" . $res['userid'] . "' AND time>='" . (time() - 15 * 60) . "' )");
 
-            if ($failcount >= 5) message($apx->lang->get('MSG_BLOCK'), 'javascript:history.back()');
-            elseif (!$res['userid'] || $res['password'] != md5(md5($_POST['login_pwd']) . $res['salt']))
+            if ($failcount >= 5) 
             {
-                if ($res['userid']) $apx->db()->query("INSERT INTO " . PRE . "_loginfailed VALUES ('" . $res['userid'] . "','" . time() . "')");
-                if ($failcount == 4) message($apx->lang->get('MSG_BLOCK'), 'javascript:history.back()');
-                else message($apx->lang->get('MSG_FAIL'), 'javascript:history.back()');
+                message($apx->lang->get('MSG_BLOCK'), 'javascript:history.back()');
             }
-            elseif (!$res['active']) message($apx->lang->get('MSG_BANNED'), 'javascript:history.back()');
-            elseif ($apx->config('user')['useractivation'] == 2 && $res['reg_key'] == 'BYADMIN') message($apx->lang->get('MSG_ADMINACTIVATION'), 'javascript:history.back()');
-            elseif ($apx->config('user')['useractivation'] == 3 && $res['reg_key']) message($apx->lang->get('MSG_NOTACTIVE'), 'javascript:history.back()');
+            elseif(
+                !$res['userid'] || 
+                $res['password'] != md5(md5($_POST['login_pwd']) . $res['salt'])
+            )
+            {
+                if ($res['userid'])
+                {
+                    $apx->db()->query("INSERT INTO " . PRE . "_loginfailed VALUES ('" . $res['userid'] . "','" . time() . "')");
+                }
+
+                if ($failcount == 4)
+                {
+                    message($apx->lang->get('MSG_BLOCK'), 'javascript:history.back()');
+                }
+                else 
+                {
+                    message($apx->lang->get('MSG_FAIL'), 'javascript:history.back()');
+                }
+            }
+            elseif (!$res['active'])
+            {
+                message($apx->lang->get('MSG_BANNED'), 'javascript:history.back()');
+            }
+            elseif ($apx->config('user')['useractivation'] == 2 && $res['reg_key'] == 'BYADMIN')
+            {
+                message($apx->lang->get('MSG_ADMINACTIVATION'), 'javascript:history.back()');
+            }
+            elseif ($apx->config('user')['useractivation'] == 3 && $res['reg_key'])
+            {
+                message($apx->lang->get('MSG_NOTACTIVE'), 'javascript:history.back()');
+            }
             else
             {
                 $apx->session()->set($apx->config('main')['cookie_pre'] . '_userid', $res['userid']);

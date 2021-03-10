@@ -7,14 +7,15 @@ class Profile extends \PublicAction
 	public function execute()
 	{
 		$apx = $this->publicModule()->module()->apx();
+
 		$db = $apx->db();
 		$user = $apx->get_registered_object('user');
 
 		$_REQUEST['id'] = (int)$_REQUEST['id'];
 		if (!$_REQUEST['id']) die('missing ID!');
 		$apx->lang->drop('profile');
-		headline($apx->lang->get('HEADLINE_PROFILE'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
-		titlebar($apx->lang->get('HEADLINE_PROFILE'));
+		$apx->headline($apx->lang->get('HEADLINE_PROFILE'), str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
+		$apx->titlebar($apx->lang->get('HEADLINE_PROFILE'));
 
 		//Nur für Registrierte
 		if ($apx->config('user')['profile_regonly'] && !$user->info['userid'])
@@ -43,11 +44,19 @@ class Profile extends \PublicAction
 		{
 			if ($_REQUEST['id'] != $user->info['userid'])
 			{
-				user_count_visit('profile', $_REQUEST['id']);
+				/**
+				 * @var PublicModule
+				 */
+				$pm = $this->publicModule();
+				$pm->user_count_visit('profile', $_REQUEST['id']);
 			}
 			if (!$apx->config('user')['visitorself'] || $_REQUEST['id'] == $user->info['userid'])
 			{
-				user_assign_visitors('profile', $_REQUEST['id'], $apx->tmpl, $parse);
+				/**
+				 * @var PublicModule
+				 */
+				$pm = $this->publicModule();
+				$pm->user_assign_visitors('profile', $_REQUEST['id'], $apx->tmpl, $parse);
 			}
 		}
 
@@ -130,8 +139,8 @@ class Profile extends \PublicAction
 
 		//Kommentare
 		if ($apx->is_module('comments'))
-		{
-			$apx->tmpl->assign('COMMENTS', comments_count($res['userid']));
+		{			
+			$apx->tmpl->assign('COMMENTS', $apx->getModule('comments')->comments_count($res['userid']));
 		}
 
 		//Interaktionen
@@ -157,7 +166,7 @@ class Profile extends \PublicAction
 		$apx->tmpl->assign('LINK_IGNORE', $link_ignore);
 
 		//Links zu anderen Funktionen
-		user_assign_profile_links($apx->tmpl, $res);
+		$this->publicModule()->user_assign_profile_links($apx->tmpl, $res);
 
 		//Inhalt melden
 		$link_report = "javascript:popupwin('user.php?action=report&amp;contentid=profile:" . $_REQUEST['id'] . "',500,300);";

@@ -77,7 +77,15 @@ class User
 		}
 	}
 
+	public function id() : ?int
+	{
+		return $this->info["userid"]??NULL;
+	}
 
+	public function signature() : ?string
+	{
+		return $this->info["signature"]??NULL;
+	}
 
 	//Buddie-Liste holen
 	function get_buddies()

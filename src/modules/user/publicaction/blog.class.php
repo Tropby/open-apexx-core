@@ -37,7 +37,11 @@ class Blog extends \PublicAction
 		}
 
 		//Links zu anderen Funktionen
-		user_assign_profile_links($apx->tmpl, $profileInfo);
+		/**
+		 * @var \Modules\User\PublicModule
+		 */
+		$pm = $this->publicModule();
+		$pm->user_assign_profile_links($apx->tmpl, $profileInfo);
 
 		/////////////// EINZELNER EINTRAG
 		if ($_REQUEST['blogid'])
@@ -73,8 +77,12 @@ class Blog extends \PublicAction
 			//Kommentare
 			if ($apx->is_module('comments') && $res['allowcoms'])
 			{
-				require_once(BASEDIR . getmodulepath('comments') . 'class.comments.php');
-				$coms = new \comments('userblog', $res['id']);
+				$comments = $apx->getModule('comments');				
+
+				/**
+				 * @var stdClass
+				 */
+				$coms = $comments->createObjectByType('commentParser', ["TYPE" => 'userblog', "ID" => $res['id']]);				
 				$coms->assign_comments($parse);
 			}
 
@@ -83,11 +91,11 @@ class Blog extends \PublicAction
 			{
 				if ($userid != $user->info['userid'])
 				{
-					user_count_visit('blog', $_REQUEST['id']);
+					$pm->user_count_visit('blog', $_REQUEST['id']);
 				}
 				if (!$apx->config('user')['visitorself'] || $userid == $user->info['userid'])
 				{
-					user_assign_visitors('blog', $_REQUEST['id'], $apx->tmpl, $parse);
+					$pm->user_assign_visitors('blog', $_REQUEST['id'], $apx->tmpl, $parse);
 				}
 			}
 
@@ -150,9 +158,23 @@ class Blog extends \PublicAction
 					//Kommentare
 					if ($apx->is_module('comments') && $res['allowcoms'])
 					{
-						require_once(BASEDIR . getmodulepath('comments') . 'class.comments.php');
-						if (!isset($coms)) $coms = new \comments('userblog', $res['id']);
-						else $coms->mid = $res['id'];
+						if (!isset($coms))
+						{
+							if ($apx->is_module('comments') && $res['allowcoms'])
+							{
+								$comments = $apx->getModule('comments');				
+				
+								/**
+								 * @var stdClass
+								 */
+								$coms = $comments->createObjectByType('commentParser', ["TYPE" => 'userblog', "ID" => $res['id']]);				
+								$coms->assign_comments($parse);
+							}
+						}
+						else
+						{
+							$coms->mid = $res['id'];
+						}
 
 						$link = mklink(
 							'user.php?action=blog&amp;id=' . $_REQUEST['id'] . '&amp;blogid=' . $res['id'],
@@ -177,11 +199,11 @@ class Blog extends \PublicAction
 			{
 				if ($userid != $user->info['userid'])
 				{
-					user_count_visit('blog', $_REQUEST['id']);
+					$pm->user_count_visit('blog', $_REQUEST['id']);
 				}
 				if (!$apx->config('user')['visitorself'] || $userid == $user->info['userid'])
 				{
-					user_assign_visitors('blog', $_REQUEST['id'], $apx->tmpl, $parse);
+					$pm->user_assign_visitors('blog', $_REQUEST['id'], $apx->tmpl, $parse);
 				}
 			}
 

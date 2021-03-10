@@ -54,49 +54,42 @@ class PublicModule extends \PublicModule
         $this->registerTemplateFunction('Info', 'USER_INFO');
         $this->registerTemplateFunction('Stats', 'USER_STATS');
         $this->registerTemplateFunction('GalleryLastPics', 'USERGALLERY_LASTPICS');
-
-
-		/*
-		//$this->register_template_function('USER_INFO', 'user_info', true);
-		$this->register_template_function('USERONLINE', 'user_online', false);
-		$this->register_template_function('NEWPMS', 'user_newpms', false);
-		$this->register_template_function('NEWGBENTRIES', 'user_newgbs', false);
-		$this->register_template_function('ONLINELIST', 'user_onlinelist', true);
-		$this->register_template_function('LOGINBOX', 'user_loginbox', false);
-		$this->register_template_function('BIRTHDAYS', 'user_birthdays', true);
-		$this->register_template_function('BIRTHDAYS_TOMORROW', 'user_birthdays_tomorrow', true);
-		$this->register_template_function('BIRTHDAYS_NEXTDAYS', 'user_birthdays_nextdays', true);
-		$this->register_template_function('BUDDYLIST', 'user_buddylist', true);
-		$this->register_template_function('NEWUSER', 'user_newuser', true);
-		$this->register_template_function('RANDOMUSER', 'user_random', true);
-		$this->register_template_function('PROFILE', 'user_profile', true);
-		$this->register_template_function('BOOKMARK', 'user_bookmarklink', false);
-		$this->register_template_function('SHOWBOOKMARKS', 'user_bookmarks', true);
-		$this->register_template_function('ONLINERECORD', 'user_onlinerecord', true);
-		$this->register_template_function('USERBLOGS', 'user_blogs_last', true);
-		$this->register_template_function('USERGALLERY_LAST', 'user_gallery_last', true);
-		$this->register_template_function('USERGALLERY_UPDATED', 'user_gallery_updated', true);
-		$this->register_template_function('USERGALLERY_LASTPICS', 'user_gallery_lastpics', true);
-		$this->register_template_function('USERGALLERY_POTM', 'user_gallery_potm', true);		
-		//$this->register_template_function('USERSTATUS', 'user_status', true);
-		*/        
+        $this->registerTemplateFunction('USER_INFO', 'info', true);
+        $this->registerTemplateFunction('USERONLINE', 'online', false);
+        $this->registerTemplateFunction('NEWPMS', 'newpms', false);
+        $this->registerTemplateFunction('NEWGBENTRIES', 'newgbs', false);
+        $this->registerTemplateFunction('ONLINELIST', 'onlinelist', true);
+        $this->registerTemplateFunction('LOGINBOX', 'loginbox', false);
+        $this->registerTemplateFunction('BIRTHDAYS', 'birthdays', true);
+        $this->registerTemplateFunction('BIRTHDAYS_TOMORROW', 'birthdaystomorrow', true);
+        $this->registerTemplateFunction('BIRTHDAYS_NEXTDAYS', 'birthdaysnextdays', true);
+        $this->registerTemplateFunction('BUDDYLIST', 'buddylist', true);
+        $this->registerTemplateFunction('NEWUSER', 'newuser', true);
+        $this->registerTemplateFunction('RANDOMUSER', 'random', true);
+        $this->registerTemplateFunction('PROFILE', 'PROFILE', true);
+        $this->registerTemplateFunction('BOOKMARK', 'bookmarklink', false);
+        $this->registerTemplateFunction('SHOWBOOKMARKS', 'bookmarks', true);
+        $this->registerTemplateFunction('ONLINERECORD', 'onlinerecord', true);
+        $this->registerTemplateFunction('USERBLOGS', 'blogslast', true);
+        $this->registerTemplateFunction('USERGALLERY_LAST', 'gallerylast', true);
+        $this->registerTemplateFunction('USERGALLERY_UPDATED', 'galleryupdated', true);
+        $this->registerTemplateFunction('USERGALLERY_LASTPICS', 'gallerylastpics', true);
+        $this->registerTemplateFunction('USERGALLERY_POTM', 'gallerypotm', true);
+        $this->registerTemplateFunction('USERSTATUS', 'status', true);
     }
 
     function search($items, $conn)
     {
         //Suchstring generieren
-        foreach ($items as $item)
-        {
+        foreach ($items as $item) {
             $search[] = "username LIKE '%" . addslashes_like($item) . "%'";
         }
 
         //Ergebnisse
         $data = $this->apx->db()->fetch("SELECT userid,username FROM " . PRE . "_user WHERE ( " . implode($conn, $search) . " ) ORDER BY username ASC");
-        if (count($data))
-        {
+        if (count($data)) {
             $i = 0;
-            foreach ($data as $res)
-            {
+            foreach ($data as $res) {
                 ++$i;
                 $result[$i]['TITLE'] = $res['username'];
                 $user = $this->module()->apx()->get_registered_object("user");
@@ -105,7 +98,7 @@ class PublicModule extends \PublicModule
         }
 
         return $result;
-    }    
+    }
 
     protected function galleryPrintpic($data, $template)
     {
@@ -115,13 +108,11 @@ class PublicModule extends \PublicModule
         //Verwendete Variablen auslesen
         $parse = $apx->tmpl->used_vars($template, 'user');
 
-        if (count($data))
-        {
+        if (count($data)) {
 
             //Benutzer-Infos auslesen
             $userdata = array();
-            if (in_template(array('PICTURE.USERNAME', 'PICTURE.REALNAME', 'PICTURE.AVATAR', 'PICTURE.AVATER_TITLE'), $parse))
-            {
+            if (in_template(array('PICTURE.USERNAME', 'PICTURE.REALNAME', 'PICTURE.AVATAR', 'PICTURE.AVATER_TITLE'), $parse)) {
                 $userids = get_ids($data, 'owner');
                 $userdata = $user->get_info_multi($userids, 'username,realname,avatar,avatar_title');
             }
@@ -129,8 +120,7 @@ class PublicModule extends \PublicModule
             //Bilder auflisten
             $tabledata = array();
             $i = 0;
-            foreach ($data as $res)
-            {
+            foreach ($data as $res) {
                 ++$i;
 
                 //GALERIE
@@ -147,8 +137,7 @@ class PublicModule extends \PublicModule
                 $tabledata[$i]['GALLERY_UPDATETIME'] = $res['lastupdate'];
 
                 //Enthaltene Bilder
-                if (in_array('PICTURE.GALLERY_COUNT', $parse))
-                {
+                if (in_array('PICTURE.GALLERY_COUNT', $parse)) {
                     list($galcount) = $db->first("SELECT count(id) FROM " . PRE . "_user_pictures WHERE galid='" . $res['galid'] . "'");
                     $tabledata[$i]['GALLERY_COUNT'] = $galcount;
                 }
@@ -179,7 +168,7 @@ class PublicModule extends \PublicModule
     {
         $apx = $this->module()->apx();
         $db = $apx->db();
-        $user = $apx->get_registered_object('user');      
+        $user = $apx->get_registered_object('user');
 
         if (!$res['id']) return;
         $tmpl = new \tengine($apx);
@@ -201,8 +190,7 @@ class PublicModule extends \PublicModule
         $tmpl->assign('GALLERY_LASTUPDATE', $res['lastupdate']);
 
         //Enthaltene Bilder
-        if (in_array('GALLERY_COUNT', $parse))
-        {
+        if (in_array('GALLERY_COUNT', $parse)) {
             list($galcount) = $db->first("SELECT count(id) FROM " . PRE . "_user_pictures WHERE galid='" . $res['galid'] . "'");
             $tmpl->assign('GALLERY_COUNT', $galcount);
         }
@@ -217,8 +205,7 @@ class PublicModule extends \PublicModule
 
         //Benutzer-Infos auslesen
         $tmpl->assign('USERID', $res['owner']);
-        if (in_template(array('USERNAME', 'REALNAME', 'AVATAR', 'AVATER_TITLE'), $parse))
-        {
+        if (in_template(array('USERNAME', 'REALNAME', 'AVATAR', 'AVATER_TITLE'), $parse)) {
             $userinfo = $user->get_info($res['owner'], 'username,realname,avatar,avatar_title');
             $tmpl->assign('USERNAME', replace($userinfo['username']));
             $tmpl->assign('REALNAME', replace($userinfo['realname']));
@@ -233,7 +220,7 @@ class PublicModule extends \PublicModule
     {
         $apx = $this->module()->apx();
         $db = $apx->db();
-        $user = $apx->get_registered_object('user');     
+        $user = $apx->get_registered_object('user');
 
         $tmpl = new \tengine($apx);
 
@@ -242,13 +229,11 @@ class PublicModule extends \PublicModule
 
         if (
             count($data)
-        )
-        {
+        ) {
 
             //Benutzer-Infos auslesen
             $userdata = array();
-            if (in_template(array('GALLERY.USERNAME', 'GALLERY.REALNAME', 'GALLERY.AVATAR', 'GALLERY.AVATER_TITLE'), $parse))
-            {
+            if (in_template(array('GALLERY.USERNAME', 'GALLERY.REALNAME', 'GALLERY.AVATAR', 'GALLERY.AVATER_TITLE'), $parse)) {
                 $userids = get_ids($data, 'owner');
                 $userdata = $user->get_info_multi($userids, 'username,realname,avatar,avatar_title');
             }
@@ -257,8 +242,7 @@ class PublicModule extends \PublicModule
             $tabledata = array();
             $i = 0;
             $laststamp = "";
-            foreach ($data as $res)
-            {
+            foreach ($data as $res) {
                 ++$i;
 
                 //Link
@@ -268,21 +252,18 @@ class PublicModule extends \PublicModule
                 );
 
                 //Enthaltene Bilder
-                if (in_array('GALLERY.COUNT', $parse))
-                {
+                if (in_array('GALLERY.COUNT', $parse)) {
                     list($count) = $db->first("SELECT count(id) FROM " . PRE . "_user_pictures WHERE galid='" . $res['id'] . "'");
                 }
 
                 //Vorschau-Bild
                 $preview = '';
-                if (in_array('GALLERY.PREVIEW', $parse) && (!$res['password'] || $user->info['userid'] == $res['owner'] || $res['password'] == $_COOKIE['usergallery_pwd_' . $res['id']]))
-                {
+                if (in_array('GALLERY.PREVIEW', $parse) && (!$res['password'] || $user->info['userid'] == $res['owner'] || $res['password'] == $_COOKIE['usergallery_pwd_' . $res['id']])) {
                     list($preview) = $db->first("SELECT thumbnail FROM " . PRE . "_user_pictures WHERE galid='" . $res['id'] . "' ORDER BY RAND() LIMIT 1");
                 }
 
                 //Datehead
-                if ($laststamp != date('Y/m/d', $res['starttime'] - TIMEDIFF))
-                {
+                if ($laststamp != date('Y/m/d', $res['starttime'] - TIMEDIFF)) {
                     $tabledata[$i]['DATEHEAD'] = $res['starttime'];
                 }
 
@@ -304,8 +285,7 @@ class PublicModule extends \PublicModule
                 $tabledata[$i]['AVATAR_TITLE'] = $user->mkavtitle($userinfo);
 
                 //Kommentare
-                if ($apx->is_module('comments') && $res['allowcoms'])
-                {
+                if ($apx->is_module('comments') && $res['allowcoms']) {
                     require_once(BASEDIR . getmodulepath('comments') . 'class.comments.php');
                     if (!isset($coms)) $coms = new \comments('usergallery', $res['id']);
                     else $coms->mid = $res['id'];
@@ -318,8 +298,7 @@ class PublicModule extends \PublicModule
                     $tabledata[$i]['COMMENT_COUNT'] = $coms->count();
                     $tabledata[$i]['COMMENT_LINK'] = $coms->link($link);
                     $tabledata[$i]['DISPLAY_COMMENTS'] = 1;
-                    if (in_template(array('GALLERY.COMMENT_LAST_USERID', 'GALLERY.COMMENT_LAST_NAME', 'GALLERY.COMMENT_LAST_TIME'), $parse))
-                    {
+                    if (in_template(array('GALLERY.COMMENT_LAST_USERID', 'GALLERY.COMMENT_LAST_NAME', 'GALLERY.COMMENT_LAST_TIME'), $parse)) {
                         $tabledata[$i]['COMMENT_LAST_USERID'] = $coms->last_userid();
                         $tabledata[$i]['COMMENT_LAST_NAME'] = $coms->last_name();
                         $tabledata[$i]['COMMENT_LAST_TIME'] = $coms->last_time();
@@ -342,24 +321,19 @@ class PublicModule extends \PublicModule
         $tmpl = new \tengine($apx);
         $parse = $tmpl->used_vars($template, $templatemodule);
         $tabledata = array();
-        if (is_array($data) && count($data))
-        {
+        if (is_array($data) && count($data)) {
             $i = 0;
-            foreach ($data as $res)
-            {
+            foreach ($data as $res) {
                 ++$i;
 
                 $age = 0;
                 $birthday = 0;
-                if ($res['birthday'])
-                {
+                if ($res['birthday']) {
                     $bd = explode('-', $res['birthday']);
                     $birthday = intval($bd[0]) . '. ' . getcalmonth($bd[1]) . iif($bd[2], ' ' . $bd[2]);
-                    if ($bd[2])
-                    {
+                    if ($bd[2]) {
                         $age = date('Y') - $bd[2];
-                        if (intval(sprintf('%02d%02d', $bd[1], $bd[0])) > intval(date('md')))
-                        {
+                        if (intval(sprintf('%02d%02d', $bd[1], $bd[0])) > intval(date('md'))) {
                             $age -= 1;
                         }
                     }
@@ -386,21 +360,18 @@ class PublicModule extends \PublicModule
                 $tabledata[$i]['AVATAR_TITLE'] = $user->mkavtitle($res);
                 $tabledata[$i]['BIRTHDAY'] = $birthday;
                 $tabledata[$i]['AGE'] = $age;
-                if (in_array($varname . '.ISBUDDY', $parse))
-                {
+                if (in_array($varname . '.ISBUDDY', $parse)) {
                     $tabledata[$i]['ISBUDDY'] = $user->is_buddy($res['userid']);
                 }
 
                 //Custom-Felder
-                for ($ii = 1; $ii <= 10; $ii++)
-                {
+                for ($ii = 1; $ii <= 10; $ii++) {
                     $tabledata[$i]['CUSTOM' . $ii . '_NAME'] = $set['user']['cusfield_names'][($ii - 1)] ?? "";
                     $tabledata[$i]['CUSTOM' . $ii] = compatible_hsc($res['custom' . $ii]);
                 }
 
                 //Interaktions-Links
-                if (isset($user->info['userid']) && $user->info['userid'])
-                {
+                if (isset($user->info['userid']) && $user->info['userid']) {
                     $tabledata[$i]['LINK_SENDPM'] = mklink(
                         'user.php?action=newpm&amp;touser=' . $res['userid'],
                         'user,newpm,' . $res['userid'] . '.html'
@@ -411,8 +382,7 @@ class PublicModule extends \PublicModule
                         'user,newmail,' . $res['userid'] . '.html'
                     );
 
-                    if (in_array($varname . '.LINK_BUDDY', $parse) && !$user->is_buddy($res['userid']))
-                    {
+                    if (in_array($varname . '.LINK_BUDDY', $parse) && !$user->is_buddy($res['userid'])) {
                         $tabledata[$i]['LINK_BUDDY'] = mklink(
                             'user.php?action=addbuddy&amp;id=' . $res['userid'],
                             'user,addbuddy,' . $res['userid'] . '.html'
@@ -421,8 +391,7 @@ class PublicModule extends \PublicModule
                 }
 
                 //Nur Buddy-Liste
-                if ($buddylist)
-                {
+                if ($buddylist) {
                     $tabledata[$i]['LINK_DELBUDDY'] = mklink(
                         'user.php?action=delbuddy&amp;id=' . $res['userid'],
                         'user,delbuddy,' . $res['userid'] . '.html'
@@ -442,14 +411,10 @@ class PublicModule extends \PublicModule
         static $count;
         if (
             !isset($count)
-        )
-        {
-            if ($set['user']['onlinelist'])
-            {
+        ) {
+            if ($set['user']['onlinelist']) {
                 list($count) = $db->first("SELECT count(ip) FROM " . PRE . "_user_online");
-            }
-            else
-            {
+            } else {
                 list($count) = $db->first("SELECT count(userid) FROM " . PRE . "_user WHERE lastactive>=" . (time() - $set['user']['timeout'] * 60) . " AND pub_invisible=0");
             }
         }
@@ -464,8 +429,7 @@ class PublicModule extends \PublicModule
 
         if (
             !isset($count)
-        )
-        {
+        ) {
             list($count) = $db->first("SELECT count(id) FROM " . PRE . "_user_pms WHERE ( touser='" . $user->info['userid'] . "' AND del_to='0' AND isread='0' )");
         }
 
@@ -481,11 +445,9 @@ class PublicModule extends \PublicModule
 
         if (
             count($set['main']['smilies'])
-        )
-        {
+        ) {
             $i = 0;
-            foreach ($set['main']['smilies'] as $res)
-            {
+            foreach ($set['main']['smilies'] as $res) {
                 ++$i;
                 $smiledata[$i]['CODE'] = $res['code'];
                 $smiledata[$i]['INSERTCODE'] = addslashes($res['code']);
@@ -502,4 +464,112 @@ class PublicModule extends \PublicModule
         $tmpl->parse('functions/' . $template, 'user');
     }
 
+
+    //Download-Größe
+    function user_getsize($fsize, $digits = 1)
+    {
+        $fsize = (float)$fsize;
+        if ($digits) $format = '%01.' . $digits . 'f';
+        else $format = '%01d';
+
+        if ($fsize < 1024) return $fsize . ' Byte';
+        if ($fsize >= 1024 && $fsize < 1024 * 1024) return  number_format($fsize / (1024), $digits, ',', '') . ' KB';
+        if ($fsize >= 1024 * 1024 && $fsize < 1024 * 1024 * 1024) return number_format($fsize / (1024 * 1024), $digits, ',', '') . ' MB';
+        if ($fsize >= 1024 * 1024 * 1024 && $fsize < 1024 * 1024 * 1024 * 1024) return number_format($fsize / (1024 * 1024 * 1024), $digits, ',', '') . ' GB';
+        return number_format($fsize / (1024 * 1024 * 1024 * 1024), $digits, ',', '') . ' TB';
+    }
+
+
+
+
+    //Besuch zählen
+    function user_count_visit($object, $id)
+    {
+        global $apx, $set, $db, $user;
+        if (!$user->info['userid']) return;
+        $db->query("DELETE FROM " . PRE . "_user_visits WHERE object='" . $object . "' AND userid='" . $user->info['userid'] . "'");
+        $db->query("INSERT INTO " . PRE . "_user_visits (object,id,userid,time) VALUES ('" . $object . "','" . $id . "','" . $user->info['userid'] . "','" . time() . "')");
+    }
+
+
+
+    //Besucher assign
+    function user_assign_visitors($object, $id, &$tmpl)
+    {
+        global $apx, $set, $db, $user;
+
+        $userdata = array();
+        $data = $db->fetch("SELECT u.userid,u.username,u.groupid,u.realname,u.gender,u.city,u.plz,u.country,u.city,u.lastactive,u.pub_invisible,u.avatar,u.avatar_title,u.custom1,u.custom2,u.custom3,u.custom4,u.custom5,u.custom6,u.custom7,u.custom8,u.custom9,u.custom10 FROM " . PRE . "_user_visits AS v LEFT JOIN " . PRE . "_user AS u USING(userid) WHERE v.object='" . addslashes($object) . "' AND v.id='" . intval($id) . "' AND v.time>='" . (time() - 24 * 3600) . "' ORDER BY u.username ASC");
+        if (count($data)) {
+            $i = 0;
+            foreach ($data as $res) {
+                ++$i;
+
+                $userdata[$i]['ID'] = $res['userid'];
+                $userdata[$i]['USERID'] = $res['userid'];
+                $userdata[$i]['USERNAME'] = replace($res['username']);
+                $userdata[$i]['GROUPID'] = $res['groupid'];
+                $userdata[$i]['ONLINE'] = iif(!$res['pub_invisible'] && ($res['lastactive'] + $set['user']['timeout'] * 60) >= time(), 1, 0);
+                $userdata[$i]['REALNAME'] = replace($res['realname']);
+                $userdata[$i]['GENDER'] = $res['gender'];
+                $userdata[$i]['CITY'] = replace($res['city']);
+                $userdata[$i]['PLZ'] = replace($res['plz']);
+                $userdata[$i]['COUNTRY'] = $res['country'];
+                $userdata[$i]['LASTACTIVE'] = $res['lastactive'];
+                $userdata[$i]['AVATAR'] = $user->mkavatar($res);
+                $userdata[$i]['AVATAR_TITLE'] = $user->mkavtitle($res);
+
+                //Custom-Felder
+                for ($ii = 1; $ii <= 10; $ii++) {
+                    $tabledata[$i]['CUSTOM' . $ii . '_NAME'] = $set['user']['cusfield_names'][($ii - 1)];
+                    $tabledata[$i]['CUSTOM' . $ii] = compatible_hsc($res['custom' . $ii]);
+                }
+            }
+        }
+
+        $tmpl->assign('VISITOR', $userdata);
+    }
+
+
+
+    //Links zu Profil-Funktionen
+    function user_assign_profile_links(&$tmpl, $userinfo)
+    {
+        global $apx, $set, $db, $user;
+
+        $link_profile = mklink(
+            'user.php?action=profile&amp;id=' . $userinfo['userid'],
+            'user,profile,' . $userinfo['userid'] . urlformat($userinfo['username']) . '.html'
+        );
+        if ($set['user']['blog']) {
+            $link_blog = mklink(
+                'user.php?action=blog&amp;id=' . $userinfo['userid'],
+                'user,blog,' . $userinfo['userid'] . ',1.html'
+            );
+        }
+        if ($set['user']['gallery']) {
+            $link_gallery = mklink(
+                'user.php?action=gallery&amp;id=' . $userinfo['userid'],
+                'user,gallery,' . $userinfo['userid'] . ',0,0.html'
+            );
+        }
+        if ($set['user']['guestbook'] && $userinfo['pub_usegb']) {
+            $link_guestbook = mklink(
+                'user.php?action=guestbook&amp;id=' . $userinfo['userid'],
+                'user,guestbook,' . $userinfo['userid'] . ',1.html'
+            );
+        }
+        if ($apx->is_module('products') && $set['products']['collection']) {
+            $link_collection = mklink(
+                'user.php?action=collection&amp;id=' . $userinfo['userid'],
+                'user,collection,' . $userinfo['userid'] . ',0,1.html'
+            );
+        }
+
+        $tmpl->assign('LINK_PROFILE', $link_profile);
+        $tmpl->assign('LINK_BLOG', $link_blog);
+        $tmpl->assign('LINK_GALLERY', $link_gallery);
+        $tmpl->assign('LINK_GUESTBOOK', $link_guestbook);
+        $tmpl->assign('LINK_COLLECTION', $link_collection);
+    }
 }

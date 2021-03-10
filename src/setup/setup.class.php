@@ -213,13 +213,14 @@ class Setup
             $this->apx->param()->postIf("email") &&
             $this->apx->param()->postIf("password")
         ) {
-            $salt = random_string(16);
+            $salt = random_string(10);
 
-            $password = md5(md5($this->apx->param()->postIf("password") . $salt));
+            $password = md5($this->apx->param()->postString("password"));
+            $password = md5( $password . $salt);
 
             $this->apx->db()->query("
                 INSERT INTO 
-                    `apx_user` 
+                    ".PRE."_user
                 (
                     `username_login`, 
                     `username`, 

@@ -66,4 +66,4 @@ $set['rendertime'] = false;
 // 2 = sichtbare Rahmen
 $set['tmplwhois'] = 0;
 
-?>
+?><?php $set['installed'] = true; ?>

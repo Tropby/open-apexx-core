@@ -23,9 +23,9 @@ namespace Modules\Dummy;
 class PublicModule extends \Module
 {   
     public function __construct(\apexx $apx, string $modulename)
-    {        
+    {                
         // Copy the old init.php data in the dummy module
-        require(BASEDIR . getmodulepath($modulename) . 'init.php');
+        require(BASEDIR . $apx->path()->getmodulepath($modulename) . 'init.php');
         parent::__construct($apx, $module["id"], $module["dependence"], $module["requirement"], $module["version"], $module["author"], $module["contact"]);
 
         foreach( $action as $k => $v )
@@ -49,17 +49,15 @@ class PublicModule extends \Module
     public function init()
     {
         global $apx, $user, $set, $db;
-
-        if (file_exists(BASEDIR . getmodulepath($this->get_info()["id"]) . 'system.php'))
-            require_once(BASEDIR . getmodulepath($this->get_info()["id"]) . 'system.php');
+        if (file_exists(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'system.php'))
+            require_once(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'system.php');
     }
 
     public function startup()
     {
         global $apx, $user, $set, $db;
-
-        if (file_exists(BASEDIR . getmodulepath($this->get_info()["id"]) . 'startup.php'))
-            require_once(BASEDIR . getmodulepath($this->get_info()["id"]) . 'startup.php');
+        if (file_exists(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'startup.php'))
+            require_once(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'startup.php');
     }
 
     public function execute()
@@ -72,8 +70,8 @@ class PublicModule extends \Module
     {
         global $apx, $user, $set, $db;
 
-        if( file_exists(BASEDIR . getmodulepath($this->get_info()["id"]) . 'shutdown.php'))
-            require_once(BASEDIR . getmodulepath($this->get_info()["id"]) . 'shutdown.php');
+        if( file_exists(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'shutdown.php'))
+            require_once(BASEDIR . $this->apx->path()->getmodulepath($this->id()) . 'shutdown.php');
     }
 }
 

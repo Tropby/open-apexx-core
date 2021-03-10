@@ -2,6 +2,9 @@
 
 namespace Modules\User\PublicAction;
 
+/**
+ * This Action will activate a account with the key provided by E-Mail
+ */
 class Activate extends \PublicAction
 {
 	public function execute()
@@ -10,29 +13,38 @@ class Activate extends \PublicAction
 		$db = $apx->db();
 		$user = $apx->get_registered_object('user');
 
-		if (isset($user->info['userid']) && $user->info['userid'])
-		{
+		if ($user->id()) {
 			(new Index($this->publicModule()))->execute();
 			return;
 		}
 
 		if ($apx->config('user')['useractivation'] != 3) exit;
+
 		$apx->lang->drop('activate');
-		$_REQUEST['userid'] = (int)$_REQUEST['userid'];
-		if (!$_REQUEST['userid'] || !$_REQUEST['key'])
-		{
-			message('back');
+
+		if (!$apx->param()->requestIf('userid') || !$apx->param()->requestIf('key')) {
+			$apx->message('back');
 			require('lib/_end.php');
 		}
 
-		$res = $db->first("SELECT userid,reg_key FROM " . PRE . "_user WHERE userid='" . $_REQUEST['userid'] . "' LIMIT 1");
+		$userId = $apx->param()->requestInt('userid');
+		$key = $apx->param()->requestString('key');
 
-		if ($res['userid'] && !$res['reg_key']) message($apx->lang->get('MSG_ISACTIVE'), mklink('user.php', 'user.html'));
-		elseif ($res['reg_key'] == $_REQUEST['key'])
-		{
-			$db->query("UPDATE " . PRE . "_user SET reg_key='' WHERE userid='" . $_REQUEST['userid'] . "' LIMIT 1");
-			message($apx->lang->get('MSG_OK'), mklink('user.php', 'user.html'));
+		$stmt = $db->prepare("SELECT userid, reg_key FROM " . PRE . "_user WHERE userid=? LIMIT 1");
+		$stmt->bind_param("i", $userId);
+		$stmt->execute();
+
+		$res = $stmt->get_result()->fetch_assoc();
+
+		if ($res['userid'] && !$res['reg_key']) {
+			$apx->message($apx->lang->get('MSG_ISACTIVE'), mklink('user.php', 'user.html'));
+		} elseif ($res['reg_key'] == $key) {
+			$stmt = $db->prepare("UPDATE " . PRE . "_user SET reg_key='' WHERE userid=? LIMIT 1");
+			$stmt->bind_param("i", $userId);
+			$stmt->execute();
+			$apx->message($apx->lang->get('MSG_OK'), mklink('user.php', 'user.html'));
+		} else {
+			$apx->message($apx->lang->get('MSG_WRONGKEY'));
 		}
-		else message($apx->lang->get('MSG_WRONGKEY'));
 	}
 }
