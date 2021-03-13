@@ -55,7 +55,7 @@ class html
 
 				$navilinks[] = array(
 					'TITLE' => $apx->lang->get('NAVI_' . strtoupper($nv_module) . '_' . strtoupper($nv_action)),
-					'LINK' => 'action.php?action=' . $nv_module . '.' . $nv_action
+					'LINK' => 'index.php?action=' . $nv_module . '.' . $nv_action
 				);
 			}
 

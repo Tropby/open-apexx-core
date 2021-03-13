@@ -20,14 +20,30 @@ define('APXRUN',true);
 require('includes/_start.php');  /////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+if ( $apx->user->info['userid'] ) 
+{
+	$apx->tmpl->loaddesign('default');
 
-if ( $apx->user->info['userid'] ) {
-	$apx->tmpl->loaddesign('blank');
-	$apx->tmpl->parse('frameset','/');
+	//Sektionen
+	$selsec = $apx->session->get('section');
+	$secdata = array();
+	foreach ( $apx->sections AS $id => $section ) {
+		$secdata[] = array(
+			'ID' => $id,
+			'TITLE' => compatible_hsc($section['title']),
+			'SELECTED' => ($selsec==$id)
+		);
+	}
+	$apx->tmpl->assign('SECTION', $secdata);
+
+	//Navigation
+	$apx->tmpl->assign_static('NAVI',$html->navi());	
+
+	$apx->executeAction();
 }
-else {
-	header("HTTP/1.1 301 Moved Permanently");
-	header('Location: action.php?action=user.login');
+else 
+{
+	header('Location: index.php?action=user.login');
 	exit;
 }
 

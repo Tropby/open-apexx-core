@@ -103,6 +103,8 @@ form
 
     min-width: calc( 100% - 2 * var(--box-margin) - 2 * var(--box-padding));
     width: calc( 100% - 2 * var(--box-margin) - 2 * var(--box-padding));
+
+    overflow: hidden;
 }
 
 
@@ -139,12 +141,24 @@ form
         min-width: calc( 25% - 2 * var(--box-margin) - 2 * var(--box-padding));
     }
     
+    .box-5
+    {
+        width: calc( 41.67% - 2 * var(--box-margin) - 2 * var(--box-padding));
+        min-width: calc( 41.67% - 2 * var(--box-margin) - 2 * var(--box-padding));
+    }
+    
     .box-6
     {
         width: calc( 50% - 2 * var(--box-margin) - 2 * var(--box-padding));
         min-width: calc( 50% - 2 * var(--box-margin) - 2 * var(--box-padding));
     }
-    
+
+    .box-7
+    {
+        width: calc( 58.33% - 2 * var(--box-margin) - 2 * var(--box-padding));
+        min-width: calc( 58.33% - 2 * var(--box-margin) - 2 * var(--box-padding));
+    }
+
     .box-8
     {
         width: calc( 75% - 2 * var(--box-margin) - 2 * var(--box-padding));

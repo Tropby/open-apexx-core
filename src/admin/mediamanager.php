@@ -27,11 +27,12 @@ if ($_REQUEST['CKEditorFuncNum'])
 	$apx->session->set('CKEditorFuncNum', $_REQUEST['CKEditorFuncNum']);
 }
 
-
 if ($apx->user->info['userid'])
 {
-	$apx->tmpl->loaddesign('blank');
-	$apx->tmpl->parse('mediamanager', '/');
+	$apx->tmpl->assign_static("HIDE_MENU", 1);
+	$apx->executeAction();
+	//$apx->tmpl->loaddesign('blank');
+	//$apx->tmpl->parse('mediamanager', '/');
 }
 else
 {
