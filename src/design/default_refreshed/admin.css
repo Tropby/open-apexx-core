@@ -1,0 +1,39 @@
+.admin-login-base
+{
+    max-width: 800px;
+    display: table;
+    height: 100%;
+}
+
+.admin-login-container
+{
+    display: table-cell;    
+    width: 100%;
+    vertical-align: middle;
+}
+
+.admin-login-form
+{
+    background-color: var(--text-background);
+    display: flex;
+    max-height: 400px;
+    height: 400px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.admin-login-form .logo
+{
+    margin: 20px;
+}
+
+.table tr td
+{
+    border-bottom: 1px solid var(--primary);
+}
+
+#framereset
+{
+    display: none;
+}
+

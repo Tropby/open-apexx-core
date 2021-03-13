@@ -71,6 +71,7 @@ class Session
 			$this->sessionId = md5(uniqid('newsession') . microtime());
 			session_id($this->sessionId);
 			session_start();
+			$_SESSION['__ownerid'] = $this->getOwnerId();
 		}
 	}
 

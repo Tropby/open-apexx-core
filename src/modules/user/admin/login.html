@@ -1,57 +1,73 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
+
 <head>
-<script type="text/javascript">
+	<script type="text/javascript">
 
-//Frameset immer entfernen!
-if ( top.frames.length!=0 ) {
-	top.window.location='action.php?action=user.login';
-}
+		//Frameset immer entfernen!
+		if (top.frames.length != 0) {
+			top.window.location = 'action.php?action=user.login';
+		}
 
-//Info-Text anzeigen
-function displayInfo(text) {
-	var box = yDom.get('infobox');
-	box.innerHTML = text;
-	yDom.setStyle(box, 'display', 'block');
-}
+		//Info-Text anzeigen
+		function displayInfo(text) {
+			var box = yDom.get('infobox');
+			box.innerHTML = text;
+			yDom.setStyle(box, 'display', 'block');
+		}
 
-</script>
-<title>apexx - Administration | {LANG[TITLE_USER_LOGIN]}</title>
-<meta http-equiv="content-Type" content="text/html; charset={CHARSET}" />
-<link rel="stylesheet" href="design/login.css" type="text/css" />
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="../lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="../lib/javascript/global.js"></script>
-<script type="text/javascript" src="../lib/javascript/admin_basic.js"></script>
+	</script>
+	<title>open-apexx - Administration | {LANG[TITLE_USER_LOGIN]}</title>
+	<meta http-equiv="content-Type" content="text/html; charset={CHARSET}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="../design/{ADMIN_DESIGN}/import.css" type="text/css" />
+	<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="../lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="../lib/javascript/global.js"></script>
+	<script type="text/javascript" src="../lib/javascript/admin_basic.js"></script>
 </head>
+
 <body>
-<noscript class="jsrequired"><div>{LANG[JSREQUIRED]}</div></noscript>
-<iframe name="postframe" src="about:blank" style="width:100%;height:300px;display:none;"></iframe>
+	<noscript class="jsrequired">
+		<div>{LANG[JSREQUIRED]}</div>
+	</noscript>
 
-<div class="position">
-<h1>{LANG[TITLE_USER_LOGIN]}</h1>
-<div class="login">
-<p id="infobox" style="display:none;"></p>
+	<iframe name="postframe" src="about:blank" style="width:100%;height:300px;display:none;"></iframe>
 
-<form action="action.php?action=user.login" method="post" target="postframe">
-<table>
-<colgroup>
-<col width="35%" />
-<col width="65%" />
-</colgroup>
-<tr><td>{LANG[USER]}</td><td><input type="text" autocomplete="username" name="login_user" class="input" style="width:225px;" /></td></tr>
-<tr><td>{LANG[PWD]}</td><td><input type="password" autocomplete="current-password"  name="login_pwd" class="input" style="width:225px;" /></td></tr>
-</table>
-<p><input type="checkbox" name="publogin" id="ip_publogin" value="1" style="vertical-align:middle;" /> <label for="ip_publogin">{LANG[PUBLOGIN]}</label></p>
-<p><input type="checkbox" name="savecookie" id="ip_savecookie" value="1" style="vertical-align:middle;" /> <label for="ip_savecookie">{LANG[SAVECOOKIE]}</label></p>
-<p><input type="text" name="cookie_time" id="ip_cookie_time" class="input" value="100" style="width:30px;" /> <label for="ip_cookie_time">{LANG[COOKIETIME]}</label></p>
-<p><input type="submit" name="apxsubmit" value="{LANG[SUBMIT]}" accesskey="s" class="button" /></p>
-<input type="hidden" name="sectoken" value="{SECTOKEN}" />
-<input type="hidden" name="send" value="1" />
-</form>
+	<div class="admin-login-base">
 
-</div>
-</div>
+		<div class="admin-login-container">
+			<div class="admin-login-form">
+				<div class="box-4">
+					<div class="logo" style="height: 100%; width: 100%; min-width: 150px; min-height: 100px;"></div>
+				</div>
 
+				<div class="box-8">
+					<h1>{LANG[TITLE_USER_LOGIN]}</h1>
+					<p id="infobox" style="display:none;"></p>	
+					<form action="action.php?action=user.login" method="post" target="postframe">
+						<div class="box-12">
+							<div class="text-input">
+								<label for="login_user">{LANG[USER]}</label>
+								<input type="text" class="text-input" autocomplete="username" id="login_user" name="login_user" />
+							</div>
+						</div>
+						<div class="box-12">
+							<div class="text-input">
+								<label for="login_pwd">{LANG[PWD]}</label>
+								<input type="password" autocomplete="current-password" id="login_pwd" name="login_pwd" />
+							</div>
+						</div>
+						<div class="box-12"><input type="submit" name="apxsubmit" value="{LANG[SUBMIT]}" accesskey="s" class="button" /></div>
+
+						<input type="hidden" name="sectoken" value="{SECTOKEN}" />
+						<input type="hidden" name="send" value="1" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
+
 </html>

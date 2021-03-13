@@ -21,10 +21,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 //BENCHMARK
 $_BENCH=microtime();
 
-// Ab PHP 5.6 muss das Charset ISO-8859-1 erzwungen werden
-if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
-	ini_set("default_charset", "ISO-8859-1");
-}
+ini_set("default_charset", "ISO-8859-1");
 
 // Setup base directory and execution type
 define('MODE','public');

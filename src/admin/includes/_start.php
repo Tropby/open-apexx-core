@@ -71,6 +71,10 @@ foreach ( $apx->modules AS $module => $info ) {
 
 $apx->lang->init();          //Sprachpakete initialisieren
 $apx->tmpl = new TemplatesAdmin;  //Templates
+
+header("Content-Type: text/html; charset=".$set['main']['charset']);
+$apx->tmpl->assign_static("ADMIN_DESIGN", "default_refreshed");
+
 $html = new html;            //HTML Klasse für Admin
 
 ?>

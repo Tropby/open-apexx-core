@@ -13,5 +13,6 @@
     height: 180px;
     display: inline-block;
     background-size: contain;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
+    background-position: center;
 }

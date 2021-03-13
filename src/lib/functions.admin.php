@@ -50,11 +50,24 @@ function jsString($text, $type = '"') {
 ////////////////////////////////////////////////////////////////////////////////// -> INFO
 
 //Info beim Formular-Post ausgebe
-function printInfo($text) {
+function printInfo($text) 
+{
 	global $apx, $set;
+	header("Content-Type: text/html; charset=".$set['main']['charset']);
 	$apx->tmpl->loaddesign('blank');
-	echo '<meta http-equiv="content-Type" content="text/html; charset='.$set['main']['charset'].'" />';
-	echo '<script type="text/javascript"> parent.displayInfo("'.jsString($text).'"); parent.scrollTo(0, 0); </script>';
+	echo "
+	<html>
+		<head>
+			<meta http-equiv='content-Type' content='text/html; charset=".$set['main']['charset']."' />
+		</head>
+		<body>
+			<script type='text/javascript'>
+				parent.displayInfo('".jsString($text, '\'')."');
+				parent.scrollTo(0, 0);
+			</script>
+		</body>
+	</html>
+	";
 }
 
 

@@ -51,7 +51,6 @@ CODE;
 		//Ist der Nutzer angemeldet?
 		if (!$apx->user->info['userid'])
 		{
-			header("HTTP/1.1 301 Moved Permanently");
 			header('Location: action.php?action=user.login');
 			return;
 		}
