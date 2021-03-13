@@ -20,6 +20,7 @@ CKEDITOR.editorConfig = function( config )
 	//Dateibrowser
 	config.filebrowserImageBrowseUrl = 'mediamanager.php?module=mediamanager:1';
 	config.filebrowserFlashBrowseUrl = 'mediamanager.php?module=mediamanager:2';
+	config.filebrowserBrowseUrl = 'mediamanager.php?module=mediamanager:3';
 
 	//Entermodus
 	config.enterMode = CKEDITOR.ENTER_P;
