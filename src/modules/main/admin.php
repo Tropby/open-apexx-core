@@ -170,7 +170,7 @@ CODE;
 					}
 					else
 					{
-						$requiredModules .= "<font color='red'>Module not found!";
+						$requiredModules .= "<font color='red'>Module not found: ";
 					}
 					$requiredModules .= $rm . "</font>";
 				}
@@ -266,7 +266,7 @@ CODE;
 						}
 						else
 						{
-							$requiredModules .= "<font color='red'>Module not found!";
+							$requiredModules .= "<font color='red'>Module not found: ";
 						}
 						$requiredModules .= $rm . "</font>";
 					}
@@ -355,12 +355,27 @@ CODE;
 	//INFO VERARBEITEN
 	function regmod_readout($res)
 	{
+		global $apx;
+
 		$modulename = $res['module'];
-		if (!file_exists(BASEDIR . getmodulepath($modulename) . 'init.php')) return false;
 
-		include(BASEDIR . getmodulepath($modulename) . 'init.php');
+		if (file_exists(BASEDIR . getmodulepath($modulename) . "module.class.php")) {
+			$module_type = "\\Modules\\" . $modulename . "\\Module";
+			/**
+			 * @var \Module
+			 */
+			$module = new $module_type($apx);
+			$info = $module->get_info();
+		}
+		else
+		{
+			if (!file_exists(BASEDIR . getmodulepath($modulename) . 'init.php')) 
+				return false;
+			include(BASEDIR . getmodulepath($modulename) . 'init.php');	
+			$info = $module;
+		}
 
-		$info = $module;
+
 		$info['active'] = $res['active'];
 		$info['installed'] = $res['installed'];
 		$info['installed_version'] = $res['version'];

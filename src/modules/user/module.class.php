@@ -33,7 +33,7 @@ class Module extends \Module
 			array(),
 			array('main' => '1.2.0'),
 			'1.2.4',
-			'Christian Scheb',
+			'Christian Scheb, Carsten Grings',
 			'http://www.stylemotion.de'
 		);
 

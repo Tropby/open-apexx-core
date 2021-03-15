@@ -183,6 +183,29 @@ table
     padding: 10px;
 }
 
+.messageoverlay, .actionoverlay_black
+{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+.actionoverlay_black
+{
+    background-color: var(--background-accent);
+    opacity: 0.5;
+}
+
+.messageoverlay iframe
+{
+    left: calc( 50% - 200px );
+    top: 0px;
+    height: 100%;
+    width: 100%;
+}
+
 #framereset
 {
     display: none;

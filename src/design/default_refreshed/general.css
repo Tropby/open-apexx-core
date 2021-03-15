@@ -72,6 +72,7 @@ form
     
 .text-input input[type=text], .text-input input[type=password]
 {
+    color: var(--text);
     display: block;
     border: 1px solid var(--primary);
     padding: 7px 3px;
@@ -111,7 +112,7 @@ form
 .button
 {
     background: var(--primary);
-    color: var(--text-on-primary);
+    color: var(--text-on-primary) !important;
     padding: 3px 15px;
     text-decoration: none;
     border-radius: 5px;
