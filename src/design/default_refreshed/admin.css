@@ -123,11 +123,64 @@ table
     border-collapse: collapse;
 }
 
-.table tr td, .tablelist tr td
+.table tr td, .tablelist tr td, .tablelist tr th
 {
     margin: 0px;
     padding: 5px;
     border-bottom: 1px solid var(--primary);
+}
+
+.tablelist
+{
+    margin-top: 20px;
+}
+
+.letters
+{
+    text-align: center;
+    margin: 10px;
+}
+
+.searchform
+{
+    width: calc( 100% - 20px );
+    border: 1px solid var(--primary);
+    padding: 10px;
+}
+
+.tabbar ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--primary);
+}
+
+.tabbar ul li 
+{
+    float: left;
+}
+
+.tabbar ul li a 
+{
+    display: block;
+    color: var(--text-on-primary);
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+  
+.tabbar ul li a:hover 
+{
+    color: var(--text-on-primary-hover);
+}
+
+.tabbody
+{
+    border: 1px solid var(--primary);
+    padding: 10px;
 }
 
 #framereset

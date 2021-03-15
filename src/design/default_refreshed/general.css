@@ -112,9 +112,10 @@ form
 {
     background: var(--primary);
     color: var(--text-on-primary);
-    padding: 10px 15px;
+    padding: 3px 15px;
     text-decoration: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .button:hover 
