@@ -18,17 +18,16 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define('APXRUN',true);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 $action = "index";
-if($apx->param()->getIf('action'))
-	$action = $apx->param()->getString('action');
+if(isset($_GET["action"]))
+	$action = $_GET["action"];
 
 if($action==="list") $action="listuser";
-header("location: module.php?module=user&action=".$action."");
+
+$_GET["action"] = $action;
+$_GET["module"] = "user";
+
+include("module.php");
+//header("location: module.php?module=user&action=".$action."");
 
 exit;

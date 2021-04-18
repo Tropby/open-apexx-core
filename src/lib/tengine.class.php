@@ -34,10 +34,14 @@ var $theme='default';
 private \apexx $apx;
 
 
-function __construct(\apexx &$apx, $firsttime=false) {
+function __construct($apx = false, $firsttime=false) {
 	global $set;
 
-	$this->apx = &$apx;
+	if(!$apx)
+	{
+		$apx = $GLOBALS["apx"];
+	}
+	$this->apx = $apx;
 	
 	//Einstellungen
 	$this->cachepath=getpath('cache');

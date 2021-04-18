@@ -8,3 +8,9 @@
 /src/language/de/content/
 /src/templates/default/content/
 /src/content.php
+
+/src/modules/calendar/
+/src/language/de/calendar/
+/src/templates/default/calendar/
+/src/calendar.php
+/src/events.php

@@ -48,7 +48,7 @@ function mediamanager_inline($text) {
 //Inline-Codes ersetzen
 function mediamanager_inline_code($ids) {
 	global $set,$db,$apx;
-	$tmpl=new \tengine;
+	$tmpl=new \tengine($apx);
 	
 	$data=$db->fetch("SELECT id,picture,popup,text,align FROM ".PRE."_inlinescreens WHERE id IN (".implode(',',$ids).")");
 	if ( !count($data) ) array();

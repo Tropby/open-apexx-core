@@ -46,18 +46,18 @@ class Autoload
                     $path = BASEDIR . $class . ".class.php";
                 }
 
-                // Include Core Classes
-                elseif( file_exists(BASEDIR . "lib/class.". $class . ".php") )
-                {
-                    $path = BASEDIR . "lib/class." . $class . ".php";
-                }
-
                 // new style
                 elseif (file_exists(BASEDIR . "lib/" . $class . ".class.php"))
                 {
                     $path = BASEDIR . "lib/" . $class . ".class.php";
                 }
 
+                // Include Core Classes
+                elseif (file_exists(BASEDIR . "lib/class." . $class . ".php"))
+                {
+                    $path = BASEDIR . "lib/class." . $class . ".php";
+                }
+                
                 // Class File not found!
                 else
                 {

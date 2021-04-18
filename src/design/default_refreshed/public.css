@@ -17,11 +17,21 @@
     background-position: top left;
 }
 
-.public-menu
+.public-menu, .public-menu-right
 {
     width: 100%;
     padding: 10px;
     color: var(--text);
+}
+
+.public-menu
+{
+    border-right: 1px solid var(--background-accent);
+}
+
+.public-menu-right
+{
+    border-left: 1px solid var(--background-accent);
 }
 
 .navi
@@ -55,12 +65,12 @@ a, a:hover, a:active
     color: var(--text);
 }
 
-.navi-top
+.navi_header
 {
-
+    font-weight: bold;
 }
 
-.navi-top .item
+.content_position
 {
-    
+    width: 100%;
 }
