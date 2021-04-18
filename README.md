@@ -9,7 +9,7 @@ Die Struktur kann [HIER](doc/structure.md) eingesehen werden.
 
 Die open-apexx Module werden nach und nach auf die neue Struktur überführt. Zu jedem Modul wird es ein eigenes Repository geben welche in der der [Modulliste](MODULES.md) verlinkt sind.
 
-## Module im Modul-Manager
+## Module
 
 |Modul|Beschreibung|Stand|Source Code|Releases|
 |-----|------------|-----|-----------|--------|
@@ -20,6 +20,9 @@ Die open-apexx Module werden nach und nach auf die neue Struktur überführt. Zu
 |Kalender|  |alt|[src](https://github.com/Tropby/open-apexx-calendar)|[releases](https://github.com/Tropby/open-apexx-calendar/releases)|
 |Kommentare|  |alt|[src](https://github.com/Tropby/open-apexx-comments)|[releases](https://github.com/Tropby/open-apexx-comments/releases)|
 |News|  |alt|[src](https://github.com/Tropby/open-apexx-news)|[releases](https://github.com/Tropby/open-apexx-news/releases)|
+|Besucherstatistiken|  ||||
+|Galerie|  ||||
+|Navigation|  ||||
 
 ## Status
 
