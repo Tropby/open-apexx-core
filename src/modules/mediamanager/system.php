@@ -17,7 +17,7 @@
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-/*
+
 //Inlinescreens
 function mediamanager_inline($text) {
 	//if ( strpos($text,'{IMAGE(')===false ) return $text;
@@ -43,14 +43,12 @@ function mediamanager_inline($text) {
 	}
 	
 	return $text;
-}*/
-
-
+}
 
 //Inline-Codes ersetzen
 function mediamanager_inline_code($ids) {
 	global $set,$db,$apx;
-	$tmpl=new tengine;
+	$tmpl=new \tengine;
 	
 	$data=$db->fetch("SELECT id,picture,popup,text,align FROM ".PRE."_inlinescreens WHERE id IN (".implode(',',$ids).")");
 	if ( !count($data) ) array();

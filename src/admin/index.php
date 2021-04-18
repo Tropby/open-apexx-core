@@ -48,9 +48,9 @@ if ( $user->info['userid'] )
 
 	
 	$module = "main.index";
-	if( $apx->param()->getIf("action") )
+	if( $apx->param()->requestIf("action") )
 	{
-		$module = $apx->param()->getString("action");
+		$module = $apx->param()->requestString("action");
 	}
 	$module = explode(".", $module);
 	if( count( $module ) != 2 )

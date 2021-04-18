@@ -95,13 +95,17 @@ abstract class Module implements IModule
     }
 
     /**
-     * @deprecated
+     * @deprecated will be deleted in the future
      */
     private function executePublicTemplateFunctionOldStyle(string $funcname, array $params) : bool
     {
         if (isset($this->template_functions[$funcname]))
         {
-            include_once(BASEDIR . $this->apx()->path()->getmodulepath($this->id()) . "tfunctions.php");
+            if( MODE == "admin")
+                include_once(BASEDIR . $this->apx()->path()->getmodulepath($this->id()) . "admin_tfunctions.php");
+            else
+                include_once(BASEDIR . $this->apx()->path()->getmodulepath($this->id()) . "tfunctions.php");
+
             if (function_exists($this->template_functions[$funcname][0]))
             {
                 call_user_func_array($this->template_functions[$funcname][0], $params);

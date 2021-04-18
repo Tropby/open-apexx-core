@@ -47,7 +47,11 @@ class Apexx
 
 	private Parameters $parameters;
 	private DatabaseMysqli $db;
-	private Session $session;
+
+	/**
+	 * @deprecated Will be private in future releases
+	 */
+	var Session $session;
 
 	private array $config = array();
 	private array $registered_objects = array();
@@ -374,7 +378,12 @@ class Apexx
 
 				// Old style module initialisation (Do not use anymore!)
 				else {
-					$module = new \Modules\Dummy\PublicModule($this, $modulename);
+					if( MODE == "admin")
+					{
+						$module = new \Modules\Dummy\AdminModule($this, $modulename);
+					}
+					else
+						$module = new \Modules\Dummy\PublicModule($this, $modulename);
 					$this->module_objects[$modulename] = $module;
 				}
 

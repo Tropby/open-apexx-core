@@ -1,3 +1,10 @@
 /src/cache/*.php
 /src/lib/config.database.php
 /src/**/.htaccess
+/src/uploads/package.zip
+/src/templates/examples/
+
+/src/modules/content/
+/src/language/de/content/
+/src/templates/default/content/
+/src/content.php

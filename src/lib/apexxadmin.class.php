@@ -44,9 +44,15 @@ class ApexxAdmin extends Apexx
 
 	////////////////////////////////////////////////////////////////////////////////// -> AKTION AUSFÜHREN
 
+	function action()
+	{
+		return $this->action;
+	}
+
 	//Aktion ausführen
 	function executeModule( $module, $action )
 	{
+		$this->action = $action;
 		$user = $this->get_registered_object("user");			
 		
 		if( $module != "user" && $action != "login" )
