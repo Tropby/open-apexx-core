@@ -44,25 +44,8 @@ class AdminModule extends \AdminModule
 		$this->registerAction('del', 0, 0, 7, 0);
 		$this->registerAction('enable', 0, 0, 8, 0);
 
-/*		
-		$this->register_admin_action('gshow', 0, 1, 12, 0);
-		$this->register_admin_action('gadd', 0, 0, 13, 0);
-		$this->register_admin_action('gedit', 0, 0, 14, 0);
-		$this->register_admin_action('gclean', 0, 0, 15, 0);
-		$this->register_admin_action('gdel', 0, 0, 16, 0);
+		$this->registerTemplateFunction('User', 'USER');
+		$this->registerTemplateFunction('UserGroups', 'USERGROUPS');
 
-		$this->register_admin_action('profile', 0, 0, 98, 0);
-		$this->register_admin_action('myprofile', 0, 1, 99, 1);
-
-		$this->register_admin_action('guestbook', 0, 1, 991, 0);
-		$this->register_admin_action('blog', 0, 1, 992, 0);
-		$this->register_admin_action('gallery', 0, 1, 993, 0);
-
-		$this->register_admin_action('sendmail', 0, 1, 2000, 0);
-		$this->register_admin_action('sendpm', 0, 1, 2001, 0);
-
-		$this->register_admin_template_function('USER', 'user_team', true);
-		$this->register_admin_template_function('USERGROUPS', 'user_groups', true);		
-		*/
     }
 }

@@ -6,14 +6,14 @@ interface IPublicTemplateFunction
 
 abstract class PublicTemplateFunction implements IPublicTemplateFunction 
 {
-    private \PublicModule $publicModule;
+    private \IPublicModule $publicModule;
 
-    public function __construct(\PublicModule &$publicModule)
+    public function __construct(\IPublicModule &$publicModule)
     {
         $this->publicModule = &$publicModule;
     }
 
-    protected function publicModule() : \PublicModule
+    protected function publicModule() : \IPublicModule
     {
         return $this->publicModule;
     }

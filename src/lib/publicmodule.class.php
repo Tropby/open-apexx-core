@@ -2,7 +2,7 @@
 
 interface IPublicModule
 {
-
+    public function module();
 }
 
 class PublicModule implements IPublicModule

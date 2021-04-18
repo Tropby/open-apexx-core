@@ -1,11 +1,6 @@
 <?php
 
-interface IAdminModule
-{
-
-}
-
-class AdminModule implements IAdminModule
+class AdminModule implements IPublicModule
 {
     private \Module $module;
 

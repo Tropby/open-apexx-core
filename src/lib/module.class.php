@@ -85,12 +85,26 @@ abstract class Module implements IModule
      */
     public function executePublicTemplateFunction(string $funcname, array $params) : bool
     {
+        if( MODE == 'admin')
+        {
+            if (!isset($this->adminModule))
+                return $this->executePublicTemplateFunctionOldStyle($funcname, $params);
+
+            if (!$this->adminModule->executeTemplateFunction($funcname, $params))
+            {
+                return $this->executePublicTemplateFunctionOldStyle($funcname, $params);
+            }
+            return true;
+        }
+
         if(!isset($this->publicModule))
             return $this->executePublicTemplateFunctionOldStyle($funcname, $params);
+
         if( !$this->publicModule->executeTemplateFunction($funcname, $params) )
         {
             return $this->executePublicTemplateFunctionOldStyle($funcname, $params);
         }
+
         return true;
     }
 
