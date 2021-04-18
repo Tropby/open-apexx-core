@@ -44,7 +44,7 @@ if ( $user->info['userid'] )
 	$apx->tmpl->assign('SECTION', $secdata);
 
 	//Navigation
-	$apx->tmpl->assign_static('NAVI',$html->navi());	
+	$apx->tmpl->assign_static('ADMIN_NAVI',$html->navi());	
 
 	
 	$module = "main.index";

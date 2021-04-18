@@ -83,12 +83,12 @@ function displayInfo(text) {
 					</form>{/if}
 				
 					<ul id="navi" class="navi">
-						{list NAVI}
-						<li class="navi_header{if NAVI.HIDDEN} collapsed{else} expanded{/if}" id="{NAVI.ID}"><a
-								href="javascript:void(0);" class="navi_header"><span class="move" id="{NAVI.ID}_move"></span><span
-									class="inner">{NAVI.TITLE}</span></a>
+						{list ADMIN_NAVI}
+						<li class="navi_header{if ADMIN_NAVI.HIDDEN} collapsed{else} expanded{/if}" id="{ADMIN_NAVI.ID}"><a
+								href="javascript:void(0);" class="navi_header"><span class="move" id="{ADMIN_NAVI.ID}_move"></span><span
+									class="inner">{ADMIN_NAVI.TITLE}</span></a>
 							<ul class="navi_sub" style="{if NAVI.HIDDEN}display:none;{/if}">
-								{list NAVI.ACTION}<li class="navi_sub"><a href="{NAVI.ACTION.LINK}">{NAVI.ACTION.TITLE}</a></li>{/list}
+								{list ADMIN_NAVI.ACTION}<li class="navi_sub"><a href="{ADMIN_NAVI.ACTION.LINK}">{ADMIN_NAVI.ACTION.TITLE}</a></li>{/list}
 							</ul>
 						</li>
 						{/list}
@@ -103,8 +103,8 @@ function displayInfo(text) {
 				
 						var menu = new Array();
 						var mi = 0;
-						{list NAVI}
-						menu[mi++] = '{NAVI.ID}';
+						{list ADMIN_NAVI}
+						menu[mi++] = '{ADMIN_NAVI.ID}';
 						{/list}
 				
 				
