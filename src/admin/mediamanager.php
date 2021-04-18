@@ -22,15 +22,27 @@ require('includes/_start.php');  ///////////////////////////////////////////////
 
 
 //CKEditor-Funcnum
-if ($_REQUEST['CKEditorFuncNum'])
+if ($apx->param()->getIf('CKEditorFuncNum'))
 {
-	$apx->session->set('CKEditorFuncNum', $_REQUEST['CKEditorFuncNum']);
+	$apx->session->set('CKEditorFuncNum', $apx->param()->getInt('CKEditorFuncNum'));
 }
 
 if ($apx->user->info['userid'])
 {
 	$apx->tmpl->assign_static("HIDE_MENU", 1);
-	$apx->executeAction();
+
+	$action = "index";
+	if( $apx->param()->getif("action") )
+	{
+		$action = explode( ".", $apx->param()->getString("action") )[1];
+	}
+
+	//$apx->tmpl->loaddesign('blank');
+	$apx->tmpl->assign('NAVI', $html->mm_navi());
+	//$apx->tmpl->parse('mediamanager_navi', '/');
+
+	$apx->executeModule("mediamanager", $action);
+	//$apx->executeAction();
 	//$apx->tmpl->loaddesign('blank');
 	//$apx->tmpl->parse('mediamanager', '/');
 }

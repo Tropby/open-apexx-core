@@ -28,6 +28,13 @@ class AdminModule extends \Module
         require(BASEDIR . $apx->path()->getmodulepath($modulename) . 'init.php');
         parent::__construct($apx, $module["id"], $module["dependence"], $module["requirement"], $module["version"], $module["author"], $module["contact"]);
 
+        foreach ($module as $k => $m)
+        {
+            $this->addInfo($k,
+                $m
+            );
+        }
+
         foreach( $action as $k => $v )
         {
             $this->register_admin_action($k, $v[0], $v[1], $v[2], $v[3]);

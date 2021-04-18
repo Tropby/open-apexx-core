@@ -128,7 +128,7 @@ CODE;
 				$mkpath[] = $currentdir;
 
 				$parentdata[$i]['NAME'] = $currentdir;
-				$parentdata[$i]['LINK'] = 'action.php?action=mediamanager.index&dir=' . implode('/', $mkpath) . '&amp;module=' . $this->module;
+				$parentdata[$i]['LINK'] = 'mediamanager.php?action=mediamanager.index&dir=' . implode('/', $mkpath) . '&amp;module=' . $this->module;
 			}
 
 			$apx->tmpl->assign('PARENT', $parentdata);
@@ -194,7 +194,7 @@ CODE;
 
 					$dirdata[$obj]['IMG'] = '<img src="design/mm/folder_closed.gif" alt="" style="vertical-align:middle;" />';
 					$dirdata[$obj]['NAME'] = $file;
-					$dirdata[$obj]['LINK'] = 'action.php?action=mediamanager.index&dir=' . iif($_REQUEST['dir'], $_REQUEST['dir'] . "/") . $file . '&amp;module=' . $this->module;
+					$dirdata[$obj]['LINK'] = 'mediamanager.php?action=mediamanager.index&dir=' . iif($_REQUEST['dir'], $_REQUEST['dir'] . "/") . $file . '&amp;module=' . $this->module;
 
 					if ($apx->user->has_right('mediamanager.dirrename')) $dirdata[$obj]['OPTIONS'] .= optionHTMLOverlay('rename.gif', 'mediamanager.dirrename', 'dir=' . iif($_REQUEST['dir'], $_REQUEST['dir'] . '/') . $file . '&module=' . $this->module, $apx->lang->get('RENAME'));
 					else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
@@ -215,7 +215,7 @@ CODE;
 					$filedata[$obj]['NAME'] = $filename;
 					$filedata[$obj]['MFUNC'] = '';
 
-					if ($apx->user->has_right('mediamanager.details')) $filedata[$obj]['NAME'] = '<a href="action.php?action=mediamanager.details&amp;file=' . iif($_REQUEST['dir'], $_REQUEST['dir'] . '/') . $file[0] . '&amp;module=' . $this->module . '">' . $file[0] . '</a>';
+					if ($apx->user->has_right('mediamanager.details')) $filedata[$obj]['NAME'] = '<a href="mediamanager.php?action=mediamanager.details&amp;file=' . iif($_REQUEST['dir'], $_REQUEST['dir'] . '/') . $file[0] . '&amp;module=' . $this->module . '">' . $file[0] . '</a>';
 
 					if (array_key_exists($extension, $ftype)) $filedata[$obj]['IMG'] = $ftype[$extension]['img'];
 					else $filedata[$obj]['IMG'] = $ftype['#UNKNOWN#']['img'];
@@ -261,10 +261,10 @@ CODE;
 
 							$funcRepl = array(
 								'{PATH}' => $url,
-								'{FUNCNUM}' => $apx->session->get('CKEditorFuncNum') ? $apx->session->get('CKEditorFuncNum') : 1
+								'{FUNCNUM}' => $apx->session()->get('CKEditorFuncNum') !== null ? $apx->session()->get('CKEditorFuncNum') : -1
 							);
 
-							$funccache[] = '<a href="javascript:' . strtr($func['function'], $funcRepl) . '">' . $apx->lang->insertpack($func['icon']) . '</a>';
+							$funccache[] = '<a href="javascript:' . strtr($func['function'], $funcRepl) . '; window.close();">' . $apx->lang->insertpack($func['icon']) . '</a>';
 						}
 
 						$filedata[$obj]['MFUNC'] = implode(' ', $funccache);
@@ -296,22 +296,22 @@ CODE;
 			$text = $apx->lang->get('NONE');
 			if ($apx->user->has_right('mediamanager.dirdel') && $_REQUEST['dir'])
 			{
-				$text .= '<br />&raquo; <a href="javascript:MessageOverlayManager.createLayer(\'action.php?action=mediamanager.dirdel&dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module . '\');">' . $apx->lang->get('DIRDEL') . '</a> &laquo;';
+				$text .= '<br />&raquo; <a href="javascript:MessageOverlayManager.createLayer(\'mediamanager.php?action=mediamanager.dirdel&dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module . '\');">' . $apx->lang->get('DIRDEL') . '</a> &laquo;';
 			}
 			$apx->tmpl->assign('NONE', $text);
 		}
 
 		//Quicklinks
-		quicklink_multi('mediamanager.diradd', 'action.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
-		quicklink_multi('mediamanager.upload', 'action.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
-		quicklink_multi('mediamanager.sts', 'action.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
+		quicklink_multi('mediamanager.diradd', 'mediamanager.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
+		quicklink_multi('mediamanager.upload', 'mediamanager.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
+		quicklink_multi('mediamanager.sts', 'mediamanager.php', 'dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
 		quicklink_out();
 
 
 		$multiactions = array();
-		if ($apx->user->has_right('mediamanager.del')) $multiactions[] = array($apx->lang->get('CORE_DEL'), 'action.php?action=mediamanager.del&module=' . $this->module, false);
-		if ($apx->user->has_right('mediamanager.copy')) $multiactions[] = array($apx->lang->get('COPY'), 'action.php?action=mediamanager.copy&module=' . $this->module, true);
-		if ($apx->user->has_right('mediamanager.move')) $multiactions[] = array($apx->lang->get('MOVE'), 'action.php?action=mediamanager.move&module=' . $this->module, true);
+		if ($apx->user->has_right('mediamanager.del')) $multiactions[] = array($apx->lang->get('CORE_DEL'), 'mediamanager.php?action=mediamanager.del&module=' . $this->module, false);
+		if ($apx->user->has_right('mediamanager.copy')) $multiactions[] = array($apx->lang->get('COPY'), 'mediamanager.php?action=mediamanager.copy&module=' . $this->module, true);
+		if ($apx->user->has_right('mediamanager.move')) $multiactions[] = array($apx->lang->get('MOVE'), 'mediamanager.php?action=mediamanager.move&module=' . $this->module, true);
 		$html->assignfooter($multiactions);
 		$apx->tmpl->parse('index');
 
@@ -321,7 +321,7 @@ CODE;
 		$orderdef['file'] = array('NOTHING', 'ASC', 'SORT_FILE');
 		$orderdef['change'] = array('CHANGE', 'DESC', 'SORT_LASTCHANGE');
 
-		orderstr($orderdef, 'action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
+		orderstr($orderdef, 'mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&amp;module=' . $this->module);
 		save_index($_SERVER['REQUEST_URI']);
 	}
 
@@ -357,7 +357,7 @@ CODE;
 				{
 					echo '<script type="text/javascript"> top.frames[1].window.location.reload(); </script>';
 				}
-				printJSRedirect('action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
 				return;
 			}
 		}
@@ -407,7 +407,7 @@ CODE;
 					}
 				}
 
-				printJSRedirect('action.php?action=mediamanager.index&dir=' . $dir . '&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $dir . '&module=' . $this->module);
 				return;
 			}
 		}
@@ -445,7 +445,7 @@ CODE;
 					echo '<script type="text/javascript"> top.frames[1].window.location.reload(); </script>';
 				}
 
-				printJSRedirect('action.php?action=mediamanager.index&dir=' . $newdir . '&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $newdir . '&module=' . $this->module);
 			}
 		}
 		else
@@ -626,7 +626,7 @@ CODE;
 				}
 				else
 				{
-					printJSRedirect('action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&sortby=change.DESC&module=' . $this->module);
+					printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&sortby=change.DESC&module=' . $this->module);
 				}
 			}
 		}
@@ -697,7 +697,7 @@ CODE;
 				@fclose($buffer);
 
 				logit('MEDIAMANAGER_STS', $newpath);
-				printJSRedirect('action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&sortby=change.DESC&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&sortby=change.DESC&module=' . $this->module);
 			}
 		}
 		else
@@ -837,7 +837,7 @@ CODE;
 							logit('MEDIAMANAGER_COPY', $_REQUEST['file'] . ' -> ' . $newfile);
 						}
 
-						printJSRedirect('action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
+						printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
 						return;
 					}
 				}
@@ -940,7 +940,7 @@ CODE;
 							logit('MEDIAMANAGER_MOVE', $_REQUEST['file'] . ' -> ' . $newfile);
 						}
 
-						printJSRedirect('action.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
+						printJSRedirect('mediamanager.php?action=mediamanager.index&dir=' . $_REQUEST['dir'] . '&module=' . $this->module);
 						return;
 					}
 				}
@@ -1135,7 +1135,7 @@ CODE;
 	{
 		global $set, $apx, $db, $html;
 
-		quicklink('mediamanager.radd', 'action.php', 'module=' . $this->module);
+		quicklink('mediamanager.radd', 'mediamanager.php', 'module=' . $this->module);
 
 		$orderdef[0] = 'extension';
 		$orderdef['extension'] = array('extension', 'ASC', 'SORT_EXTENSION');
@@ -1171,7 +1171,7 @@ CODE;
 		$apx->tmpl->assign('TABLE', $tabledata);
 		$html->table($col);
 
-		orderstr($orderdef, 'action.php?action=mediamanager.rules');
+		orderstr($orderdef, 'mediamanager.php?action=mediamanager.rules');
 		save_index($_SERVER['REQUEST_URI']);
 	}
 
@@ -1195,7 +1195,7 @@ CODE;
 				$_POST['extension'] = strtoupper($_POST['extension']);
 				$db->dinsert(PRE . '_mediarules', 'extension,name,special');
 				logit('MEDIAMANAGER_RADD', 'ID #' . $_REQUEST['id']);
-				printJSRedirect('action.php?action=mediamanager.rules&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.rules&module=' . $this->module);
 			}
 		}
 		else
@@ -1231,7 +1231,7 @@ CODE;
 				$_POST['extension'] = strtoupper($_POST['extension']);
 				$db->dupdate(PRE . '_mediarules', 'extension,name,special', "WHERE id='" . $_REQUEST['id'] . "'");
 				logit('MEDIAMANAGER_REDIT', 'ID #' . $_REQUEST['id']);
-				printJSRedirect('action.php?action=mediamanager.rules&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.rules&module=' . $this->module);
 			}
 		}
 		else
@@ -1265,7 +1265,7 @@ CODE;
 			{
 				$db->query("DELETE FROM " . PRE . "_mediarules WHERE id='" . $_REQUEST['id'] . "' LIMIT 1");
 				logit('MEDIAMANAGER_RDEL', 'ID #' . $_REQUEST['id']);
-				printJSRedirect('action.php?action=mediamanager.rules&module=' . $this->module);
+				printJSRedirect('mediamanager.php?action=mediamanager.rules&module=' . $this->module);
 			}
 		}
 		else
@@ -1317,22 +1317,22 @@ CODE;
 							$filedata[$obj]['NAME'] = $file;
 							$filedata[$obj]['PATH'] = replace($path);
 
-							if ($apx->user->has_right('mediamanager.details')) $filedata[$obj]['NAME'] = '<a href="action.php?action=mediamanager.details&amp;file=' . $filepath . '&amp;module=' . $this->module . '">' . $file . '</a>';
+							if ($apx->user->has_right('mediamanager.details')) $filedata[$obj]['NAME'] = '<a href="mediamanager.php?action=mediamanager.details&amp;file=' . $filepath . '&amp;module=' . $this->module . '">' . $file . '</a>';
 
 							if (array_key_exists($extension, $ftype)) $filedata[$obj]['IMG'] = $ftype[$extension]['img'];
 							else $filedata[$obj]['IMG'] = $ftype['#UNKNOWN#']['img'];
 
 							//Optionen
-							if ($apx->user->has_right('mediamanager.copy')) $filedata[$obj]['OPTIONS'] .= '<a href="action.php?action=mediamanager.copy&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/copy.gif" title="' . $apx->lang->get('COPY') . '" alt="' . $apx->lang->get('COPY') . '" style="vertical-align:middle;" /></a>';
+							if ($apx->user->has_right('mediamanager.copy')) $filedata[$obj]['OPTIONS'] .= '<a href="mediamanager.php?action=mediamanager.copy&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/copy.gif" title="' . $apx->lang->get('COPY') . '" alt="' . $apx->lang->get('COPY') . '" style="vertical-align:middle;" /></a>';
 							else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
-							if ($apx->user->has_right('mediamanager.move') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="action.php?action=mediamanager.move&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/move.gif" title="' . $apx->lang->get('MOVE') . '" alt="' . $apx->lang->get('MOVE') . '" style="vertical-align:middle;" /></a>';
+							if ($apx->user->has_right('mediamanager.move') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="mediamanager.php?action=mediamanager.move&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/move.gif" title="' . $apx->lang->get('MOVE') . '" alt="' . $apx->lang->get('MOVE') . '" style="vertical-align:middle;" /></a>';
 							else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
-							if ($apx->user->has_right('mediamanager.rename') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="action.php?action=mediamanager.rename&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/rename.gif" title="' . $apx->lang->get('RENAME') . '" alt="' . $apx->lang->get('RENAME') . '" style="vertical-align:middle;" /></a>';
+							if ($apx->user->has_right('mediamanager.rename') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="mediamanager.php?action=mediamanager.rename&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/rename.gif" title="' . $apx->lang->get('RENAME') . '" alt="' . $apx->lang->get('RENAME') . '" style="vertical-align:middle;" /></a>';
 							else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
-							if ($apx->user->has_right('mediamanager.del') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="action.php?action=mediamanager.del&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/del.gif" title="' . $apx->lang->get('CORE_DEL') . '" alt="' . $apx->lang->get('CORE_DEL') . '" style="vertical-align:middle;" /></a>';
+							if ($apx->user->has_right('mediamanager.del') && $ftype[$extension]['special'] != "undel") $filedata[$obj]['OPTIONS'] .= '<a href="mediamanager.php?action=mediamanager.del&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/del.gif" title="' . $apx->lang->get('CORE_DEL') . '" alt="' . $apx->lang->get('CORE_DEL') . '" style="vertical-align:middle;" /></a>';
 							else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
 							$filedata[$obj]['OPTIONS'] .= '&nbsp;';
-							if ($apx->user->has_right('mediamanager.thumb') && in_array($extension, array('GIF', 'JPG', 'JPEG', 'JPE', 'PNG'))) $filedata[$obj]['OPTIONS'] .= '<a href="action.php?action=mediamanager.thumb&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/pic.gif" title="' . $apx->lang->get('THUMB') . '" alt="' . $apx->lang->get('THUMB') . '" style="vertical-align:middle;" /></a>';
+							if ($apx->user->has_right('mediamanager.thumb') && in_array($extension, array('GIF', 'JPG', 'JPEG', 'JPE', 'PNG'))) $filedata[$obj]['OPTIONS'] .= '<a href="mediamanager.php?action=mediamanager.thumb&amp;file=' . $filepath . '&amp;module=' . $this->module . '"><img src="design/pic.gif" title="' . $apx->lang->get('THUMB') . '" alt="' . $apx->lang->get('THUMB') . '" style="vertical-align:middle;" /></a>';
 							else $filedata[$obj]['OPTIONS'] .= '<img src="design/ispace.gif" alt="" />';
 						}
 					}
@@ -1561,7 +1561,7 @@ CODE;
 
 		$db->dinsert(PRE . '_inlinescreens', 'module,mid,hash,picture,popup,align,text,addtime');
 		logit('MEDIAMANAGER_INLINE', 'ID #' . $db->insert_id());
-		printJSRedirect('action.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
+		printJSRedirect('mediamanager.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
 		exit;
 	}
 
@@ -1579,7 +1579,7 @@ CODE;
 		}
 
 		$db->query("UPDATE " . PRE . "_inlinescreens SET text='" . addslashes($_POST['text']) . "',align='" . addslashes($_POST['align']) . "' WHERE ( module='" . addslashes($_REQUEST['module']) . "' AND id='" . $_REQUEST['id'] . "' )");
-		printJSRedirect('action.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
+		printJSRedirect('mediamanager.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
 		exit;
 	}
 
@@ -1601,7 +1601,7 @@ CODE;
 		if ($popup && file_exists(BASEDIR . getpath('uploads') . $popup)) $this->mm->deletefile($popup);
 
 		$db->query("DELETE FROM " . PRE . "_inlinescreens WHERE ( module='" . addslashes($_REQUEST['module']) . "' AND id='" . $_REQUEST['id'] . "' )");
-		printJSRedirect('action.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
+		printJSRedirect('mediamanager.php?action=mediamanager.inline&module=' . $_REQUEST['module'] . '&mid=' . $_REQUEST['mid'] . '&hash=' . $_REQUEST['hash'] . '&fields=' . $_REQUEST['fields']);
 		exit;
 	}
 } //END CLASS

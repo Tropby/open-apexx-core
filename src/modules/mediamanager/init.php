@@ -29,19 +29,19 @@ $module = array(
 	'mediainput' => array(
 		1 =>	array(
 			'icon' => '<img src="design/mm/insert_img.gif" alt="{MM_USEIMAGE}" title="{MM_USEIMAGE}" style="vertical-align:middle;" />',
-			'function' => 'top.opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
+			'function' => 'opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
 			'filetype' => array('GIF', 'JPG', 'JPEG', 'JPE', 'PNG'),
 			'urlrel' => 'httpdir'
 		),
 		2 =>	array(
 			'icon' => '<img src="design/mm/insert_swf.gif" alt="{MM_USESWF}" title="{MM_USESWF}" style="vertical-align:middle;" />',
-			'function' => 'top.opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
+			'function' => 'opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
 			'filetype' => array('SWF'),
 			'urlrel' => 'httpdir'
 		),
 		3 =>	array(
 			'icon' => '<img src="design/mm/insert_swf.gif" alt="{MM_USESWF}" title="{MM_USESWF}" style="vertical-align:middle;" />',
-			'function' => 'top.opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
+			'function' => 'opener.CKEDITOR.tools.callFunction({FUNCNUM}, \'{PATH}\');',
 			'filetype' => array(),
 			'urlrel' => 'httpdir'
 		)
@@ -51,8 +51,8 @@ $module = array(
 
 //Aktionen registrieren      S V O R
 $action['inline']    = array(0, 0, 99, 1);
-$action['index']     = array(0, 1, 1, 1);
-$action['search']    = array(0, 1, 2, 0);
+$action['index']     = array(0, 0, 1, 1);
+$action['search']    = array(0, 0, 2, 0);
 
 $action['diradd']    = array(0, 0, 3, 0);
 $action['dirdel']    = array(0, 0, 4, 0);
@@ -67,7 +67,7 @@ $action['rename']    = array(0, 0, 11, 0);
 $action['details']   = array(0, 0, 12, 0);
 $action['thumb']     = array(0, 0, 13, 0);
 
-$action['rules']     = array(0, 1, 14, 0);
+$action['rules']     = array(0, 0, 14, 0);
 $action['radd']      = array(0, 0, 15, 0);
 $action['redit']     = array(0, 0, 16, 0);
 $action['rdel']      = array(0, 0, 17, 0);
