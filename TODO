@@ -1,0 +1,10 @@
+Core:
+    ? Check call stack for unused/never used functions
+    ? Add deprecated tags to functions that shouldn't be used in the future
+
+
+Tests:
+    ? Test Stats Module
+    ? Test Gallery Module
+    ? Test Navi Module @started(21-04-18 17:17)
+    ? Test News Module
