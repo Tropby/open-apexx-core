@@ -14,6 +14,16 @@ class AdminModule implements IPublicModule
         return $this->module;
     }
 
+    public function call(string $func, array $param)
+    {
+        if (method_exists($this, $func))
+            return call_user_func_array(array($this, $func), $param);
+        else
+        {
+            ApexxError::ERROR("Calling nox existing function \"" . $func . "\" on public module \"" . $this->module()->id() . "\"!");
+        }
+    }
+
     /**
      * 
      * @param action Name of the 

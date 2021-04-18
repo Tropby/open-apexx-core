@@ -30,8 +30,8 @@ require('lib/_start.php');  ////////////////////////////////////////////////////
 $apx->module('main');
 $apx->lang->drop('search');
 
-headline($apx->lang->get('HEADLINE'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
-titlebar($apx->lang->get('HEADLINE'));
+$apx->headline($apx->lang->get('HEADLINE'),str_replace('&','&amp;',$_SERVER['REQUEST_URI']));
+$apx->titlebar($apx->lang->get('HEADLINE'));
 
 $parse = $apx->tmpl->used_vars('search');
 

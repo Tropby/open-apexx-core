@@ -3,6 +3,7 @@
 interface IPublicModule
 {
     public function module();
+    public function call(string $func, array $param);
 }
 
 class PublicModule implements IPublicModule

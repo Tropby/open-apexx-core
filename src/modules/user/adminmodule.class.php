@@ -44,6 +44,15 @@ class AdminModule extends \AdminModule
 		$this->registerAction('del', 0, 0, 7, 0);
 		$this->registerAction('enable', 0, 0, 8, 0);
 
+		$this->registerAction('gshow', 0, 1, 4, 0);
+		$this->registerAction('gadd', 0, 0, 5, 0);
+		$this->registerAction('gedit', 0, 0, 6, 0);
+		$this->registerAction('gclean', 0, 0, 6, 0);
+		$this->registerAction('gdel', 0, 0, 6, 0);
+
+		$this->registerAction('myprofile', 0, 1, 6, 0);
+		$this->registerAction('profile', 0, 0, 6, 0);
+
 		$this->registerTemplateFunction('User', 'USER');
 		$this->registerTemplateFunction('UserGroups', 'USERGROUPS');
 

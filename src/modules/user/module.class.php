@@ -24,6 +24,8 @@ namespace Modules\User;
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
+require_once("func/func.citymatch.php");
+
 class Module extends \Module
 {
 	public function __construct(\apexx &$apx)
