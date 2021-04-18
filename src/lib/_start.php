@@ -44,6 +44,8 @@ define('PRE', $set['mysql_pre']??"");
  * @var ApexxPublic
  */
 $apx = Apexx::startApexxPublic();
+$apx->tmpl->assign_static("CURRENT_DESIGN", "default_refreshed");
+
 
 if( $apx->config('debugCheck') )
 {

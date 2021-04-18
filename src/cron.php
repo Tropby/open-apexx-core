@@ -89,8 +89,8 @@ $apx->lang->init();
 
 //Funktionen laden
 foreach ( $loadmodule AS $module ) {
-	if ( !file_exists(BASEDIR.getmodulepath($module).'cron.php') ) continue;
-	include_once(BASEDIR.getmodulepath($module).'cron.php');
+	if ( !file_exists(BASEDIR.$apx->path()->getModulePath($module).'cron.php') ) continue;
+	include_once(BASEDIR.$apx->path()->getModulePath($module).'cron.php');
 }
 
 //Funktionen ausführen (Timestamp wird übergeben)

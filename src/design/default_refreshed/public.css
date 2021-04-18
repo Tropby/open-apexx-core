@@ -1,0 +1,66 @@
+
+.base
+{
+    border-left: 1px solid var(--primary);
+    border-right: 1px solid var(--primary);
+    width: 100%;
+}
+
+.logo
+{
+    background: url(logo_open-apexx.svg);
+    width: 250px;
+    height: 180px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+.public-menu
+{
+    width: 100%;
+    padding: 10px;
+    color: var(--text);
+}
+
+.navi
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.public-menu .navi-header a
+{
+    color: var(--text);
+    text-decoration: underline;    
+}
+
+.public-menu .navi-header
+{
+    margin: 0px;
+    padding: 0px;
+    margin-left: 15px;
+}
+
+.public-menu .navi-sub
+{
+    margin: 0px;
+    padding: 0px;
+    margin-left: 15px;
+}
+
+a, a:hover, a:active
+{
+    color: var(--text);
+}
+
+.navi-top
+{
+
+}
+
+.navi-top .item
+{
+    
+}

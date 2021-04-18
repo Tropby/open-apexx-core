@@ -40,10 +40,14 @@ class Apexx
 
 	var $coremodules = array('main', 'mediamanager', 'user');
 
+	/**
+	 * @deprecated use get_registered_object("user")
+	 */
+	var $user = null;
+
 	private Parameters $parameters;
 	private DatabaseMysqli $db;
 	private Session $session;
-
 
 	private array $config = array();
 	private array $registered_objects = array();
@@ -117,8 +121,11 @@ class Apexx
 
 			//Module auslesen
 			$this->get_modules();
-			$this->get_config(); {
+			$this->get_config(); 
+			
+			{
 				$GLOBALS["user"] = $this->get_registered_object('user');
+				$this->user = $this->get_registered_object('user');
 			}
 
 			//Sprachpakete
@@ -219,6 +226,7 @@ class Apexx
 		foreach ($this->module_objects as $module) {
 			$module->init();
 		}
+		$this->user = $this->get_registered_object("user");
 	}
 
 	public function start_modules()

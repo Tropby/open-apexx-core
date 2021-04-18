@@ -162,6 +162,23 @@ abstract class Module implements IModule
         }
     }
 
+    protected function registerAdminModule(\AdminModule &$module)
+    {        
+        $this->adminModule = &$module;
+    }
+
+    public function executeAdmin(string $action)
+    {  
+        if(isset($this->adminModule))
+        {
+            $this->adminModule->executeAction($action);
+        }
+        else
+        {
+            throw new Exception("Can not execute Admin action on NULL!");
+        }
+    }
+
     protected function registerPublicModule(\PublicModule &$module)
     {        
         $this->publicModule = &$module;
@@ -170,11 +187,6 @@ abstract class Module implements IModule
     public function executePublic(string $action)
     {
         $this->publicModule->executeAction($action);
-    }
-
-    public function executeAdmin(string $action)
-    {
-        // TODO
     }
 
     public function debugCheck()
@@ -231,7 +243,10 @@ abstract class Module implements IModule
      */
     public function get_admin_actions()
     {
-        return $this->admin_actions;
+        if( isset($this->adminModule))
+            return $this->adminModule->getActions();
+        else
+            return $this->admin_actions;
     }
 
     /**

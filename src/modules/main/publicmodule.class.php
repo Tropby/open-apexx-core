@@ -2,6 +2,7 @@
 
 /*
 	Open Apexx Core
+	(c) Copyright 2005-2009, Christian Scheb
 	(c) Copyright 2020 Carsten Grings
 
 	This program is free software: you can redistribute it and/or modify
@@ -18,12 +19,12 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define('APXRUN', true);
+namespace Modules\Main;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-require('lib/_start.php');  //////////////////////////////////////////////////////////// SYSTEMSTART ///
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-header("location: module.php?module=user&action=team");
-
-exit;
+class PublicModule extends \PublicModule
+{
+    public function __construct(\Module &$module)
+    {
+        parent::__construct($module);
+    }
+}

@@ -35,46 +35,28 @@ define('PRE',$set['mysql_pre']);
 
 /**
  * Apexx System
- * @var ApexxPublic
+ * @var \ApexxAdmin
  */
 $apx = Apexx::startApexxAdmin();
 $db = $apx->db();
 
-$apx->lang = new Language($apx);   //Sprache
-$apx->lang->langid($apx->language_default); //Standard-Sprachpaket
-
-
 //Session starten
-$apx->session = new Session('sid');
-$token = $apx->session->get('sectoken');
+$token = $apx->session()->get('sectoken');
 if ( !$token ) {
-	$apx->session->set('sectoken', md5(microtime().rand()));
+	$apx->session()->set('sectoken', md5(microtime().rand()));
 }
 
 //Sektionswähler
 if ( isset($_GET['selectsection']) ) {
 	if ( isset($apx->sections[$_GET['selectsection']]) ) {
-		$apx->session->set('section', $_GET['selectsection']);
+		$apx->session()->set('section', $_GET['selectsection']);
 	}
 	else {
-		$apx->session->set('section', 0);
+		$apx->session()->set('section', 0);
 	}
 }
-
-
-//Modul-Funktionen laden
-foreach ( $apx->modules AS $module => $info ) {
-	if ( !file_exists(BASEDIR.getmodulepath($module).'admin_system.php') ) continue;
-	include_once(BASEDIR.getmodulepath($module).'admin_system.php');
-}
-
-
-$apx->lang->init();          //Sprachpakete initialisieren
-$apx->tmpl = new TemplatesAdmin;  //Templates
 
 header("Content-Type: text/html; charset=".$set['main']['charset']);
 $apx->tmpl->assign_static("ADMIN_DESIGN", "default_refreshed");
 
 $html = new html;            //HTML Klasse für Admin
-
-?>

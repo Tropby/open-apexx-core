@@ -23,11 +23,16 @@ class AdminModule implements IAdminModule
      * 
      * @param action Name of the 
      */
-    protected function registerAction(string $action)
+    protected function registerAction(string $action, int $special_right = 0, int $visible = 0, int $order = -1, int $rights_for_all = 0)
     {
         $m = $this->module->id();
         $actionClass = "\\Modules\\" . ucwords($m) . "\\AdminAction\\" . ucwords($action);
-        $this->registeredModules[$action] = $actionClass;
+        $this->registeredModules[$action] = array( $special_right, $visible, $order, $rights_for_all, $actionClass);
+    }
+
+    public function getActions()
+    {
+        return $this->registeredModules;
     }
 
     /**
@@ -74,7 +79,7 @@ class AdminModule implements IAdminModule
     {
         if ($this->registeredModules[$action] ?? NULL)
         {
-            $obj = new $this->registeredModules[$action]($this);
+            $obj = new $this->registeredModules[$action][4]($this);
             $obj->execute($this->apx);
         }
         else

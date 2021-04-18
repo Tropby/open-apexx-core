@@ -17,7 +17,7 @@
 //Security-Check
 if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly!');
 
-
+/*
 //Inlinescreens
 function mediamanager_inline($text) {
 	//if ( strpos($text,'{IMAGE(')===false ) return $text;
@@ -43,7 +43,7 @@ function mediamanager_inline($text) {
 	}
 	
 	return $text;
-}
+}*/
 
 
 

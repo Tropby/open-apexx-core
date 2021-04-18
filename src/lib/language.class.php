@@ -49,12 +49,9 @@ class language
 
 		$this->core_load();     //Core Sprachpakete in den Cache laden und ablegen
 
-		if (MODE == 'admin')
-		{
-			$this->dropall('modulename'); //Diesen Teil aller Modul-Sprachpakete ablegen (Modul-Name -> für Navi)
-			$this->dropall('navi');       //Diesen Teil aller Modul-Sprachpakete ablegen (Navigation)
-			$this->dropall('titles');     //Diesen Teil aller Modul-Sprachpakete ablegen (Titel)
-		}
+		$this->dropall('modulename'); //Diesen Teil aller Modul-Sprachpakete ablegen (Modul-Name -> für Navi)
+		$this->dropall('navi');       //Diesen Teil aller Modul-Sprachpakete ablegen (Navigation)
+		$this->dropall('titles');     //Diesen Teil aller Modul-Sprachpakete ablegen (Titel)
 	}
 
 
@@ -96,6 +93,7 @@ class language
 		{
 			$lang = array();
 			include_once(BASEDIR . $langdir . $pack . '.php');
+
 			if (is_array($lang))
 			{
 				$langSystem = $lang;
@@ -152,8 +150,9 @@ class language
 	{
 		global $apx;
 
+
 		if (!$this->is_loaded($modulename))
-		{
+		{			
 			$this->cache($modulename);
 			$this->set_loaded($modulename);
 		}
@@ -193,6 +192,7 @@ class language
 		if ($module === false) $module = $apx->module();
 		$this->module_load($module);
 
+
 		if (isset($this->cached[$module][$type]) && !is_array($this->cached[$module][$type])) return;
 		if ($this->is_dropped($module . '-' . $type)) return;
 
@@ -200,7 +200,6 @@ class language
 		$this->mergepack($this->cached[$module][$type]);
 		$this->dropped($module . '-' . $type);
 	}
-
 
 	//Von allen Modulen den Teil mit Namen $type ablegen
 	function dropall($type)
@@ -227,6 +226,7 @@ class language
 		$this->module_load($module);
 
 		if ($action === false) $action = $apx->action();
+
 		if (!isset($this->cached[$module]['actions'][$action]) || !is_array($this->cached[$module]['actions'][$action])) return;
 		if ($this->is_dropped($module . '-action-' . $action)) return;
 

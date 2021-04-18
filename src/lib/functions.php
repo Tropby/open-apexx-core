@@ -521,6 +521,73 @@ function urlformat($text, $connector = ',')
 }
 
 
+//Codes aus der Datenbank
+function dbcodes($text,$sig=false) {
+	global $set;
+	static $syntax;
+	if ( !count($set['main']['codes']) ) return $text;
+	
+	if ( !isset($syntax) ) {
+		foreach ( $set['main']['codes'] AS $res ) {
+			if ( $res['count']==2 ) {
+				$find='\['.$res['code'].'=(.*)\](.*)\[/'.$res['code'].'\]';
+				$replace=str_replace('{1}','$1',str_replace('{2}','$2',$res['replace']));
+			}
+			else {
+				$find='\['.$res['code'].'\](.*)\[/'.$res['code'].'\]';
+				$replace=str_replace('{1}','$1',$res['replace']);
+			}
+			
+			$syntax[]=array($find,$replace,$res['allowsig']);
+		}
+	}
+	
+	foreach ( $syntax AS $replace ) {
+		if ( $sig && !$replace[2] ) continue;
+		while ( preg_match('#'.$replace[0].'#siU',$text) ) {
+			$text = preg_replace('#'.$replace[0].'#siU',$replace[1],$text);
+		}
+	}
+	
+	return $text;
+}
+
+
+
+//Smilies aus der Datenbank
+function dbsmilies($text) {
+	global $set;
+	static $smilies;
+	if ( !count($set['main']['smilies']) ) return $text;
+	
+	if ( !isset($smilies) ) {
+		foreach ( $set['main']['smilies'] AS $res ) {
+			if ( $res['file'][0]!='/' && defined('BASEREL') ) $filepath=BASEREL.$res['file'];
+			else $filepath=$res['file'];
+			$smilies[$res['code']]='<img src="'.$filepath.'" alt="'.replace($res['code']).iif($res['description'],' = '.replace($res['description'])).'" />';
+		}
+	}
+	
+	$text=strtr($text,$smilies);
+	return $text;
+}
+
+//Badwords aus der Datenbank
+function badwords($text) {
+	global $set;
+	static $badwords_find,$badwords_replace;
+	if ( !count($set['main']['badwords']) ) return $text;
+	
+	if ( !isset($badwords_find) ) {
+		foreach ( $set['main']['badwords'] AS $res ) {
+			$badwords_find[]='#'.str_replace('#','\\#',preg_quote($res['find'])).'#i';
+			$badwords_replace[]=$res['replace'];
+		}
+	}
+	
+	$text=preg_replace($badwords_find,$badwords_replace,$text);
+	return $text;
+}
 
 //Wörter aus einem Text filtern
 function extract_words($text)

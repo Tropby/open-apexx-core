@@ -295,4 +295,60 @@ class User
 		list($check) = $db->first("SELECT userid FROM " . PRE . "_user_friends WHERE userid='" . $id . "' AND friendid='" . $this->info['userid'] . "' LIMIT 1");
 		return $check ? true : false;
 	}
+
+	//Hat der User das Recht diese Aktion auszuführen?
+	function has_right($action)
+	{
+		$this->give_default_rights();
+		$this->get_rights();
+
+		if (isset($this->rights['global']) && $this->rights['global'] == 'global') return true;
+		if (is_array($this->rights) && in_array($action, $this->rights)) return true;
+
+		return false;
+	}
+
+	//Rechte holen
+	function get_rights()
+	{
+		global $db;
+
+		//Admin -> alle Rechte
+		if ($this->info['gtype'] == 'admin')
+		{
+			$this->rights['global'] = $this->sprights['global'] = 'global';
+			return;
+		}
+
+		$this->rights = unserialize($this->info['rights']);
+		$this->sprights = unserialize($this->info['sprights']);
+	}
+
+
+	//Standard-Rechte setzen
+	function give_default_rights()
+	{
+		global $apx;
+		foreach ($apx->actions as $module => $info)
+		{
+			foreach ($info as $action => $ainfo)
+			{
+				if (!$ainfo[3] == 1) continue;
+				$this->rights[] = $module . '.' . $action;
+			}
+		}
+	}
+
+	//Hat der User Sonderrechte für diese Aktion?
+	function has_spright($action)
+	{
+		$this->give_default_rights();
+		$this->get_rights();
+
+		if (is_array($this->sprights) && $this->sprights['global'] == 'global') return true;
+		if (is_array($this->sprights) && in_array($action, $this->sprights)) return true;
+
+		return false;
+	}
+
 } //END CLASS

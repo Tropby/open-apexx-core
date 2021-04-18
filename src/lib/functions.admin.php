@@ -25,7 +25,7 @@ if ( !defined('APXRUN') ) die('You are not allowed to execute this file directly
 function checkToken() {
 	global $apx;
 	
-	$token = $apx->session->get('sectoken');
+	$token = $apx->session()->get('sectoken');
 	if ( $_REQUEST['sectoken']==$token ) {
 		return true;
 	}
@@ -83,7 +83,7 @@ function infoInvalidToken() {
 //Ungültiges Token
 function printInvalidToken() {
 	global $apx;
-	message($apx->lang->get('CORE_INVALIDTOKEN'));
+	$apx->message($apx->lang->get('CORE_INVALIDTOKEN'));
 }
 
 
@@ -125,7 +125,7 @@ function printJSUpdateObject($id, $code) {
 function messageOverlay($text,$link=false) {
 	global $set,$db,$apx;
 	$apx->tmpl->assign_static('OVERLAY', true);
-	message($text,$link);
+	$apx->message($text,$link);
 }
 
 
@@ -399,7 +399,7 @@ function logit($text,$affect=false) {
 function save_index($url,$action=false) {
 	global $apx;
 	if ( $action===false ) $action=$apx->active_module.'.'.$apx->active_action;
-	$apx->session->set('indexpage_'.$action, $url);
+	$apx->session()->set('indexpage_'.$action, $url);
 }
 
 
@@ -562,7 +562,8 @@ function quicklink_out() {
 //Quicklink generieren
 function quicklink_generate($action,$file='action.php',$addurl='') {
 	global $apx;
-	if ( !$apx->user->has_right($action) ) return;
+	$user = $apx->get_registered_object("user");
+	if ( !$user->has_right($action) ) return;
 	
 	$out='&raquo; <a href="'.$file.'?action='.$action.iif($addurl,'&amp;'.$addurl).'">';
 	$out.=$apx->lang->get('TITLE_'.strtoupper(str_replace('.','_',$action)));

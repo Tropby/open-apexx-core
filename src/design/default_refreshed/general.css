@@ -8,9 +8,8 @@ html, body
     margin: 0px; 
     padding: 0px;
     background: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
-    height: 100%;
-    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;    
+    min-width: 100%;
 }
 
 p
@@ -105,6 +104,8 @@ form
     min-width: calc( 100% - 2 * var(--box-margin) - 2 * var(--box-padding));
     width: calc( 100% - 2 * var(--box-margin) - 2 * var(--box-padding));
 
+    min-height: 0px;
+
     overflow: hidden;
 }
 
@@ -137,6 +138,12 @@ form
 
 @media only screen and (min-width: 600px) 
 {
+    .box-2
+    {
+        width: calc( 12.5% - 2 * var(--box-margin) - 2 * var(--box-padding));
+        min-width: calc( 12.5% - 2 * var(--box-margin) - 2 * var(--box-padding));
+    }
+
     .box-4
     {
         width: calc( 25% - 2 * var(--box-margin) - 2 * var(--box-padding));

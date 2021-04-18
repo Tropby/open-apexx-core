@@ -38,12 +38,7 @@ function __construct()
 	if( defined("SID") )
 		$this->assign_static('SID',SID);
 	$this->assign_static('SERVER_REQUEST_METHOD',$_SERVER['REQUEST_METHOD']);
-	
-	//Benutzerinfos
-	$this->assign_static('LOGGED_ID',$apx->user->info['userid']??0);
-	$this->assign_static('LOGGED_USERNAME',replace($apx->user->info['username']??""));
-	$this->assign_static('LOGGED_EDITOR',$apx->user->info['admin_editor']??"");
-	
+		
 	//Sektionen verwendet?
 	if ( count($apx->sections) ) {
 		$this->assign_static('SET_SECTIONS',1);

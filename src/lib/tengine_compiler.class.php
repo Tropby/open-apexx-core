@@ -609,10 +609,8 @@ function compile_if($match) {
 	return  '<?php '.iif($elseif,'else').'if ( '.$compiled_expr.' ): ?>';
 }
 
-
-
-/*** Listen kompilieren ***/
-function compile_list($match) {
+function compile_list($match) 
+{
 	$varname=$match[1];
 	$varname=trim($varname);
 	
@@ -633,9 +631,6 @@ function compile_list($match) {
 	return '<?php if ( ('.$comp_varname.') && !is_array('.$comp_varname.') ): echo "<b>runtime error:</b> '.$varname.' is not listable!"; elseif ( is_array('.$comp_varname.') ): foreach ( '.$comp_varname.' AS $list_'.$listid.' ): $this->parsevars[\'#LIST#\'][\''.$listid.'\']=&$list_'.$listid.'; ?>';
 }
 
-
-
-/*** Repeat kompilieren ***/
 function compile_repeat($match) {
 	$expression=$match[1];
 	$expression=trim($expression);

@@ -38,7 +38,10 @@ class html
 	function navi()
 	{
 		global $apx, $db;
-		if (!$apx->user->info['userid']) return '';
+
+		$user = $apx->get_registered_object("user");
+
+		if (!$user->info['userid']) return '';
 
 		//Module
 		foreach ($apx->modules as $nv_module => $module_info)
@@ -51,7 +54,7 @@ class html
 			//Aktionen
 			foreach ($apx->actions[$nv_module] as $nv_action => $action_info)
 			{
-				if (!$apx->user->has_right($nv_module . '.' . $nv_action) || !$action_info[1]) continue;
+				if (!$user->has_right($nv_module . '.' . $nv_action) || !$action_info[1]) continue;
 
 				$navilinks[] = array(
 					'TITLE' => $apx->lang->get('NAVI_' . strtoupper($nv_module) . '_' . strtoupper($nv_action)),
@@ -75,9 +78,9 @@ class html
 
 
 		//Anordnung anpassen
-		if ($apx->user->info['userid'])
+		if ($user->info['userid'])
 		{
-			$data = $db->fetch("SELECT module FROM " . PRE . "_user_navord WHERE userid='" . $apx->user->info['userid'] . "' ORDER BY ord ASC");
+			$data = $db->fetch("SELECT module FROM " . PRE . "_user_navord WHERE userid='" . $user->info['userid'] . "' ORDER BY ord ASC");
 			if (count($data))
 			{
 				foreach ($data as $res)
@@ -102,11 +105,12 @@ class html
 	function mm_navi()
 	{
 		global $apx;
-		if (!$apx->user->info['userid']) return '';
+		$user = $apx->get_registered_object("user");
+		if (!$user->info['userid']) return '';
 		$i=0;
 		foreach ($apx->actions['mediamanager'] as $nv_action => $action_info)
 		{
-			if (!$apx->user->has_right('mediamanager' . '.' . $nv_action) || !$action_info[1]) continue;
+			if (!$user->has_right('mediamanager' . '.' . $nv_action) || !$action_info[1]) continue;
 
 			++$i;
 

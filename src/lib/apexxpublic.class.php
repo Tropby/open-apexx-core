@@ -55,8 +55,8 @@ class ApexxPublic extends Apexx
 	 * Execute Module
 	 * Executes a module public class
 	 * @param module Module to execute
-	 */
-	public function execute_module(string $module, string $action="index")
+	 */	
+	public function executeModule(string $module, string $action="index") : void
 	{
 		if ($this->is_module($module) ?? false)
 		{
@@ -73,6 +73,17 @@ class ApexxPublic extends Apexx
 		{
 			ApexxError::ERROR("Can not execute module \"" . $module . "\". Module unknown!");
 		}
+	}
+
+	/**
+	 * Execute Module
+	 * Executes a module public class
+	 * @param module Module to execute
+	 * @depricated
+	 */
+	public function execute_module(string $module, string $action="index") : void
+	{
+		$this->executeModule($module, $action);
 	}
 
 	//Sektion wählen

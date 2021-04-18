@@ -46,39 +46,7 @@ CODE;
 	//***************************** Index-Seite *****************************
 	function index()
 	{
-		global $set, $apx, $db;
-
-		//Ist der Nutzer angemeldet?
-		if (!$apx->user->info['userid'])
-		{
-			header('Location: action.php?action=user.login');
-			return;
-		}
-
-		//Online-Liste
-		list($online) = $db->first("SELECT count(userid) FROM " . PRE . "_user LEFT JOIN " . PRE . "_user_groups USING(groupid) WHERE ( gtype IN ('admin','indiv') AND lastactive>='" . (time() - $apx->user->timeout * 60) . "' )");
-		$data = $db->fetch("SELECT username FROM " . PRE . "_user LEFT JOIN " . PRE . "_user_groups USING(groupid) WHERE ( gtype IN ('admin','indiv') AND lastactive>='" . (time() - $apx->user->timeout * 60) . "' ) ORDER BY username ASC");
-		foreach ($data as $res)
-		{
-			$usernames[] = $res['username'];
-		}
-		$apx->tmpl->assign('ONLINE_COUNT', $online);
-		$apx->tmpl->assign('ONLINE', implode(', ', $usernames));
-
-		//Benutzer-Informationen
-		list($groupname) = $db->first("SELECT name FROM " . PRE . "_user_groups WHERE groupid='" . $apx->user->info['groupid'] . "' LIMIT 1");
-
-		$apx->tmpl->assign('USERID', $apx->user->info['userid']);
-		$apx->tmpl->assign('USERNAME_LOGIN', replace($apx->user->info['username_login']));
-		$apx->tmpl->assign('USERNAME', replace($apx->user->info['username']));
-		$apx->tmpl->assign('EMAIL', replace($apx->user->info['email']));
-		$apx->tmpl->assign('GROUP', replace($groupname));
-		$apx->tmpl->assign('SESSION', mkdate($apx->user->info['lastonline']));
-
-		$apx->tmpl->assign('VERSION', VERSION);
-		$apx->tmpl->assign('MODULES', count($apx->modules));
-
-		$apx->tmpl->parse('index');
+	
 	}
 
 

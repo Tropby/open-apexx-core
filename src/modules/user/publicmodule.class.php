@@ -47,6 +47,7 @@ class PublicModule extends \PublicModule
         $this->registerAction("subscribe");
         $this->registerAction("subscriptions");
         $this->registerAction("usermap");
+        $this->registerAction("team");
 
         /** 
          * Register all tempaltes that can be used in public scope

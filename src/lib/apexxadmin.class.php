@@ -24,101 +24,96 @@ if (!defined('APXRUN')) die('You are not allowed to execute this file directly!'
 
 class ApexxAdmin extends Apexx
 {
-
-	var $active_action;
-
-	var $user;
-	var $tmpl;
-	var $lang;
-	var $session;
-
 	function __construct()
 	{
 		parent::__construct();
 
-		if (!isset($_REQUEST['action']))
-			$_REQUEST['action'] = 'main.index';
+		//Template Engine
+		$this->tmpl = new TemplatesAdmin( $this );
 
-		$loadmodule = explode('.', $_REQUEST['action']);
-		if (count($loadmodule) != 2) {
-			die('WRONG SYNTAX OF ACTION PARAM!');
-		}
-		$this->module($loadmodule[0]);
-		$this->action($loadmodule[1]);
+		//Modul-Funktionen laden
+		$this->init_modules();
+
+		//Sprachpaket initialisieren
+		$this->lang->init();
+
+		// Init all modules
+		$this->start_modules();			
 	}
 
 
 	////////////////////////////////////////////////////////////////////////////////// -> AKTION AUSFÜHREN
 
 	//Aktion ausführen
-	function executeAction()
+	function executeModule( $module, $action )
 	{
-		if (!file_exists(BASEDIR . getmodulepath($this->module()) . 'admin.php'))
+		$user = $this->get_registered_object("user");			
+		
+		if( $module != "user" && $action != "login" )
 		{
-			message($this->lang->get('CORE_MISSADMIN'));
+			if (!$user->has_right($module.".".$action)) 
+			{
+				if ($user->info['userid']) 
+				{
+					$this->message($this->lang->get('CORE_NORIGHT'));
+					exit;
+				} 
+				else 
+				{
+					header('Location: action.php?action=user.login');
+					exit;
+				}
+			} 	
 		}
-		elseif (!isset($this->actions[$this->module()][$this->action()]))
+
+		if ($this->is_module($module) ?? false)
 		{
-			message($this->lang->get('CORE_NOTREG'));
-		}
-		elseif (!$this->user->has_right($_REQUEST['action'])) {
-			if ($this->user->info['userid']) 
+			// set active module
+			$this->module($module);
+
+			// drop language
+			$this->lang->dropaction($module, $action);
+
+			// execute the module
+			try
 			{
-				message($this->lang->get('CORE_NORIGHT'));
-			} 
-			else 
-			{
-				header("HTTP/1.1 301 Moved Permanently");
-				header('Location: action.php?action=user.login');
-				exit;
+				$this->getModule($module)->executeAdmin($action);
 			}
-		} 
-		else 
-		{
-			$this->lang->dropaction(); //Action-Sprachpaket des Moduls laden
-			require_once(BASEDIR . getmodulepath($this->module()) . 'admin.php');
-			$adminclass = new action;
+			catch(Exception $ex)
+			{
+				if (!file_exists(BASEDIR . getmodulepath($this->module()) . 'admin.php'))
+				{
+					message($this->lang->get('CORE_MISSADMIN'));
+				}
+				elseif (!$user->has_right($_REQUEST['action']))
+				{
+					if ($user->info['userid'])
+					{
+						message($this->lang->get('CORE_NORIGHT'));
+					}
+					else
+					{
+						header("HTTP/1.1 301 Moved Permanently");
+						header('Location: action.php?action=user.login');
+						exit;
+					}
+				}
+				else
+				{
+					$this->lang->dropaction(); //Action-Sprachpaket des Moduls laden
+					require_once(BASEDIR . getmodulepath($this->module()) . 'admin.php');
+					$adminclass = new action;
 
-			$action = $this->action();
-			if (method_exists($adminclass, $action)) $adminclass->$action();
-			else message($this->lang->get('CORE_METHODFAIL'));
+					if (method_exists($adminclass, $action))
+					{
+						$adminclass->$action();
+					} 
+					else
+					{
+						message($this->lang->get('CORE_METHODFAIL'));
+					}
+				}
+			}
 		}
-	}
-
-
-	/*
-//Multifunktion ausführen
-function execute_multifunc(&$class) {
-	if ( !is_array($_POST['multi']) ) return;
-	
-	foreach ( $_POST['multi'] AS $key => $val ) {
-		if ( $val=='1' ) continue;
-		unset($_POST['multi'][$key]);
-	}
-	
-	if ( !count($_POST['multi']) ) return;
-	
-	foreach ( $this->actions[$this->module()] AS $action => $trash ) {
-		if ( !$_POST['multi_'.$action] ) continue;
-		if ( !$this->user->has_right($this->module().'.'.$action) ) continue;
-	
-		$callfunc='multi_'.$action;
-		return $class->$callfunc();
-	}
-}
-*/
-
-
-	////////////////////////////////////////////////////////////////////////////////// -> INTERNE VARIABLEN SETZEN(AUSLESEN
-
-	//Aktives Module
-	//-> class apexx
-
-
-	//Aktive Aktion
-	function action($action = false)
-	{
-		if ($action === false) return $this->active_action;
-		$this->active_action = $action;
 	}
 } //END CLASS

@@ -106,13 +106,7 @@ function out() {
 	if ( $this->designid!='blank' ) {
 		$addcode='';
 		$extendcode='';
-		
-		//Autoload Javascript
-		$addcode='<script type="text/javascript" src="'.HTTPDIR.'lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>';
-		$addcode.='<script language="JavaScript" type="text/javascript" src="'.HTTPDIR.'lib/javascript/global.js"></script>'."\n";
-		$addcode.='<script language="JavaScript" type="text/javascript" src="'.HTTPDIR.'lib/javascript/public_popups.js"></script>'."\n";
-		$addcode.='<script language="JavaScript" type="text/javascript" src="'.HTTPDIR.'lib/javascript/tooltip.js"></script>'."\n";
-		
+				
 		//Cronjobs ausführen
 		//Prüfen, ob das Script bereits installiert ist!
 		if ( isset($set['main']) && $cronhash=cronexec() ) {

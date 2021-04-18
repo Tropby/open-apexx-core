@@ -165,7 +165,7 @@ class Register extends \PublicAction
 			}
 
 			$postto = mklink(
-				'user.php?action=register',
+				'module.php?module=user&action=register',
 				'user,register.html'
 			);
 
@@ -195,7 +195,7 @@ class Register extends \PublicAction
 		else
 		{
 			$postto = mklink(
-				'user.php?action=register',
+				'module.php?module=user&action=register',
 				'user,register.html'
 			);
 

@@ -1,17 +1,22 @@
 <?php 
 
-/***************************************************************\
-|                                                               |
-|                   apexx CMS & Portalsystem                    |
-|                 ============================                  |
-|           (c) Copyright 2005-2009, Christian Scheb            |
-|                  http://www.stylemotion.de                    |
-|                                                               |
-|---------------------------------------------------------------|
-| THIS SOFTWARE IS NOT FREE! MAKE SURE YOU OWN A VALID LICENSE! |
-| DO NOT REMOVE ANY COPYRIGHTS WITHOUT PERMISSION!              |
-| SOFTWARE BELONGS TO ITS AUTHORS!                              |
-\***************************************************************/
+/*
+	Open Apexx Core
+	(c) Copyright 2020 Carsten Grings
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 2.1 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 
 define('APXRUN',true);
@@ -20,12 +25,14 @@ define('APXRUN',true);
 require('includes/_start.php');  /////////////////////////////////////////////////////// SYSTEMSTART ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if ( $apx->user->info['userid'] ) 
+$user = $apx->get_registered_object("user");
+
+if ( $user->info['userid'] ) 
 {
 	$apx->tmpl->loaddesign('default');
 
 	//Sektionen
-	$selsec = $apx->session->get('section');
+	$selsec = $apx->session()->get('section');
 	$secdata = array();
 	foreach ( $apx->sections AS $id => $section ) {
 		$secdata[] = array(
@@ -39,11 +46,23 @@ if ( $apx->user->info['userid'] )
 	//Navigation
 	$apx->tmpl->assign_static('NAVI',$html->navi());	
 
-	$apx->executeAction();
+	
+	$module = "main.index";
+	if( $apx->param()->getIf("action") )
+	{
+		$module = $apx->param()->getString("action");
+	}
+	$module = explode(".", $module);
+	if( count( $module ) != 2 )
+		throw new ApexxError("Action must contain a dot!");
+	$action = $module[1];
+	$module = $module[0];
+
+	$apx->executeModule($module, $action);
 }
 else 
-{
-	header('Location: index.php?action=user.login');
+{	
+	$apx->executeModule("user", "login");
 	exit;
 }
 
