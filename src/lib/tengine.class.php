@@ -459,8 +459,11 @@ function used_vars_readout($filepath) {
 	//Variablen der Includes einlesen
 	if ( is_array($includes) && count($includes) ) {
 		foreach ( $includes AS $include ) {
-			$addlist=$this->used_vars_readout($include);
-			$varlist=array_merge($varlist,$addlist);
+			if( file_exists(BASEDIR . $include))
+			{
+				$addlist = $this->used_vars_readout($include);
+				$varlist = array_merge($varlist, $addlist);
+			}
 		}
 	}
 	

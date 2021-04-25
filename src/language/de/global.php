@@ -54,6 +54,8 @@ $lang = array (
 'NEW' => 'neu',
 'OLD' => 'alt',
 
+'BY' => 'von',
+
 'CORE_NOLETTER' => 'Alle',
 'CORE_MESSAGE' => 'Information',
 'CORE_REDIRECT' => 'Weiterleitung zu:',

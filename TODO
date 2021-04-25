@@ -1,10 +1,9 @@
 Core:
-    ? Check call stack for unused/never used functions
-    ? Add deprecated tags to functions that shouldn't be used in the future
-
+    ☐ Check call stack for unused/never used functions
+    ☐ Add deprecated tags to functions that shouldn't be used in the future
 
 Tests:
-    ? Test Stats Module
-    ? Test Gallery Module
-    ? Test Navi Module @started(21-04-18 18:00)
-    ? Test News Module
+    ☐ Test Stats Module
+    ☐ Test Gallery Module
+    ✔ Test Navi Module @started(21-04-18 19:45) @done(21-04-18 19:45) @lasted(55s)
+    ☐ Test News Module
