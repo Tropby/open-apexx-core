@@ -21,3 +21,9 @@
 /src/language/de/navi/
 /src/templates/default/navi/
 /src/tmp/
+
+/src/modules/news/
+/src/language/de/news/
+/src/templates/default/news/
+/src/templates/examples/news/
+/src/news*

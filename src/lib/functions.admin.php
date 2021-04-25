@@ -200,7 +200,7 @@ function choosetime($id,$empty=0,$sel=0) {
 	
 	//Jahre
 	$string.='<select name="t_year_'.$id.'">'.iif($empty,'<option value=""'.iif(!isset($date['year']),' selected="selected"').'></option>');
-	for ($i=2000; $i<=2020; $i++ ) $string.='<option value="'.$i.'"'.iif($date['year']==$i,' selected="selected"').'>'.sprintf('%02.d',$i).'</option>';
+	for ($i=2000; $i<=date("Y")+3; $i++ ) $string.='<option value="'.$i.'"'.iif($date['year']==$i,' selected="selected"').'>'.sprintf('%02.d',$i).'</option>';
 	$string.='</select> - ';
 	
 	//Ab hier === damit "kein Wert" als "ungleich" 0 erkannt wird
